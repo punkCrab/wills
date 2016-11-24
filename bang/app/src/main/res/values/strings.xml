@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">交大帮</string>
+
+    <string name="login">登录</string>
+    <string name="unlogin">忘记密码?</string>
+    <string name="register">注册新用户</string>
+    <string name="back_exit">再按一次退出程序</string>
+
+    <string name="error_net_fail">网络连接失败</string>
+    <string name="error_net_parse">网络异常</string>
+    <string name="error_network_is_not_available">网络不可用</string>
+    <string name="error_net_timeout">网络超时</string>
+    <string name="error_inner_error">网络错误</string>
+
+    <string name="tab_home">首页</string>
+    <string name="tab_person">个人中心</string>
+    <string name="tab_msg">消息</string>
+    <string name="tab_release">发布求助</string>
+    <string name="tab_assist">顺手帮忙</string>
+
+    <string name="list_loading">正在加载...</string>
+
+    <string name="release">发布求助</string>
+    <string name="release_progress">正在进行</string>
+    <string name="release_complete">已完成</string>
+
+    <string name="home_seek">求助</string>
+    <string name="home_help">帮人</string>
+
+    <string name="person_release_order">发布订单</string>
+    <string name="person_assist_order">帮助订单</string>
+    <string name="person_check">查看全部</string>
+    <string name="person_release">我发布</string>
+    <string name="person_progress">进行中</string>
+    <string name="person_complete">已完成</string>
+    <string name="person_evaluation">待评价</string>
+    <string name="person_refund">退款</string>
+    <string name="person_assist">我帮助</string>
+    <string name="person_identification">在校生认证</string>
+    <string name="person_public">我的公益</string>
+    <string name="person_wallet">我的钱包</string>
+
+    <string name="identification">在校生认证</string>
+    <string name="wallet">我的钱包</string>
+
+    <string name="ok">确定</string>
+    <string name="photo_preview">预览</string>
+    <string name="photo_choose">选择</string>
+    <string name="camera_error">拍照失败</string>
+
+</resources>

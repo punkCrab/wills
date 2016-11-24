@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <com.wills.help.photo.widget.HackyViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.wills.help.photo.widget.HackyViewPager>
+
+    <include layout="@layout/toolbar"></include>
+
+    <RelativeLayout
+        android:id="@+id/rl_choose"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/collection_photo_toolbar_height"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/photo_dark_translucent">
+
+        <CheckBox
+            android:id="@+id/cb_choose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_choose"
+            android:background="@drawable/photo_checkbox"
+            android:button="@null" />
+
+        <TextView
+            android:id="@+id/tv_choose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:enabled="false"
+            android:padding="10dp"
+            android:text="@string/photo_choose"
+            android:textColor="@drawable/photo_btn_black_textcolor" />
+    </RelativeLayout>
+</RelativeLayout>

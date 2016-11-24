@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/banner_height"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/default_circle" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/textPrimary"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_school"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/textSecondary" />
+            </LinearLayout>
+
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nsv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/page_divider"
+                android:background="@color/colorDividerLight"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/person_release_order"
+                        android:textColor="@color/textPrimary"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_release_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:drawablePadding="5dp"
+                        android:drawableRight="@drawable/arrow_right"
+                        android:text="@string/person_release_order"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/page_divider_thin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:background="@color/colorDividerLight"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/tv_release"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/person_release"
+                        android:gravity="center"
+                        android:text="@string/person_release"
+                        android:textColor="@color/textPrimary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_release_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/person_progress"
+                        android:gravity="center"
+                        android:text="@string/person_progress"
+                        android:textColor="@color/textPrimary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_release_complete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/person_complete"
+                        android:gravity="center"
+                        android:text="@string/person_complete"
+                        android:textColor="@color/textPrimary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_release_evaluation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/person_evaluation"
+                        android:gravity="center"
+                        android:text="@string/person_evaluation"
+                        android:textColor="@color/textPrimary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_release_refund"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/person_refund"
+                        android:gravity="center"
+                        android:text="@string/person_refund"
+                        android:textColor="@color/textPrimary"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/page_divider"
+                    android:background="@color/colorDividerLight"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/activity_horizontal_margin">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:text="@string/person_assist_order"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/tv_assist_check"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:drawablePadding="5dp"
+                            android:drawableRight="@drawable/arrow_right"
+                            android:text="@string/person_release_order"
+                            android:textColor="@color/textSecondary"
+                            android:textSize="16sp" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/page_divider_thin"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:background="@color/colorDividerLight"></View>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/activity_horizontal_margin">
+
+                        <TextView
+                            android:id="@+id/tv_assist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="5dp"
+                            android:drawableTop="@drawable/person_assist"
+                            android:gravity="center"
+                            android:text="@string/person_assist"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_assist_progress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="5dp"
+                            android:drawableTop="@drawable/person_progress"
+                            android:gravity="center"
+                            android:text="@string/person_progress"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_assist_complete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="5dp"
+                            android:drawableTop="@drawable/person_complete"
+                            android:gravity="center"
+                            android:text="@string/person_complete"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_assist_evaluation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="5dp"
+                            android:drawableTop="@drawable/person_evaluation"
+                            android:gravity="center"
+                            android:text="@string/person_evaluation"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_assist_refund"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="5dp"
+                            android:drawableTop="@drawable/person_refund"
+                            android:gravity="center"
+                            android:text="@string/person_refund"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/page_divider"
+                        android:background="@color/colorDividerLight"></View>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/activity_horizontal_margin">
+
+                        <TextView
+                            android:id="@+id/tv_identification"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableBottom="@drawable/person_identification"
+                            android:drawablePadding="10dp"
+                            android:gravity="center"
+                            android:text="@string/person_identification"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_public"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableBottom="@drawable/person_public"
+                            android:drawablePadding="10dp"
+                            android:gravity="center"
+                            android:text="@string/person_public"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_wallet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableBottom="@drawable/person_wallet"
+                            android:drawablePadding="10dp"
+                            android:gravity="center"
+                            android:text="@string/person_wallet"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

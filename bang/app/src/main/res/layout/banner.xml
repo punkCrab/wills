@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_banner"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/banner_height">
+
+    <com.wills.help.widget.banner.AutoScrollPoster
+        android:id="@+id/poster"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/flash"></com.wills.help.widget.banner.AutoScrollPoster>
+
+    <LinearLayout
+        android:id="@+id/ll_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"></LinearLayout>
+
+</RelativeLayout>

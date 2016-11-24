@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg">
+
+    <ImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/default_circle" />
+
+    <EditText
+        android:id="@+id/et_username"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/iv_avatar"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:padding="5dp"
+        android:textColor="@color/textSecondary" />
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/et_username"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="5dp"
+        android:textColor="@color/textSecondary" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/et_password"
+        android:layout_margin="20dp"
+        android:background="@drawable/btn_selector"
+        android:clickable="true"
+        android:text="@string/login"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_unlogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:clickable="true"
+        android:padding="15dp"
+        android:text="@string/unlogin"
+        android:textColor="@color/textSecondary" />
+
+    <TextView
+        android:id="@+id/tv_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:padding="15dp"
+        android:text="@string/register"
+        android:textColor="@color/textSecondary" />
+
+</RelativeLayout>
