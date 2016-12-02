@@ -23,8 +23,8 @@ public class BaseListLoadMoreListener extends RecyclerView.OnScrollListener {
         if (newState == RecyclerView.SCROLL_STATE_IDLE
                 && lastVisibleItem + 1 == adapter.getItemCount()
                 && adapter.isShowFooter()
-                && !adapter.isLoadMore()) {
-            adapter.setLoadMore(true);
+                && adapter.getState() != adapter.LOAD) {
+            adapter.setLoadMore(adapter.LOAD);
             loadMoreListener.loadMore();
         }
     }
@@ -42,11 +42,6 @@ public class BaseListLoadMoreListener extends RecyclerView.OnScrollListener {
     public BaseListLoadMoreListener(LinearLayoutManager linearLayoutManager , BaseListAdapter adapter) {
         this.linearLayoutManager = linearLayoutManager;
         this.adapter = adapter;
-    }
-
-    public BaseListLoadMoreListener(BaseListAdapter adapter, LinearLayoutManager linearLayoutManager) {
-        this.adapter = adapter;
-        this.linearLayoutManager = linearLayoutManager;
     }
 
     public interface LoadMoreListener{

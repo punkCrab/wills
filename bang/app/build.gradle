@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'china'
+            keyPassword 'lizhaoyong'
+            storeFile file('D:/个人材料/keystore.jks')
+            storePassword 'lizhaoyong'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "24.0.2"
     defaultConfig {
@@ -32,9 +40,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:multidex:1.+'
-    compile 'com.android.support:appcompat-v7:23.4.0'
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:support-v4:23.+'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:design:23.+'
@@ -54,4 +60,5 @@ dependencies {
     compile 'org.greenrobot:greendao-generator:3.2.0'
     compile 'com.lovedise:permissiongen:0.+'
     compile files('libs/uk-co-senab-photoview.jar')
+    compile project(':sublimepicker')
 }

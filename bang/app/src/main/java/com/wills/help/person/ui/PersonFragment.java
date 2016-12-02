@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +16,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.appeaser.sublimepickerlibrary.SublimePickerFragment;
+import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
+import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
+import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker;
 import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.listener.AppBarStateChangeListener;
@@ -189,6 +195,17 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
             case R.id.tv_assist_evaluation:
                 break;
             case R.id.tv_assist_refund:
+                SublimePickerFragment fragment = new SublimePickerFragment();
+                fragment.setCallback(callback);
+                Pair<Boolean,SublimeOptions> optionsPair =getOptions();
+                if (!optionsPair.first){
+                    return;
+                }
+                Bundle bd = new Bundle();
+                bd.putParcelable("SUBLIME_OPTIONS", optionsPair.second);
+                fragment.setArguments(bd);
+                fragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                fragment.show(getAppCompatActivity().getSupportFragmentManager(), "SUBLIME_PICKER");
                 break;
             case R.id.tv_identification:
                 IntentUtils.startActivity(getAppCompatActivity(),IdentificationActivity.class);
@@ -205,4 +222,27 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
                 break;
         }
     }
+
+    private Pair<Boolean, SublimeOptions> getOptions(){
+        SublimeOptions options = new SublimeOptions();
+        int displayOptions = 0;
+//        displayOptions |= SublimeOptions.ACTIVATE_DATE_PICKER;
+//        options.setPickerToShow(SublimeOptions.Picker.DATE_PICKER);
+        displayOptions = SublimeOptions.ACTIVATE_TIME_PICKER;
+        options.setPickerToShow(SublimeOptions.Picker.TIME_PICKER);
+        options.setDisplayOptions(displayOptions);
+        return new Pair<>(displayOptions != 0 ? Boolean.TRUE : Boolean.FALSE, options);
+    }
+
+    SublimePickerFragment.Callback callback = new SublimePickerFragment.Callback() {
+        @Override
+        public void onCancelled() {
+
+        }
+
+        @Override
+        public void onDateTimeRecurrenceSet(SelectedDate selectedDate, int hourOfDay, int minute, SublimeRecurrencePicker.RecurrenceOption recurrenceOption, String recurrenceRule) {
+
+        }
+    };
 }

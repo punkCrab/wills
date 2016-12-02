@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.wills.help.R;
 
@@ -20,11 +21,16 @@ import java.util.List;
 public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
+    public static final int LOAD = 3;//加载中
+    public static final int SUCCESS = 4;//加载成功
+    public static final int FAIL = 5;//加载失败
+    public static final int EMPTY = 6;//全部加载完成
+    private static int STATE = 3;//全部加载完成
     private boolean mShowFooter = true;
-    private boolean isLoadMore = false;
 
     private List<T> list;
     private Context context;
+    private View view;
 
     public BaseListAdapter(Context context) {
         this.context = context;
@@ -39,16 +45,17 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType == TYPE_ITEM) {
             return CreateViewHolder(parent,viewType);
-        } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.footer, null);
+        } else if (viewType == TYPE_FOOTER){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.footer, null);
             view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
             return new FooterViewHolder(view);
         }
+        return null;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-         BindViewHolder(holder,position);
+        BindViewHolder(holder,position);
     }
 
     public boolean isShowFooter() {
@@ -59,12 +66,37 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
         this.mShowFooter = showFooter;
     }
 
-    public boolean isLoadMore(){
-        return this.isLoadMore;
+    public int getState(){
+        return STATE;
     }
 
-    public void setLoadMore(boolean loadMore) {
-        isLoadMore = loadMore;
+    public void setLoadMore(int state) {
+        this.STATE = state;
+        changeFooter();
+    }
+
+    private void changeFooter(){
+        if (view!=null){
+            if (STATE != SUCCESS){
+                if (view.getVisibility() == View.GONE){
+                    view.setVisibility(View.VISIBLE);
+                }
+                if (STATE == LOAD){
+                    view.findViewById(R.id.pb_more).setVisibility(View.VISIBLE);
+                    ((TextView)view.findViewById(R.id.tv_more)).setText(context.getString(R.string.list_loading));
+                }else if (STATE == FAIL){
+                    view.findViewById(R.id.pb_more).setVisibility(View.GONE);
+                    ((TextView)view.findViewById(R.id.tv_more)).setText(context.getString(R.string.list_fail));
+                }else if (STATE == EMPTY){
+                    view.findViewById(R.id.pb_more).setVisibility(View.GONE);
+                    ((TextView)view.findViewById(R.id.tv_more)).setText(context.getString(R.string.list_empty));
+                }
+            }else {
+                if (view.getVisibility() == View.VISIBLE){
+                    view.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 
     @Override
@@ -93,8 +125,7 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
         this.notifyDataSetChanged();
     }
 
-    public class FooterViewHolder extends RecyclerView.ViewHolder {
-
+    public class FooterViewHolder extends RecyclerView.ViewHolder{
         public FooterViewHolder(View view) {
             super(view);
         }

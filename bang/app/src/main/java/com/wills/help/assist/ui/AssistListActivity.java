@@ -81,7 +81,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
                     if (swipeRefreshLayout.isRefreshing()){
                         swipeRefreshLayout.setRefreshing(false);
                     }
-                    assistAdapter.setLoadMore(false);
+                    assistAdapter.setLoadMore(assistAdapter.SUCCESS);
                     assistList.addAll(getAssistList());
                     assistAdapter.setList(assistList);
                     break;
