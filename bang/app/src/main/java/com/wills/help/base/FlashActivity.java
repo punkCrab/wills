@@ -1,4 +1,4 @@
-package com.wills.help.login.ui;
+package com.wills.help.base;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -6,8 +6,9 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.umeng.analytics.MobclickAgent;
 import com.wills.help.R;
-import com.wills.help.base.BaseActivity;
+import com.wills.help.login.ui.LoginActivity;
 import com.wills.help.utils.IntentUtils;
 
 /**
@@ -24,6 +25,7 @@ public class FlashActivity extends BaseActivity {
     }
 
     private void initEvents() {
+        MobclickAgent.openActivityDurationTrack(false);
         ObjectAnimator animator = ObjectAnimator.ofFloat(iv_flash,"alpha",0.1f,1.0f);
         animator.setDuration(2000);
         animator.start();
@@ -31,7 +33,7 @@ public class FlashActivity extends BaseActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                IntentUtils.startFinishActivity(context,LoginActivity.class);
+                IntentUtils.startFinishActivity(context,MainActivity.class);
             }
         });
     }

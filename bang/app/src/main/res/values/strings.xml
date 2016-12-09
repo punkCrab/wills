@@ -6,8 +6,14 @@
     <string name="register">注册新用户</string>
     <string name="back_exit">再按一次退出程序</string>
 
+    <string name="register_submit">注册</string>
+    <string name="register_phone">请输入您的手机号码</string>
+    <string name="register_pwd">请输入密码</string>
+    <string name="register_pwd_ok">请再次输入密码</string>
+    <string name="register_code">请输入您收到的验证码</string>
+
     <string name="error_net_fail">网络连接失败</string>
-    <string name="error_net_parse">网络异常</string>
+    <string name="error_net_parse">解析异常</string>
     <string name="error_network_is_not_available">网络不可用</string>
     <string name="error_net_timeout">网络超时</string>
     <string name="error_inner_error">网络错误</string>
@@ -26,8 +32,19 @@
     <string name="release_progress">正在进行</string>
     <string name="release_complete">已完成</string>
 
+    <string name="release_state">求助内容</string>
+    <string name="release_from">求助定位</string>
+    <string name="release_from_address">详细地址</string>
+    <string name="release_money">薪酬金额</string>
+    <string name="release_bargain">议价范围</string>
+    <string name="release_time">起止时间</string>
+    <string name="release_send">送达地址</string>
+    <string name="release_send_address">详细地址</string>
+    <string name="release_submit">发单</string>
+
     <string name="home_seek">求助</string>
     <string name="home_help">帮人</string>
+    <string name="home_express">快递</string>
 
     <string name="person_release_order">发布订单</string>
     <string name="person_assist_order">帮助订单</string>

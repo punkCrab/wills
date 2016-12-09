@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseActivity;
-import com.wills.help.base.MainActivity;
+import com.wills.help.login.model.LoginInfo;
+import com.wills.help.login.presenter.LoginInfoPresenterImpl;
+import com.wills.help.login.view.LoginInfoView;
 import com.wills.help.utils.IntentUtils;
 
 /**
@@ -18,11 +20,12 @@ import com.wills.help.utils.IntentUtils;
  * 2016/11/16.
  */
 
-public class LoginActivity extends BaseActivity{
+public class LoginActivity extends BaseActivity implements LoginInfoView {
     ImageView imageView;
     EditText et_username,et_password;
     TextView tv_unlogin,tv_register;
     Button btn_login;
+    private LoginInfoPresenterImpl loginInfoPresenter;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -33,6 +36,8 @@ public class LoginActivity extends BaseActivity{
         btn_login = (Button) findViewById(R.id.btn_login);
         et_username = (EditText) findViewById(R.id.et_username);
         et_password = (EditText) findViewById(R.id.et_password);
+        loginInfoPresenter = new LoginInfoPresenterImpl(this);
+        loginInfoPresenter.getLoginInfo();
         initEvents();
     }
 
@@ -40,8 +45,20 @@ public class LoginActivity extends BaseActivity{
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IntentUtils.startFinishActivity(context, MainActivity.class);
+//                IntentUtils.startFinishActivity(context, MainActivity.class);
+
             }
         });
+        tv_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IntentUtils.startActivity(context,RegisterActivity.class);
+            }
+        });
+    }
+
+    @Override
+    public void setLoginInfo(LoginInfo loginInfo) {
+        tv_register.setText(loginInfo.toString());
     }
 }

@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.util.Pair;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,13 +14,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.appeaser.sublimepickerlibrary.SublimePickerFragment;
-import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
-import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
-import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker;
 import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.listener.AppBarStateChangeListener;
+import com.wills.help.login.ui.LoginActivity;
 import com.wills.help.photo.model.PhotoModel;
 import com.wills.help.photo.ui.PhotoSelectorActivity;
 import com.wills.help.utils.AppConfig;
@@ -45,8 +40,8 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     AppBarLayout appBarLayout;
     ImageView imageView;
     TextView tv_name, tv_school, tv_release_check, tv_release, tv_release_progress, tv_release_complete, tv_release_evaluation,
-            tv_release_refund, tv_assist_check, tv_assist, tv_assist_progress, tv_assist_complete, tv_assist_evaluation,
-            tv_assist_refund, tv_identification, tv_public, tv_wallet;
+             tv_assist_check, tv_assist, tv_assist_progress, tv_assist_complete, tv_assist_evaluation,
+             tv_identification, tv_public, tv_wallet;
     Toolbar toolbar;
     String url = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b" +
             "4000_4000&sec=1479201416&di=6a38bbdd6162963a2d848f4becf73fa9&src=http://www.qqzhi.com/uploadpic/2014-05-29/160458328.jpg";
@@ -76,13 +71,11 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
         tv_release_progress = (TextView) view.findViewById(R.id.tv_release_progress);
         tv_release_complete = (TextView) view.findViewById(R.id.tv_release_complete);
         tv_release_evaluation = (TextView) view.findViewById(R.id.tv_release_evaluation);
-        tv_release_refund = (TextView) view.findViewById(R.id.tv_release_refund);
         tv_assist_check = (TextView) view.findViewById(R.id.tv_assist_check);
         tv_assist = (TextView) view.findViewById(R.id.tv_assist);
         tv_assist_progress = (TextView) view.findViewById(R.id.tv_assist_progress);
         tv_assist_complete = (TextView) view.findViewById(R.id.tv_assist_complete);
         tv_assist_evaluation = (TextView) view.findViewById(R.id.tv_assist_evaluation);
-        tv_assist_refund = (TextView) view.findViewById(R.id.tv_assist_refund);
         tv_identification = (TextView) view.findViewById(R.id.tv_identification);
         tv_public = (TextView) view.findViewById(R.id.tv_public);
         tv_wallet = (TextView) view.findViewById(R.id.tv_wallet);
@@ -98,13 +91,11 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
         tv_release_progress.setOnClickListener(this);
         tv_release_complete.setOnClickListener(this);
         tv_release_evaluation.setOnClickListener(this);
-        tv_release_refund.setOnClickListener(this);
         tv_assist_check.setOnClickListener(this);
         tv_assist.setOnClickListener(this);
         tv_assist_progress.setOnClickListener(this);
         tv_assist_complete.setOnClickListener(this);
         tv_assist_evaluation.setOnClickListener(this);
-        tv_assist_refund.setOnClickListener(this);
         tv_identification.setOnClickListener(this);
         tv_public.setOnClickListener(this);
         tv_wallet.setOnClickListener(this);
@@ -173,47 +164,40 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_release_check:
+                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
                 break;
             case R.id.tv_release:
+                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
                 break;
             case R.id.tv_release_progress:
+                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
                 break;
             case R.id.tv_release_complete:
+                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
                 break;
             case R.id.tv_release_evaluation:
-                break;
-            case R.id.tv_release_refund:
+                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
                 break;
             case R.id.tv_assist_check:
+                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
                 break;
             case R.id.tv_assist:
+                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
                 break;
             case R.id.tv_assist_progress:
+                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
                 break;
             case R.id.tv_assist_complete:
+                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
                 break;
             case R.id.tv_assist_evaluation:
-                break;
-            case R.id.tv_assist_refund:
-                SublimePickerFragment fragment = new SublimePickerFragment();
-                fragment.setCallback(callback);
-                Pair<Boolean,SublimeOptions> optionsPair =getOptions();
-                if (!optionsPair.first){
-                    return;
-                }
-                Bundle bd = new Bundle();
-                bd.putParcelable("SUBLIME_OPTIONS", optionsPair.second);
-                fragment.setArguments(bd);
-                fragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-                fragment.show(getAppCompatActivity().getSupportFragmentManager(), "SUBLIME_PICKER");
+
                 break;
             case R.id.tv_identification:
                 IntentUtils.startActivity(getAppCompatActivity(),IdentificationActivity.class);
                 break;
             case R.id.tv_public:
-                Bundle bundle = new Bundle();
-                bundle.putInt("action", AppConfig.PHOTO);
-                IntentUtils.startActivityForResult(getAppCompatActivity(), PhotoSelectorActivity.class,bundle,AppConfig.PHOTO);
+                IntentUtils.startActivity(getAppCompatActivity(),LoginActivity.class);
                 break;
             case R.id.tv_wallet:
                 IntentUtils.startActivity(getAppCompatActivity(),WalletActivity.class);
@@ -223,26 +207,4 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
-    private Pair<Boolean, SublimeOptions> getOptions(){
-        SublimeOptions options = new SublimeOptions();
-        int displayOptions = 0;
-//        displayOptions |= SublimeOptions.ACTIVATE_DATE_PICKER;
-//        options.setPickerToShow(SublimeOptions.Picker.DATE_PICKER);
-        displayOptions = SublimeOptions.ACTIVATE_TIME_PICKER;
-        options.setPickerToShow(SublimeOptions.Picker.TIME_PICKER);
-        options.setDisplayOptions(displayOptions);
-        return new Pair<>(displayOptions != 0 ? Boolean.TRUE : Boolean.FALSE, options);
-    }
-
-    SublimePickerFragment.Callback callback = new SublimePickerFragment.Callback() {
-        @Override
-        public void onCancelled() {
-
-        }
-
-        @Override
-        public void onDateTimeRecurrenceSet(SelectedDate selectedDate, int hourOfDay, int minute, SublimeRecurrencePicker.RecurrenceOption recurrenceOption, String recurrenceRule) {
-
-        }
-    };
 }

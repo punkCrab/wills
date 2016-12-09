@@ -9,15 +9,17 @@ import com.wills.help.utils.AppConfig;
  */
 
 public class ApiException extends RuntimeException {
-    private int mErrorCode;
+    private int errorCode;
+    private String errorMessage;
 
     public ApiException(int errorCode, String errorMessage) {
         super(errorMessage);
-        mErrorCode = errorCode;
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
     }
 
     public int getErrorCode(){
-        return mErrorCode;
+        return errorCode;
     }
 
     /**
@@ -26,6 +28,6 @@ public class ApiException extends RuntimeException {
      * @return 失效返回true, 否则返回false;
      */
     public boolean isTokenExpried() {
-        return mErrorCode == AppConfig.TOKEN_EXPRIED;
+        return errorCode == AppConfig.TOKEN_EXPRIED;
     }
 }

@@ -170,18 +170,6 @@
                         android:text="@string/person_evaluation"
                         android:textColor="@color/textPrimary"
                         android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_release_refund"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawablePadding="5dp"
-                        android:drawableTop="@drawable/person_refund"
-                        android:gravity="center"
-                        android:text="@string/person_refund"
-                        android:textColor="@color/textPrimary"
-                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <View
@@ -280,18 +268,6 @@
                             android:drawableTop="@drawable/person_evaluation"
                             android:gravity="center"
                             android:text="@string/person_evaluation"
-                            android:textColor="@color/textPrimary"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/tv_assist_refund"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawablePadding="5dp"
-                            android:drawableTop="@drawable/person_refund"
-                            android:gravity="center"
-                            android:text="@string/person_refund"
                             android:textColor="@color/textPrimary"
                             android:textSize="14sp" />
                     </LinearLayout>

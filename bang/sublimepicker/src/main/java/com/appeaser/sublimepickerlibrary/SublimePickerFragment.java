@@ -33,15 +33,13 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class SublimePickerFragment extends DialogFragment {
-    // Date & Time formatter used for formatting
-    // text on the switcher button
     DateFormat mDateFormatter, mTimeFormatter;
-
-    // Picker
     SublimePicker mSublimePicker;
-
-    // Callback to activity
     Callback mCallback;
+    public static final int TIME_ALL = 1;
+    public static final int TIME_DATE = 2;
+    public static final int TIME_TIME = 3;
+    private int state = 0;
 
     SublimeListenerAdapter mListener = new SublimeListenerAdapter() {
         @Override
@@ -49,8 +47,6 @@ public class SublimePickerFragment extends DialogFragment {
             if (mCallback!= null) {
                 mCallback.onCancelled();
             }
-
-            // Should actually be called by activity inside `Callback.onCancelled()`
             dismiss();
         }
 
@@ -62,24 +58,18 @@ public class SublimePickerFragment extends DialogFragment {
                                             String recurrenceRule) {
             if (mCallback != null) {
                 mCallback.onDateTimeRecurrenceSet(selectedDate,
-                        hourOfDay, minute, recurrenceOption, recurrenceRule);
+                        String.format("%02d",hourOfDay), String.format("%02d",minute), recurrenceOption, recurrenceRule);
             }
-
-            // Should actually be called by activity inside `Callback.onCancelled()`
             dismiss();
         }
-// You can also override 'formatDate(Date)' & 'formatTime(Date)'
-        // to supply custom formatters.
     };
 
     public SublimePickerFragment() {
-        // Initialize formatters
         mDateFormatter = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault());
         mTimeFormatter = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
         mTimeFormatter.setTimeZone(TimeZone.getTimeZone("GMT+0"));
     }
 
-    // Set activity callback
     public void setCallback(Callback callback) {
         mCallback = callback;
     }
@@ -87,39 +77,52 @@ public class SublimePickerFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        /*try {
-            //getActivity().getLayoutInflater()
-                    //.inflate(R.layout.sublime_recurrence_picker, new FrameLayout(getActivity()), true);
-            getActivity().getLayoutInflater()
-                    .inflate(R.layout.sublime_date_picker, new FrameLayout(getActivity()), true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException();
-        }*/
 
-        mSublimePicker = (SublimePicker) getActivity()
-                .getLayoutInflater().inflate(R.layout.sublime_picker, container);
-
-        // Retrieve SublimeOptions
-        Bundle arguments = getArguments();
-        SublimeOptions options = null;
-
-        // Options can be null, in which case, default
-        // options are used.
-        if (arguments != null) {
-            options = arguments.getParcelable("SUBLIME_OPTIONS");
-        }
-
+        mSublimePicker = (SublimePicker) getActivity().getLayoutInflater().inflate(R.layout.sublime_picker, container);
+        setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        state = getArguments().getInt("state",0);
+        SublimeOptions options = getOptions(state);
         mSublimePicker.initializePicker(options, mListener);
         return mSublimePicker;
     }
 
-    // For communicating with the activity
+    private SublimeOptions getOptions(int state){
+        SublimeOptions options = new SublimeOptions();
+        int displayOptions = 0;
+        switch (state){
+            case TIME_ALL:
+                displayOptions |= SublimeOptions.ACTIVATE_DATE_PICKER;
+                displayOptions |= SublimeOptions.ACTIVATE_TIME_PICKER;
+                options.setPickerToShow(SublimeOptions.Picker.DATE_PICKER);
+                break;
+            case TIME_DATE:
+                displayOptions = SublimeOptions.ACTIVATE_DATE_PICKER;
+                options.setPickerToShow(SublimeOptions.Picker.DATE_PICKER);
+                break;
+            case TIME_TIME:
+                displayOptions = SublimeOptions.ACTIVATE_TIME_PICKER;
+                options.setPickerToShow(SublimeOptions.Picker.TIME_PICKER);
+                break;
+            default:
+                break;
+        }
+        options.setDisplayOptions(displayOptions);
+        return options;
+    }
+
+    public static SublimePickerFragment newInstance(int state) {
+        
+        Bundle args = new Bundle();
+        args.putInt("state",state);
+        SublimePickerFragment fragment = new SublimePickerFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+    
     public interface Callback {
         void onCancelled();
-
         void onDateTimeRecurrenceSet(SelectedDate selectedDate,
-                                     int hourOfDay, int minute,
+                                     String hourOfDay, String minute,
                                      SublimeRecurrencePicker.RecurrenceOption recurrenceOption,
                                      String recurrenceRule);
     }

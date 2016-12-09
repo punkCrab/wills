@@ -81,6 +81,7 @@ public class HomeFragment extends BaseFragment{
         setViewPager(viewPager);
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.home_seek)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.home_help)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.home_express)));
         tabLayout.setupWithViewPager(viewPager);
         return view;
     }
@@ -166,6 +167,7 @@ public class HomeFragment extends BaseFragment{
         PagerAdapter adapter = new PagerAdapter(getChildFragmentManager());
         adapter.addFragment(IconFragment.newInstance(0),getString(R.string.home_seek));
         adapter.addFragment(IconFragment.newInstance(1),getString(R.string.home_help));
+        adapter.addFragment(IconFragment.newInstance(2),getString(R.string.home_express));
         mViewPager.setAdapter(adapter);
     }
 }

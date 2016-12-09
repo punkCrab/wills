@@ -8,7 +8,8 @@ package com.wills.help.utils;
 
 public class AppConfig {
     public static String VERSION = "1.0.0";
-    public static final String HOST = "";
+//    public static final String HOST = "https://api.github.com/repositories/892275/";
+    public static final String HOST = "https://api.github.com/";
     public static boolean TEST = true;
 
     public static final int NET_SUCCESS = 1;
