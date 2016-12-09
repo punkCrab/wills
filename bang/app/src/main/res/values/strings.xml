@@ -11,6 +11,9 @@
     <string name="register_pwd">请输入密码</string>
     <string name="register_pwd_ok">请再次输入密码</string>
     <string name="register_code">请输入您收到的验证码</string>
+    <string name="register_code_fetch">点击获取验证码</string>
+    <string name="register_code_fetched">%1$s秒后重新发送</string>
+    <string name="register_code_again">重新获取验证码</string>
 
     <string name="error_net_fail">网络连接失败</string>
     <string name="error_net_parse">解析异常</string>

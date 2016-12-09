@@ -7,6 +7,8 @@ import android.widget.EditText;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseActivity;
+import com.wills.help.login.presenter.RegisterPresenterImpl;
+import com.wills.help.login.view.RegisterView;
 import com.wills.help.utils.TimeCountUtils;
 
 /**
@@ -15,9 +17,10 @@ import com.wills.help.utils.TimeCountUtils;
  * 2016/12/8.
  */
 
-public class RegisterActivity extends BaseActivity implements View.OnClickListener{
+public class RegisterActivity extends BaseActivity implements View.OnClickListener , RegisterView{
     private EditText et_register_phone,et_register_pwd,et_register_pwd_ok,et_register_code;
     private Button btn_code,btn_submit;
+    private RegisterPresenterImpl registerPresenter;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -31,17 +34,24 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         btn_code.setOnClickListener(this);
         btn_submit = (Button) findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(this);
+        registerPresenter = new RegisterPresenterImpl(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_code:
-                TimeCountUtils utils = new TimeCountUtils(context , 600000,1000,btn_code);
+                TimeCountUtils utils = new TimeCountUtils(context , 60000 , 1000 ,  btn_code);
                 utils.start();
+                registerPresenter.getCode("15311437664");
                 break;
             case R.id.btn_submit:
                 break;
         }
+    }
+
+    @Override
+    public void setRegister(boolean register) {
+
     }
 }

@@ -29,7 +29,7 @@ public class TimeCountUtils extends CountDownTimer{
     @Override
     public void onTick(long l) {
         button.setClickable(false);
-        button.setText(l/1000+"秒后可重新发送");//设置倒计时时间
+        button.setText(String.format(context.getString(R.string.register_code_fetched),String.valueOf(l/1000)));//设置倒计时时间
         button.setBackgroundResource(R.color.button_gray);
         Spannable span = new SpannableString(button.getText().toString());
         span.setSpan(new ForegroundColorSpan(Color.RED), 0, 2,Spannable.SPAN_INCLUSIVE_EXCLUSIVE);//讲倒计时时间显示为红色
@@ -38,7 +38,7 @@ public class TimeCountUtils extends CountDownTimer{
 
     @Override
     public void onFinish() {
-        button.setText("重新获取验证码");
+        button.setText(context.getString(R.string.register_code_again));
         button.setClickable(true);//重新获得点击
         button.setBackgroundResource(R.drawable.btn_selector);
     }

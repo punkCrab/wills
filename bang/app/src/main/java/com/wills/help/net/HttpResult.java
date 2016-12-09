@@ -9,24 +9,24 @@ import com.wills.help.utils.AppConfig;
  */
 
 public class HttpResult<T> {
-    private int resultCode;
-    private String resultMessage;
+    private int state;
+    private String info;
     private T data;
 
-    public int getResultCode() {
-        return resultCode;
+    public int getState() {
+        return state;
     }
 
-    public void setResultCode(int resultCode) {
-        this.resultCode = resultCode;
+    public void setState(int state) {
+        this.state = state;
     }
 
-    public String getResultMessage() {
-        return resultMessage;
+    public String getInfo() {
+        return info;
     }
 
-    public void setResultMessage(String resultMessage) {
-        this.resultMessage = resultMessage;
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     public T getData() {
@@ -38,6 +38,6 @@ public class HttpResult<T> {
     }
 
     public boolean isCodeInvalid() {
-        return resultCode != AppConfig.NET_SUCCESS;
+        return state != AppConfig.NET_SUCCESS;
     }
 }

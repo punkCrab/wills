@@ -13,6 +13,7 @@ import rx.Observable;
 
 public class LoginInfoModelImpl{
 
+
 //    public Observable<LoginInfo> net_getLoginInfo(final Map<String ,String > map) {
     public Observable<LoginInfo> net_getLoginInfo(final String map) {
 //        Observable observable = Observable.create(new Observable.OnSubscribe<LoginInfo>(){

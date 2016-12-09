@@ -18,7 +18,7 @@
 
         <EditText
             android:id="@+id/et_register_phone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:background="@null"
@@ -48,7 +48,7 @@
 
         <EditText
             android:id="@+id/et_register_pwd"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:background="@null"
@@ -78,7 +78,7 @@
 
         <EditText
             android:id="@+id/et_register_pwd_ok"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:background="@null"
@@ -93,8 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:background="@color/white"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin">
+        android:paddingLeft="@dimen/activity_horizontal_margin">
 
         <ImageView
             android:id="@+id/iv_register_code"
@@ -120,7 +119,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/btn_selector" />
+            android:background="@drawable/btn_selector"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:textColor="@color/white"
+            android:text="@string/register_code_fetch" />
     </RelativeLayout>
 
     <Button

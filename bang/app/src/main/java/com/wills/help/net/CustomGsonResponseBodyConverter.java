@@ -38,7 +38,7 @@ final class CustomGsonResponseBodyConverter<T> implements Converter<ResponseBody
         HttpResult httpResult = gson.fromJson(response, HttpResult.class);
         if (httpResult.isCodeInvalid()) {
             value.close();
-            throw new ApiException(httpResult.getResultCode(), httpResult.getResultMessage());
+            throw new ApiException(httpResult.getState(), httpResult.getInfo());
         }
 
         MediaType contentType = value.contentType();
