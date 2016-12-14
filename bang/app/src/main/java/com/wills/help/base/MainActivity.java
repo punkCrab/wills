@@ -1,5 +1,6 @@
 package com.wills.help.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,8 +13,10 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.wills.help.R;
 import com.wills.help.assist.ui.AssistFragment;
 import com.wills.help.home.ui.HomeFragment;
+import com.wills.help.login.ui.LoginActivity;
 import com.wills.help.person.ui.PersonFragment;
 import com.wills.help.release.ui.MainReleaseFragment;
+import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -29,6 +32,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private MainReleaseFragment mainReleaseFragment;
     private AssistFragment assistFragment;
     private PersonFragment personFragment;
+    private final int LOGIN = 11;
+    private int currentPosition = 0;
+    private int prevPosition = 0;
 //    private BottomNavigationItem msgItem;
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -75,7 +81,21 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             personFragment = (PersonFragment) getSupportFragmentManager().findFragmentByTag(tags[3]);
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.hide(mainReleaseFragment).hide(assistFragment).hide(personFragment).show(homeFragment).commit();
+            if (mainReleaseFragment!=null){
+                transaction.hide(mainReleaseFragment);
+            }
+            if (assistFragment!=null){
+                transaction.hide(assistFragment);
+            }
+            if (personFragment!=null){
+                transaction.hide(personFragment);
+            }
+            if (homeFragment!=null){
+                transaction.show(homeFragment);
+            }
+            transaction.commit();
+            fragments = getFragments();
+            currentView = fragments.get(0);
         }
     }
 
@@ -119,9 +139,17 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     public void onTabSelected(int position) {
         if (fragments !=null){
+            currentPosition = position;
             if (position<fragments.size()){
+                if (position ==1 || position ==2){
+                    if (!App.getApp().getIsLogin()){
+                        IntentUtils.startActivityForResult(this, LoginActivity.class,LOGIN);
+                        return;
+                    }
+                }
                 Fragment fragment = fragments.get(position);
                 switchView(fragment,position);
+                prevPosition = position;
             }
         }
     }
@@ -159,4 +187,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==LOGIN){
+            if (resultCode==RESULT_OK)
+                bottomNavigationBar.selectTab(currentPosition);
+            else if (resultCode==RESULT_CANCELED)
+                bottomNavigationBar.selectTab(prevPosition);
+        }
+    }
 }

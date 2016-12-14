@@ -49,7 +49,8 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
 
     @Override
     public void setLogin(User login) {
-        tv_register.setText(login.toString());
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Override
@@ -69,5 +70,11 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
             case R.id.tv_unlogin:
                 break;
         }
+    }
+
+    @Override
+    protected void backClick() {
+        setResult(RESULT_CANCELED);
+        super.backClick();
     }
 }

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.umeng.analytics.MobclickAgent;
@@ -110,4 +111,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
     /** 初始化视图 **/
     protected abstract void initViews(Bundle savedInstanceState);
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            backClick();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

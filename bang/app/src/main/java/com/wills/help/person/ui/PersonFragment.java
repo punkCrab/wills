@@ -18,6 +18,7 @@ import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.listener.AppBarStateChangeListener;
 import com.wills.help.login.ui.LoginActivity;
+import com.wills.help.login.ui.SettingActivity;
 import com.wills.help.photo.model.PhotoModel;
 import com.wills.help.photo.ui.PhotoSelectorActivity;
 import com.wills.help.utils.AppConfig;
@@ -155,6 +156,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_right:
+                IntentUtils.startActivity(getAppCompatActivity(), SettingActivity.class);
                 break;
         }
         return true;

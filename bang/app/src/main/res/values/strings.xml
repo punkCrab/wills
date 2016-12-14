@@ -6,6 +6,10 @@
     <string name="register">注册新用户</string>
     <string name="back_exit">再按一次退出程序</string>
 
+    <string name="setting_exit">退出登录</string>
+    <string name="setting_about">关于交大帮</string>
+    <string name="setting">设置</string>
+
     <string name="register_submit">注册</string>
     <string name="register_phone">请输入您的手机号码</string>
     <string name="register_pwd">请输入密码</string>

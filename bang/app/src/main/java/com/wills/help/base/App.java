@@ -23,6 +23,7 @@ public class App extends MultiDexApplication {
     private static User.UserInfo user;
     private UserObserver userObserver;
     private UserCache userCache;
+    private static boolean isLogin = false;
 
     @Override
     public void onCreate() {
@@ -47,8 +48,17 @@ public class App extends MultiDexApplication {
 
     public void setUser(User.UserInfo user) {
         App.user = user;
-        userCache = new UserCache(app);
+        if (userCache == null){
+            userCache = new UserCache(app);
+        }
         userCache.put(user.getUserid(),user);
+    }
+
+    public void removeUser(){
+        if (userCache == null){
+            userCache = new UserCache(app);
+        }
+        userCache.remove(user.getUserid());
     }
 
     public UserObserver getUserObserver() {
@@ -56,6 +66,14 @@ public class App extends MultiDexApplication {
             userObserver = new UserObserver();
         }
         return userObserver;
+    }
+
+    public void setIsLogin(boolean isLogin){
+        App.isLogin = isLogin;
+    }
+
+    public boolean getIsLogin(){
+        return isLogin;
     }
 
     private class ObserverUser implements Observer{

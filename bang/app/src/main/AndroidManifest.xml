@@ -46,6 +46,7 @@
         </activity>
         <activity android:name=".login.ui.LoginActivity"></activity>
         <activity android:name=".login.ui.RegisterActivity"></activity>
+        <activity android:name=".login.ui.SettingActivity"></activity>
         <activity android:name=".person.ui.IdentificationActivity"></activity>
         <activity android:name=".person.ui.WalletActivity"></activity>
         <activity android:name=".photo.ui.PhotoSelectorActivity" />

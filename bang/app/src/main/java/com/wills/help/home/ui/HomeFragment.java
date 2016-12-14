@@ -157,9 +157,13 @@ public class HomeFragment extends BaseFragment{
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (hidden){
-            poster.stopScroll();
+            if (poster!=null){
+                poster.stopScroll();
+            }
         }else {
-            poster.resumeScroll();
+            if (poster!=null){
+                poster.resumeScroll();
+            }
         }
     }
 

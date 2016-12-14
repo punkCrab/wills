@@ -8,7 +8,6 @@ import com.wills.help.login.view.LoginView;
 import com.wills.help.net.ApiSubscriber;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.SharedPreferencesUtils;
-import com.wills.help.utils.ToastUtils;
 
 import java.util.Map;
 
@@ -40,6 +39,7 @@ public class LoginPresenterImpl implements LoginPresenter {
                         //储存到本地
                         SharedPreferencesUtils.getInstance().put(AppConfig.SP_USER,login.getData().getUserid());
                         App.getApp().setUser(login.getData());
+                        App.getApp().setIsLogin(true);
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -52,7 +52,7 @@ public class LoginPresenterImpl implements LoginPresenter {
 
                     @Override
                     public void onNext(User login) {
-                        ToastUtils.toast("成功");
+                        loginInfoView.setLogin(login);
                     }
                 });
     }
