@@ -18,4 +18,12 @@ public class AppConfig {
     public static final int AVATAR = 100;
     public static final int PHOTO = 101;
     public static final int CAMERA = 102;
+
+    public static final int CACHE_VERSION = 1;
+    public static final int CACHE_TIME = 24*60*1000;
+    public static final String CACHE_DIR = "/wills/user";
+
+
+    public static final String SP_USER = "sp_user";
+
 }

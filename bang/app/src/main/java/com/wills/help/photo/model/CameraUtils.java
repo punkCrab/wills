@@ -19,7 +19,7 @@ import java.util.Date;
 
 public class CameraUtils {
 
-    private static final String saveDir = Environment.getExternalStorageDirectory() + "/wills_photos";
+    private static final String saveDir = Environment.getExternalStorageDirectory() + "/wills/photos";
 
     public static File getPath(){
         File tempFile = null;

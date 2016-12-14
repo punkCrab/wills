@@ -6,6 +6,8 @@ package com.wills.help.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.wills.help.base.App;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -23,12 +25,24 @@ public class SharedPreferencesUtils {
 	 * 保存在手机里面的文件名
 	 */
 	private static final String FILE_NAME = "bang_data";
-	private static SharedPreferences.Editor editor;
-	private static SharedPreferences sp;
+	private SharedPreferences.Editor editor;
+	private SharedPreferences sp;
+	private static SharedPreferencesUtils sharedPreferencesUtils;
 
-	public SharedPreferencesUtils(Context context) {
-		sp = context.getSharedPreferences(FILE_NAME,Context.MODE_PRIVATE);
+	public SharedPreferencesUtils() {
+		sp = App.getApp().getSharedPreferences(FILE_NAME,Context.MODE_PRIVATE);
 		editor = sp.edit();
+	}
+
+	public static SharedPreferencesUtils getInstance(){
+		if (sharedPreferencesUtils == null){
+			synchronized (SharedPreferencesUtils.class){
+				if (sharedPreferencesUtils == null){
+					sharedPreferencesUtils = new SharedPreferencesUtils();
+				}
+			}
+		}
+		return sharedPreferencesUtils;
 	}
 
 	/**
@@ -38,7 +52,7 @@ public class SharedPreferencesUtils {
 	 * @param object
 	 */
 
-	public static void put(String key, Object object)
+	public void put(String key, Object object)
 	{
 		if (object instanceof String)
 		{
@@ -72,7 +86,7 @@ public class SharedPreferencesUtils {
 	 * @param defaultObject
 	 * @return
 	 */
-	public static Object get( String key, Object defaultObject)
+	public Object get( String key, Object defaultObject)
 	{
 		if (defaultObject instanceof String)
 		{
@@ -100,7 +114,7 @@ public class SharedPreferencesUtils {
 	 * 移除某个key值已经对应的值
 	 * @param key
 	 */
-	public static void remove( String key)
+	public void remove( String key)
 	{
 		editor.remove(key);
 		SharedPreferencesCompat.apply(editor);
@@ -109,7 +123,7 @@ public class SharedPreferencesUtils {
 	/**
 	 * 清除所有数据
 	 */
-	public static void clear()
+	public void clear()
 	{
 		editor.clear();
 		SharedPreferencesCompat.apply(editor);
@@ -120,7 +134,7 @@ public class SharedPreferencesUtils {
 	 * @param key
 	 * @return
 	 */
-	public static boolean contains( String key)
+	public boolean contains( String key)
 	{
 		return sp.contains(key);
 	}
@@ -130,7 +144,7 @@ public class SharedPreferencesUtils {
 	 *
 	 * @return
 	 */
-	public static Map<String, ?> getAll()
+	public Map<String, ?> getAll()
 	{
 		return sp.getAll();
 	}

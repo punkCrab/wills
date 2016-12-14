@@ -46,6 +46,19 @@ public class RegisterPresenterImpl implements RegisterPresenter{
 
     @Override
     public void register(Map<String, String> map) {
+        registerModel.submitRegister(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiSubscriber<Empty>() {
+                    @Override
+                    public void onCompleted() {
 
+                    }
+
+                    @Override
+                    public void onNext(Empty o) {
+
+                    }
+                });
     }
 }

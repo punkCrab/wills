@@ -5,9 +5,9 @@ import com.wills.help.net.Empty;
 import java.util.Map;
 
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
-import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -23,6 +23,7 @@ public interface RegisterModel {
     Observable<Empty> getCode(@Field("username") String phone);
 
     @POST("registercheck")
-    Observable<Empty> submitRegister(@QueryMap Map<String , String > map);
+    @FormUrlEncoded
+    Observable<Empty> submitRegister(@FieldMap Map<String , String > map);
 
 }
