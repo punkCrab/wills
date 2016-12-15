@@ -50,5 +50,6 @@ public class BaseListLoadMoreListener extends RecyclerView.OnScrollListener {
 
     public void setLoadMoreListener(LoadMoreListener loadMoreListener){
         this.loadMoreListener = loadMoreListener;
+        adapter.setLoadMoreListener(loadMoreListener);
     }
 }

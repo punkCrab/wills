@@ -1,11 +1,13 @@
 package com.wills.help.login.model;
 
+import java.io.Serializable;
+
 /**
  * com.lzy.mmd.bean
  * Created by lizhaoyong
  * 2016/8/3.
  */
-public class User {
+public class User implements Serializable{
 
 
     /**
@@ -58,7 +60,7 @@ public class User {
         this.data = data;
     }
 
-    public static class UserInfo {
+    public static class UserInfo implements Serializable{
         private String userid;
         private String username;
         private String phone_num;

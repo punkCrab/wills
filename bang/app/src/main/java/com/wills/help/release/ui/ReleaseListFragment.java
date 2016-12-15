@@ -15,6 +15,7 @@ import com.wills.help.base.BaseFragment;
 import com.wills.help.listener.BaseListLoadMoreListener;
 import com.wills.help.release.adapter.ReleaseListAdapter;
 import com.wills.help.release.model.Release;
+import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
 
@@ -57,6 +58,7 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
         linearLayoutManager = new LinearLayoutManager(getAppCompatActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new MyItemDecoration(getAppCompatActivity(),5));
         releaseListAdapter = new ReleaseListAdapter(getAppCompatActivity().getApplicationContext(),list,type);
         recyclerView.setAdapter(releaseListAdapter);
         BaseListLoadMoreListener loadMore = new BaseListLoadMoreListener(linearLayoutManager,releaseListAdapter);

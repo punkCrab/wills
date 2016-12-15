@@ -8,7 +8,6 @@ package com.wills.help.utils;
 
 public class AppConfig {
     public static String VERSION = "1.0.0";
-//    public static final String HOST = "https://api.github.com/repositories/892275/";
     public static final String HOST = "http://59.110.62.75/think/";
     public static boolean TEST = true;
 
@@ -20,10 +19,8 @@ public class AppConfig {
     public static final int CAMERA = 102;
 
     public static final int CACHE_VERSION = 1;
-    public static final int CACHE_TIME = 24*60*1000;
+    public static final int CACHE_TIME = 30*24*60*1000;
     public static final String CACHE_DIR = "/wills/user";
-
-
     public static final String SP_USER = "sp_user";
 
 }

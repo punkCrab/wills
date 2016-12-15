@@ -44,7 +44,7 @@ public class UserCache extends AbstractCache<String , User.UserInfo>{
             return null;
         }
         ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
-        int version = inputStream.read();
+        int version = inputStream.readInt();
         if (AppConfig.CACHE_VERSION!=version){
             file.delete();
             return null;

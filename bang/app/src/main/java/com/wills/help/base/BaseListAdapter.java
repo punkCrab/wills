@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.wills.help.R;
+import com.wills.help.listener.BaseListLoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
     private List<T> list;
     private Context context;
     private View view;
+    private BaseListLoadMoreListener.LoadMoreListener loadMoreListener;
 
     public BaseListAdapter(Context context) {
         this.context = context;
@@ -73,6 +75,10 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
     public void setLoadMore(int state) {
         this.STATE = state;
         changeFooter();
+    }
+
+    public void setLoadMoreListener(BaseListLoadMoreListener.LoadMoreListener loadMoreListener){
+        this.loadMoreListener = loadMoreListener;
     }
 
     private void changeFooter(){
@@ -125,9 +131,18 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
         this.notifyDataSetChanged();
     }
 
-    public class FooterViewHolder extends RecyclerView.ViewHolder{
+    public class FooterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public FooterViewHolder(View view) {
             super(view);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (STATE!=LOAD){
+                setLoadMore(LOAD);
+                loadMoreListener.loadMore();
+            }
         }
     }
 

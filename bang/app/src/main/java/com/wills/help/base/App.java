@@ -29,6 +29,7 @@ public class App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         app = (App) getApplicationContext();
+        user = getUser();
         getUserObserver().addObserver(new ObserverUser());
     }
 
@@ -40,6 +41,9 @@ public class App extends MultiDexApplication {
         if (user == null){
             String username = (String) SharedPreferencesUtils.getInstance().get(AppConfig.SP_USER,"");
             if (!TextUtils.isEmpty(username)){
+                if (userCache == null){
+                    userCache = new UserCache(app);
+                }
                 user = userCache.get(username);
             }
         }
