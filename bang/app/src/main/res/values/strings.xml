@@ -79,4 +79,10 @@
     <string name="photo_choose">选择</string>
     <string name="camera_error">拍照失败</string>
 
+    <string name="pay_amount">金额</string>
+    <string name="pay_ali">支付宝</string>
+    <string name="pay_ali_content">推荐支付宝用户使用</string>
+    <string name="pay">支付</string>
+    <string name="pay_wx">微信支付</string>
+    <string name="pay_wx_content">推荐微信用户使用</string>
 </resources>

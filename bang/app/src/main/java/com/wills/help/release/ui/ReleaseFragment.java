@@ -14,6 +14,8 @@ import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
 import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker;
 import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
+import com.wills.help.pay.ui.PayActivity;
+import com.wills.help.utils.IntentUtils;
 
 /**
  * com.wills.help.release.ui
@@ -94,6 +96,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
                 showAlert(address,tv_release_send);
                 break;
             case R.id.btn_submit:
+                IntentUtils.startActivity(getAppCompatActivity(), PayActivity.class);
                 break;
         }
     }
