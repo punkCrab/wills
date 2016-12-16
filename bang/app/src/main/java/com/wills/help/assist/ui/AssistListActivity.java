@@ -13,6 +13,7 @@ import com.wills.help.assist.adapter.AssistAdapter;
 import com.wills.help.assist.model.Assist;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.listener.BaseListLoadMoreListener;
+import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new MyItemDecoration(context,5));
         assistAdapter = new AssistAdapter(context,assistList);
         recyclerView.setAdapter(assistAdapter);
         BaseListLoadMoreListener listLoadMore = new BaseListLoadMoreListener(linearLayoutManager,assistAdapter);

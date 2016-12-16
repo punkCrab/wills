@@ -131,6 +131,19 @@ public class GlideUtils {
         });
     }
 
+    public void displayCircleImage(final Context context, @DrawableRes int resId, ImageView view) {
+
+        Glide.with(context).load(resId).asBitmap().centerCrop().into(new BitmapImageViewTarget(view){
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable =
+                        RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                circularBitmapDrawable.setCircular(true);
+                view.setImageDrawable(circularBitmapDrawable);
+            }
+        });
+    }
+
     /**
      * 加载bitmap
      *

@@ -13,6 +13,7 @@ import com.wills.help.base.BaseActivity;
 import com.wills.help.listener.BaseListLoadMoreListener;
 import com.wills.help.person.adapter.OrderAdapter;
 import com.wills.help.person.model.Order;
+import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,8 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setBaseView(R.layout.page_list);
-        setBaseTitle(getString(R.string.tab_assist));
+        Bundle bundle = getIntent().getExtras();
+        setBaseTitle(bundle.getString("title"));
         recyclerView = (RecyclerView) findViewById(R.id.list);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.srl);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark,R.color.colorPrimary, R.color.colorPrimaryLight,R.color.colorAccent);
@@ -46,6 +48,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new MyItemDecoration(context,5));
         orderAdapter = new OrderAdapter(context,orderArrayList);
         recyclerView.setAdapter(orderAdapter);
         BaseListLoadMoreListener listLoadMore = new BaseListLoadMoreListener(linearLayoutManager,orderAdapter);

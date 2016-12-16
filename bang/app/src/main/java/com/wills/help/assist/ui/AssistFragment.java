@@ -1,14 +1,15 @@
 package com.wills.help.assist.ui;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.wills.help.R;
+import com.wills.help.assist.adapter.MapAdapter;
 import com.wills.help.base.BaseFragment;
-import com.wills.help.utils.IntentUtils;
 
 /**
  * com.wills.help.assist.ui
@@ -16,10 +17,15 @@ import com.wills.help.utils.IntentUtils;
  * 2016/11/8.
  */
 
-public class AssistFragment extends BaseFragment {
+public class AssistFragment extends BaseFragment implements MapAdapter.MapItemClickListener {
 
     private Toolbar toolbar;
-    ImageView iv;
+    private RecyclerView recyclerView;
+    private GridLayoutManager gridLayoutManager;
+    private MapAdapter mapAdapter;
+    private int[] images = {R.drawable.example_assist_01, R.drawable.example_assist_02,R.drawable.example_assist_03,
+            R.drawable.example_assist_04, R.drawable.example_assist_05, R.drawable.example_assist_06
+            , R.drawable.example_assist_07, R.drawable.example_assist_08, R.drawable.example_assist_09};
 
     public static AssistFragment newInstance() {
 
@@ -36,17 +42,21 @@ public class AssistFragment extends BaseFragment {
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.tab_assist));
         getAppCompatActivity().setSupportActionBar(toolbar);
-        iv = (ImageView) view.findViewById(R.id.iv);
+        recyclerView = (RecyclerView) view.findViewById(R.id.list);
         return view;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                IntentUtils.startActivity(getAppCompatActivity(),AssistListActivity.class);
-            }
-        });
+        gridLayoutManager = new GridLayoutManager(getAppCompatActivity(), 3);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        mapAdapter = new MapAdapter(getAppCompatActivity(),images);
+        mapAdapter.setItemClickListener(this);
+        recyclerView.setAdapter(mapAdapter);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
     }
 }

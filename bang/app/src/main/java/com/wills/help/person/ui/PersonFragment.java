@@ -166,34 +166,34 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_release_check:
-                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
+                startOrderView(tv_release_check.getText().toString());
                 break;
             case R.id.tv_release:
-                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
+                startOrderView(tv_release.getText().toString());
                 break;
             case R.id.tv_release_progress:
-                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
+                startOrderView(tv_release_progress.getText().toString());
                 break;
             case R.id.tv_release_complete:
-                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
+                startOrderView(tv_release_complete.getText().toString());
                 break;
             case R.id.tv_release_evaluation:
-                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
+                startOrderView(tv_release_evaluation.getText().toString());
                 break;
             case R.id.tv_assist_check:
-                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
+                startOrderView(tv_assist_check.getText().toString());
                 break;
             case R.id.tv_assist:
-                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
+                startOrderView(tv_assist.getText().toString());
                 break;
             case R.id.tv_assist_progress:
-                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
+                startOrderView(tv_assist_progress.getText().toString());
                 break;
             case R.id.tv_assist_complete:
-                IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class);
+                startOrderView(tv_assist_complete.getText().toString());
                 break;
             case R.id.tv_assist_evaluation:
-
+                startOrderView(tv_assist_evaluation.getText().toString());
                 break;
             case R.id.tv_identification:
                 IntentUtils.startActivity(getAppCompatActivity(),IdentificationActivity.class);
@@ -207,6 +207,12 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
             default:
                 break;
         }
+    }
+
+    private void startOrderView(String title){
+        Bundle bundle = new Bundle();
+        bundle.putString("title",title);
+        IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class,bundle);
     }
 
 }

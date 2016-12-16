@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.wills.help.R;
 import com.wills.help.base.BaseListAdapter;
 import com.wills.help.person.model.Order;
+import com.wills.help.utils.GlideUtils;
 
 import java.util.List;
 
@@ -20,9 +21,10 @@ import java.util.List;
  */
 
 public class OrderAdapter extends BaseListAdapter<Order>{
-
+    private Context context;
     public OrderAdapter(Context context, List<Order> list) {
         super(context, list);
+        this.context = context;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class OrderAdapter extends BaseListAdapter<Order>{
     @Override
     protected void BindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof OrderHolder){
-            ((OrderHolder)holder).imageView.setImageResource(R.drawable.example_assist_item);
+            GlideUtils.getInstance().displayCircleImage(context ,R.drawable.example_assist_item ,((OrderHolder)holder).imageView);
         }
     }
 
