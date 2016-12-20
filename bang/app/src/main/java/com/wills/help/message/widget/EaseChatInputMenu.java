@@ -17,6 +17,7 @@ import com.wills.help.message.model.EaseDefaultEmojiconDatas;
 import com.wills.help.message.utils.EaseSmileUtils;
 import com.wills.help.message.widget.emojicon.EaseEmojiconMenu;
 import com.wills.help.message.widget.emojicon.EaseEmojiconMenuBase;
+import com.wills.help.utils.KeyBoardUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,10 +65,11 @@ public class EaseChatInputMenu extends LinearLayout {
         primaryMenuContainer = (FrameLayout) findViewById(R.id.primary_menu_container);
         emojiconMenuContainer = (FrameLayout) findViewById(R.id.emojicon_menu_container);
         chatExtendMenuContainer = (FrameLayout) findViewById(R.id.extend_menu_container);
-
          // extend menu
-         chatExtendMenu = (EaseChatExtendMenu) findViewById(R.id.extend_menu);
-        
+        chatExtendMenu = (EaseChatExtendMenu) findViewById(R.id.extend_menu);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, KeyBoardUtils.getKeyBoardHeight());
+        chatExtendMenu.setLayoutParams(params);
+
 
     }
 

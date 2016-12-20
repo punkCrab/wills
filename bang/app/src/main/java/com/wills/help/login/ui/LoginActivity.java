@@ -1,10 +1,13 @@
 package com.wills.help.login.ui;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hyphenate.EMCallBack;
@@ -14,7 +17,12 @@ import com.wills.help.base.BaseActivity;
 import com.wills.help.login.model.User;
 import com.wills.help.login.presenter.LoginPresenterImpl;
 import com.wills.help.login.view.LoginView;
+import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.KeyBoardUtils;
+import com.wills.help.utils.ScreenUtils;
+import com.wills.help.utils.SharedPreferencesUtils;
+import com.wills.help.utils.ToastUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,10 +39,25 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
     TextView tv_unlogin,tv_register;
     Button btn_login;
     private LoginPresenterImpl loginInfoPresenter;
+    private RelativeLayout relativeLayout;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setNoActionBarView(R.layout.activity_login);
+        if (KeyBoardUtils.getKeyBoardHeight() == 0){
+            relativeLayout = (RelativeLayout) findViewById(R.id.rl_root);
+            relativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    Rect r = new Rect();
+                    relativeLayout.getWindowVisibleDisplayFrame(r);
+                    int screenHeight = ScreenUtils.getScreenHeight(context);
+                    int KeyboardHeight = screenHeight-(r.bottom-r.top)-ScreenUtils.getStatusHeight(context);
+                    SharedPreferencesUtils.getInstance().put(AppConfig.KEYBOARD,KeyboardHeight);
+                    ToastUtils.toast("键盘高度"+KeyboardHeight);
+                }
+            });
+        }
         imageView = (ImageView) findViewById(R.id.iv_avatar);
         tv_register = (TextView) findViewById(R.id.tv_register);
         tv_unlogin = (TextView) findViewById(R.id.tv_unlogin);

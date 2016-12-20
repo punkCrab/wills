@@ -238,7 +238,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
 
     }
     
-    
+
     protected void toggleFaceImage(){
         if(faceNormal.getVisibility() == View.VISIBLE){
             showSelectedFaceImage();
@@ -246,17 +246,17 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
             showNormalFaceImage();
         }
     }
-    
+
     private void showNormalFaceImage(){
         faceNormal.setVisibility(View.VISIBLE);
         faceChecked.setVisibility(View.INVISIBLE);
     }
-    
+
     private void showSelectedFaceImage(){
         faceNormal.setVisibility(View.INVISIBLE);
         faceChecked.setVisibility(View.VISIBLE);
     }
-    
+
 
     @Override
     public void onExtendMenuContainerHide() {

@@ -18,6 +18,20 @@ import android.widget.EditText;
  */
 public class KeyBoardUtils
 {
+
+    private static int keyBoardHeight = 0;
+
+    public static int getKeyBoardHeight() {
+        if (keyBoardHeight == 0){
+            keyBoardHeight = (int) SharedPreferencesUtils.getInstance().get(AppConfig.KEYBOARD , 0);
+        }
+        return keyBoardHeight;
+    }
+
+    public static void setKeyBoardHeight(int keyBoardHeight) {
+        KeyBoardUtils.keyBoardHeight = keyBoardHeight;
+    }
+
     /**
      * 打卡软键盘
      *

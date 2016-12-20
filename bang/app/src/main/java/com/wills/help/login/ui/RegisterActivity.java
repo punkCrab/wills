@@ -1,14 +1,21 @@
 package com.wills.help.login.ui;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.login.presenter.RegisterPresenterImpl;
 import com.wills.help.login.view.RegisterView;
+import com.wills.help.utils.AppConfig;
+import com.wills.help.utils.KeyBoardUtils;
+import com.wills.help.utils.ScreenUtils;
+import com.wills.help.utils.SharedPreferencesUtils;
 import com.wills.help.utils.TimeCountUtils;
 
 /**
@@ -21,11 +28,25 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private EditText et_register_phone,et_register_pwd,et_register_pwd_ok,et_register_code;
     private Button btn_code,btn_submit;
     private RegisterPresenterImpl registerPresenter;
+    private LinearLayout linearLayout;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setBaseView(R.layout.activity_register);
         setBaseTitle(getString(R.string.register));
+        if (KeyBoardUtils.getKeyBoardHeight() == 0){
+            linearLayout = (LinearLayout) findViewById(R.id.ll_root);
+            linearLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    Rect r = new Rect();
+                    linearLayout.getWindowVisibleDisplayFrame(r);
+                    int screenHeight = ScreenUtils.getScreenHeight(context);
+                    int KeyboardHeight = screenHeight-(r.bottom-r.top)-ScreenUtils.getStatusHeight(context);
+                    SharedPreferencesUtils.getInstance().put(AppConfig.KEYBOARD,KeyboardHeight);
+                }
+            });
+        }
         et_register_phone = (EditText) findViewById(R.id.et_register_phone);
         et_register_pwd = (EditText) findViewById(R.id.et_register_pwd);
         et_register_pwd_ok = (EditText) findViewById(R.id.et_register_pwd_ok);

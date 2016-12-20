@@ -2,14 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="2dip"
-    android:paddingTop="2dip" >
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/gray_normal" />
+        android:background="@color/colorDividerLight" />
 
     <LinearLayout
         android:id="@+id/rl_bottom"
@@ -18,7 +16,7 @@
         android:background="#aaffffff"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingTop="4dp" >
+        android:padding="4dp">
 
         <Button
             android:id="@+id/btn_set_mode_voice"
@@ -66,7 +64,7 @@
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:layout_weight="1"
-            android:gravity="bottom" >
+            android:gravity="bottom">
 
             <EditText
                 android:id="@+id/et_sendmessage"
@@ -82,7 +80,7 @@
                 android:paddingTop="3dp"
                 android:textSize="18sp" />
 
-            <RelativeLayout 
+            <RelativeLayout
                 android:id="@+id/rl_face"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,7 +104,7 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/ease_chatting_biaoqing_btn_enable"
                 android:visibility="invisible" />
-            
+
             </RelativeLayout>
         </RelativeLayout>
 
@@ -120,12 +118,12 @@
 
         <Button
             android:id="@+id/btn_send"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="32dp"
-            android:layout_marginRight="4dp"
-            android:background="@drawable/ease_chat_send_btn_selector"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/btn_selector"
             android:text="@string/button_send"
-            android:textColor="#666666"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:visibility="gone" />
     </LinearLayout>

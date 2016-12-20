@@ -23,4 +23,6 @@ public class AppConfig {
     public static final String CACHE_DIR = "/wills/user";
     public static final String SP_USER = "sp_user";
 
+    public static final String KEYBOARD = "keyboard_height";
+
 }
