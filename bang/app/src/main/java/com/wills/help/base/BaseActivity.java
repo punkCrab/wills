@@ -1,6 +1,7 @@
 package com.wills.help.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.umeng.analytics.MobclickAgent;
+import com.wills.help.message.controller.EaseUI;
 import com.wills.help.utils.AppManager;
 
 /**
@@ -27,6 +29,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = this;
         AppManager.getAppManager().addActivity(this);
+        if(!isTaskRoot()){
+            Intent intent = getIntent();
+            String action = intent.getAction();
+            if(intent.hasCategory(Intent.CATEGORY_LAUNCHER) && action.equals(Intent.ACTION_MAIN)){
+                finish();
+                return;
+            }
+        }
         initViews(savedInstanceState);
     }
 
@@ -35,6 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onResume();
         MobclickAgent.onPageStart(title);
         MobclickAgent.onResume(context);
+        EaseUI.getInstance().getNotifier().reset();
     }
 
     @Override

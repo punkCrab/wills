@@ -74,11 +74,18 @@ public class GlideUtils {
                         super.onResourceReady(resource, animation);
                         listener.onResult(resource,animation);
                     }
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        listener.onStart();
+                    }
                 });
     }
 
     public interface LoadImageListener{
         void onResult(GlideDrawable drawable, GlideAnimation anim);
+        void onStart();
     }
 
     /**

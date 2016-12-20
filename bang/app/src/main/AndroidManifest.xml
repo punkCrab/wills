@@ -27,14 +27,41 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <meta-data android:value="5844ff784544cb0ffa0000bb" android:name="UMENG_APPKEY"/>
-        <meta-data android:value="yyb" android:name="UMENG_CHANNEL"/>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5844ff784544cb0ffa0000bb" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="yyb" />
 
         <meta-data
             android:name="com.wills.help.utils.GlideConfiguration"
             android:value="GlideModule"></meta-data>
 
-        <activity android:name=".base.MainActivity"
+        <!-- 设置环信应用的AppKey -->
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="1159161108115686#wills"></meta-data>
+        <!-- 声明SDK所需的service SDK核心功能-->
+        <service android:name="com.hyphenate.chat.EMChatService" android:exported="true"/>
+        <service android:name="com.hyphenate.chat.EMJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"/>
+        <!-- 声明SDK所需的receiver -->
+        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+                <data android:scheme="package"/>
+            </intent-filter>
+            <!-- 可选filter -->
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".base.MainActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity android:name=".assist.ui.AssistListActivity"></activity>
         <activity android:name=".base.FlashActivity">
@@ -53,6 +80,10 @@
         <activity android:name=".person.ui.OrderListActivity"></activity>
         <activity android:name=".photo.ui.PhotoPreviewActivity" />
         <activity android:name=".pay.ui.PayActivity" />
+        <activity android:name=".message.ui.MessageActivity" />
+        <activity android:name=".message.ui.ChatActivity" />
+        <activity android:name=".message.ui.EaseShowBigImageActivity" />
+        <activity android:name=".message.ui.EaseBaiduMapActivity" />
 
         <!-- alipay sdk begin -->
 
@@ -61,15 +92,13 @@
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <activity
             android:name="com.alipay.sdk.app.H5AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
 
         <!-- alipay sdk end -->
     </application>

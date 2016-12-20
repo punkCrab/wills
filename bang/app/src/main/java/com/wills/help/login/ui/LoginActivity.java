@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.wills.help.R;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.login.model.User;
@@ -50,7 +52,22 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
     @Override
     public void setLogin(User login) {
         setResult(RESULT_OK);
-        finish();
+        EMClient.getInstance().login("leewills", "123456", new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                finish();
+            }
+
+            @Override
+            public void onError(int i, String s) {
+
+            }
+
+            @Override
+            public void onProgress(int i, String s) {
+
+            }
+        });
     }
 
     @Override

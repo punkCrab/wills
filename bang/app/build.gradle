@@ -63,5 +63,8 @@ dependencies {
     compile project(':sublimepicker')
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile files('libs/alipaySdk-20161129.jar')
+    compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/hyphenatechat_3.2.2.jar')
+    compile files('libs/org.apache.http.legacy.jar')
 }
 

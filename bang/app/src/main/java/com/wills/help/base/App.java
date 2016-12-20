@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.wills.help.cache.UserCache;
 import com.wills.help.cache.UserObserver;
 import com.wills.help.login.model.User;
+import com.wills.help.message.controller.EaseUI;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.SharedPreferencesUtils;
 
@@ -29,6 +30,7 @@ public class App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         app = (App) getApplicationContext();
+        EaseUI.getInstance().init(app,null);
         user = getUser();
         getUserObserver().addObserver(new ObserverUser());
     }
