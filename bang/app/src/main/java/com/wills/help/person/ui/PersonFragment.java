@@ -44,8 +44,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
              tv_assist_check, tv_assist, tv_assist_progress, tv_assist_complete, tv_assist_evaluation,
              tv_identification, tv_public, tv_wallet;
     Toolbar toolbar;
-    String url = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b" +
-            "4000_4000&sec=1479201416&di=6a38bbdd6162963a2d848f4becf73fa9&src=http://www.qqzhi.com/uploadpic/2014-05-29/160458328.jpg";
+    String url = "http://img4.duitang.com/uploads/item/201601/09/20160109190245_JzaA3.thumb.224_0.jpeg";
 
     public static PersonFragment newInstance() {
 

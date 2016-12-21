@@ -43,7 +43,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     linearLayout.getWindowVisibleDisplayFrame(r);
                     int screenHeight = ScreenUtils.getScreenHeight(context);
                     int KeyboardHeight = screenHeight-(r.bottom-r.top)-ScreenUtils.getStatusHeight(context);
-                    SharedPreferencesUtils.getInstance().put(AppConfig.KEYBOARD,KeyboardHeight);
+                    if (KeyboardHeight != 0){
+                        linearLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        SharedPreferencesUtils.getInstance().put(AppConfig.KEYBOARD,KeyboardHeight);
+                    }
                 }
             });
         }

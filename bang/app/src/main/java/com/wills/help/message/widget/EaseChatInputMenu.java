@@ -67,7 +67,7 @@ public class EaseChatInputMenu extends LinearLayout {
         chatExtendMenuContainer = (FrameLayout) findViewById(R.id.extend_menu_container);
          // extend menu
         chatExtendMenu = (EaseChatExtendMenu) findViewById(R.id.extend_menu);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, KeyBoardUtils.getKeyBoardHeight());
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, KeyBoardUtils.getKeyBoardHeight());
         chatExtendMenu.setLayoutParams(params);
 
 
@@ -99,8 +99,9 @@ public class EaseChatInputMenu extends LinearLayout {
             }
             ((EaseEmojiconMenu)emojiconMenu).init(emojiconGroupList);
         }
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, KeyBoardUtils.getKeyBoardHeight());
+        emojiconMenu.setLayoutParams(params);
         emojiconMenuContainer.addView(emojiconMenu);
-
         processChatMenu();
         chatExtendMenu.init();
         
@@ -277,7 +278,7 @@ public class EaseChatInputMenu extends LinearLayout {
      */
     protected void toggleEmojicon() {
         if (chatExtendMenuContainer.getVisibility() == View.GONE) {
-            hideKeyboard();
+//            hideKeyboard();
             handler.postDelayed(new Runnable() {
                 public void run() {
                     chatExtendMenuContainer.setVisibility(View.VISIBLE);

@@ -53,8 +53,10 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
                     relativeLayout.getWindowVisibleDisplayFrame(r);
                     int screenHeight = ScreenUtils.getScreenHeight(context);
                     int KeyboardHeight = screenHeight-(r.bottom-r.top)-ScreenUtils.getStatusHeight(context);
-                    SharedPreferencesUtils.getInstance().put(AppConfig.KEYBOARD,KeyboardHeight);
-                    ToastUtils.toast("键盘高度"+KeyboardHeight);
+                    if (KeyboardHeight != 0){
+                        relativeLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        SharedPreferencesUtils.getInstance().put(AppConfig.KEYBOARD,KeyboardHeight);
+                    }
                 }
             });
         }
