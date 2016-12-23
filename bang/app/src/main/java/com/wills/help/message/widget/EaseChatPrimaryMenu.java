@@ -192,13 +192,14 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
             if(listener != null)
                 listener.onToggleExtendClicked();
         } else if (id == R.id.et_sendmessage) {
-            editText.setBackgroundResource(R.drawable.ease_input_bar_bg_active);
             if(listener != null)
                 listener.onEditTextClicked();
         } else if (id == R.id.btn_face) {
             showKeyboard();
             KeyBoardUtils.closeKeybord(context,editText);
-            handler.sendEmptyMessageDelayed(1,50);
+            if(listener != null){
+                listener.onToggleEmojiconClicked();
+            }
         } else if (id == R.id.btn_keyboard){
             showFace();
             KeyBoardUtils.openKeybord(context,editText,100);
@@ -214,9 +215,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
             super.handleMessage(msg);
             switch (msg.what){
                 case 1:
-                    if(listener != null){
-                        listener.onToggleEmojiconClicked();
-                    }
+
                     break;
             }
         }
@@ -290,6 +289,15 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
     @Override
     public EditText getEditText() {
         return editText;
+    }
+
+    @Override
+    public void canEdit(boolean isEdit) {
+        if (isEdit){
+//            editText.setBackgroundResource(R.drawable.ease_input_bar_bg_active);
+        }else {
+//            editText.setBackgroundResource(R.drawable.ease_input_bar_bg_normal);
+        }
     }
 
 }

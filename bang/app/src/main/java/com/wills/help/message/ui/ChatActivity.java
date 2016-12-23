@@ -6,8 +6,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.wills.help.R;
+import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.message.EaseConstant;
+import com.wills.help.utils.AppConfig;
 
 /**
  * com.wills.help.message.ui
@@ -50,5 +52,11 @@ public class ChatActivity extends BaseActivity{
 
     public String getChatUsername(){
         return chatUsername;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        chatFragment.onActivityResult(requestCode, resultCode, data);
     }
 }

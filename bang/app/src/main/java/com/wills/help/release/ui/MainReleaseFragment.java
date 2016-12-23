@@ -5,11 +5,17 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
+import com.wills.help.login.ui.SettingActivity;
+import com.wills.help.message.ui.MessageActivity;
 import com.wills.help.release.adapter.PagerAdapter;
+import com.wills.help.utils.IntentUtils;
 
 /**
  * com.wills.help.release.ui
@@ -36,6 +42,7 @@ public class MainReleaseFragment extends BaseFragment{
         View view = inflater.inflate(R.layout.fragment_mainrelease,null);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.tab_release));
+        setHasOptionsMenu(true);
         getAppCompatActivity().setSupportActionBar(toolbar);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
@@ -46,6 +53,23 @@ public class MainReleaseFragment extends BaseFragment{
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.release_complete)));
         tabLayout.setupWithViewPager(viewPager);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getAppCompatActivity().getMenuInflater().inflate(R.menu.menu_base, menu);
+        menu.getItem(0).setIcon(R.drawable.msg);
+        menu.getItem(0).setTitle(R.string.tab_msg);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_right:
+                IntentUtils.startActivity(getAppCompatActivity(), MessageActivity.class);
+                break;
+        }
+        return true;
     }
 
     @Override

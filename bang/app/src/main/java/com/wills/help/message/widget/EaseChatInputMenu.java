@@ -261,14 +261,17 @@ public class EaseChatInputMenu extends LinearLayout {
                     chatExtendMenuContainer.setVisibility(View.VISIBLE);
                     chatExtendMenu.setVisibility(View.VISIBLE);
                     emojiconMenu.setVisibility(View.GONE);
+                    chatPrimaryMenu.canEdit(false);
                 }
-            }, 50);
+            }, 100);
         } else {
             if (emojiconMenu.getVisibility() == View.VISIBLE) {
                 emojiconMenu.setVisibility(View.GONE);
                 chatExtendMenu.setVisibility(View.VISIBLE);
             } else {
                 chatExtendMenuContainer.setVisibility(View.GONE);
+                chatPrimaryMenu.canEdit(true);
+                KeyBoardUtils.openKeybord(context,chatPrimaryMenu.getEditText(),100);
             }
         }
     }
@@ -285,7 +288,7 @@ public class EaseChatInputMenu extends LinearLayout {
                     chatExtendMenu.setVisibility(View.GONE);
                     emojiconMenu.setVisibility(View.VISIBLE);
                 }
-            }, 50);
+            }, 100);
         } else {
             if (emojiconMenu.getVisibility() == View.VISIBLE) {
                 chatExtendMenuContainer.setVisibility(View.GONE);

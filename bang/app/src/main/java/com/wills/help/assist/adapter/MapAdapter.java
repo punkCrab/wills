@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.wills.help.R;
+import com.wills.help.utils.ScreenUtils;
 
 /**
  * com.wills.help.assist.adapter
@@ -55,6 +57,8 @@ public class MapAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemView);
             this.itemView = itemView;
             imageView = (ImageView) itemView.findViewById(R.id.image);
+            RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(ScreenUtils.getScreenWidth(context)/3, ScreenUtils.getContentHeight()/3);
+            imageView.setLayoutParams(params);
         }
     }
 

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
@@ -16,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -25,6 +27,7 @@ import com.wills.help.home.adapter.NewsAdapter;
 import com.wills.help.home.model.News;
 import com.wills.help.listener.AppBarStateChangeListener;
 import com.wills.help.release.adapter.PagerAdapter;
+import com.wills.help.utils.ScreenUtils;
 import com.wills.help.widget.banner.AutoScrollPoster;
 import com.wills.help.widget.banner.Banner;
 
@@ -53,6 +56,7 @@ public class HomeFragment extends BaseFragment{
     NewsAdapter newsAdapter;
     List<News> newsList = new ArrayList<>();
     Context context;
+    private CoordinatorLayout cl_root;
 
     public static HomeFragment newInstance() {
         
@@ -70,6 +74,20 @@ public class HomeFragment extends BaseFragment{
         getAppCompatActivity().setSupportActionBar(toolbar);
         appBarLayout = (AppBarLayout) view.findViewById(R.id.appbar);
         collapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
+        if (ScreenUtils.getContentHeight() == 0){
+            cl_root = (CoordinatorLayout) view.findViewById(R.id.cl_root);
+            cl_root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    int toolbarHeight = toolbar.getHeight();
+                    int content = cl_root.getHeight();
+                    if (toolbarHeight != 0){
+                        cl_root.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        ScreenUtils.setContentHeight(content - toolbarHeight);
+                    }
+                }
+            });
+        }
         poster = (AutoScrollPoster) view.findViewById(R.id.poster);
         linearLayout = (LinearLayout) view.findViewById(R.id.ll_img);
         ll_icon = (LinearLayout) view.findViewById(R.id.ll_icon);

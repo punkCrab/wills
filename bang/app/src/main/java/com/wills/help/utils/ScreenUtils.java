@@ -21,7 +21,25 @@ import android.view.WindowManager;
  *
  */
 public class ScreenUtils
-{
+{   private static int tabHeight = 0;
+    private static int contentHeight = 0;
+
+    public static int getContentHeight() {
+        return contentHeight;
+    }
+
+    public static void setContentHeight(int contentHeight) {
+        ScreenUtils.contentHeight = contentHeight;
+    }
+
+    public static int getTabHeight() {
+        return tabHeight;
+    }
+
+    public static void setTabHeight(int tabHeight) {
+        ScreenUtils.tabHeight = tabHeight;
+    }
+
     private ScreenUtils()
     {
         /* cannot be instantiated */

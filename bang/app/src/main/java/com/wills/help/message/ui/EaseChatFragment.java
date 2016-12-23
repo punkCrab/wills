@@ -52,17 +52,23 @@ import com.wills.help.message.widget.EaseChatMessageList;
 import com.wills.help.message.widget.EaseChatPrimaryMenuBase;
 import com.wills.help.message.widget.EaseVoiceRecorderView;
 import com.wills.help.message.widget.chatrow.EaseCustomChatRowProvider;
+import com.wills.help.photo.model.CameraUtils;
+import com.wills.help.photo.model.PhotoModel;
 import com.wills.help.photo.ui.PhotoSelectorActivity;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.ToastUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import kr.co.namee.permissiongen.PermissionFail;
 import kr.co.namee.permissiongen.PermissionGen;
 import kr.co.namee.permissiongen.PermissionSuccess;
+import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * you can new an EaseChatFragment to use or you can inherit it to expand.
@@ -356,17 +362,28 @@ import kr.co.namee.permissiongen.PermissionSuccess;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) { 
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == AppConfig.CAMERA) { // capture new image
-                if (cameraFile != null && cameraFile.exists())
+                if (cameraFile != null && cameraFile.exists()){
+                    CameraUtils.insertCamera(getAppCompatActivity(),cameraFile);
                     sendImageMessage(cameraFile.getAbsolutePath());
-            } else if (requestCode == REQUEST_CODE_LOCAL) { // send local image
+                }
+            } else if (requestCode == AppConfig.PHOTO) { // send local image
                 if (data != null) {
-                    Uri selectedImage = data.getData();
-                    if (selectedImage != null) {
-                        sendPicByUri(selectedImage);
+                    ArrayList<PhotoModel> arrayList = new ArrayList<>();
+                    Bundle bundle = data.getExtras();
+                    arrayList = (ArrayList<PhotoModel>) bundle.getSerializable("photos");
+                    if (arrayList!=null&&arrayList.size()>0){
+                        Observable.from(arrayList)
+                                .subscribe(new Action1<PhotoModel>() {
+                                    @Override
+                                    public void call(PhotoModel photoModel) {
+                                        sendPicByUri(Uri.parse(photoModel.getOriginalPath()));
+                                    }
+                                });
                     }
                 }
+
             } else if (requestCode == REQUEST_CODE_MAP) { // location
                 double latitude = data.getDoubleExtra("latitude", 0);
                 double longitude = data.getDoubleExtra("longitude", 0);

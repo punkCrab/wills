@@ -5,11 +5,16 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.wills.help.R;
 import com.wills.help.assist.adapter.MapAdapter;
 import com.wills.help.base.BaseFragment;
+import com.wills.help.message.ui.MessageActivity;
+import com.wills.help.utils.IntentUtils;
 
 /**
  * com.wills.help.assist.ui
@@ -42,8 +47,26 @@ public class AssistFragment extends BaseFragment implements MapAdapter.MapItemCl
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.tab_assist));
         getAppCompatActivity().setSupportActionBar(toolbar);
+        setHasOptionsMenu(true);
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getAppCompatActivity().getMenuInflater().inflate(R.menu.menu_base, menu);
+        menu.getItem(0).setIcon(R.drawable.msg);
+        menu.getItem(0).setTitle(R.string.tab_msg);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_right:
+                IntentUtils.startActivity(getAppCompatActivity(), MessageActivity.class);
+                break;
+        }
+        return true;
     }
 
     @Override

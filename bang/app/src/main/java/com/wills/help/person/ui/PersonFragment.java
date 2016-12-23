@@ -18,6 +18,7 @@ import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.listener.AppBarStateChangeListener;
 import com.wills.help.login.ui.LoginActivity;
+import com.wills.help.login.ui.SettingActivity;
 import com.wills.help.message.ui.MessageActivity;
 import com.wills.help.photo.model.PhotoModel;
 import com.wills.help.photo.ui.PhotoSelectorActivity;
@@ -146,17 +147,17 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getAppCompatActivity().getMenuInflater().inflate(R.menu.menu_base, menu);
-        menu.getItem(0).setTitle("设置");
-        menu.getItem(0).setIcon(R.drawable.setting);
+        getAppCompatActivity().getMenuInflater().inflate(R.menu.menu_person, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_right:
-//                IntentUtils.startActivity(getAppCompatActivity(), SettingActivity.class);
+            case R.id.action_msg:
                 IntentUtils.startActivity(getAppCompatActivity(), MessageActivity.class);
+                break;
+            case R.id.action_setting:
+                IntentUtils.startActivity(getAppCompatActivity(), SettingActivity.class);
                 break;
         }
         return true;
