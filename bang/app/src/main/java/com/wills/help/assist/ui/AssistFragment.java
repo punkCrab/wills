@@ -80,6 +80,8 @@ public class AssistFragment extends BaseFragment implements MapAdapter.MapItemCl
 
     @Override
     public void onItemClick(int position) {
-
+        Bundle bundle = new Bundle();
+        bundle.putInt("mapId",images[position]);
+        IntentUtils.startActivity(getAppCompatActivity(),AssistActivity.class,bundle);
     }
 }
