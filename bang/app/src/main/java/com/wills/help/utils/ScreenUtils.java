@@ -8,6 +8,7 @@ package com.wills.help.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
@@ -23,21 +24,31 @@ import android.view.WindowManager;
 public class ScreenUtils
 {   private static int tabHeight = 0;
     private static int contentHeight = 0;
+    private static int toolbarHeight = 0;
 
-    public static int getContentHeight() {
+    public static int getToolbarHeight() {
+        return toolbarHeight == 0? (int) SharedPreferencesUtils.getInstance().get(AppConfig.TOOLBAR, 0) :toolbarHeight;
+    }
+
+    public static void setToolbarHeight(int toolbarHeight) {
+        ScreenUtils.toolbarHeight = toolbarHeight;
+        SharedPreferencesUtils.getInstance().put(AppConfig.TOOLBAR,toolbarHeight);
+    }
+
+    public static int getContentHeight(Context context) {
+        if (contentHeight == 0){
+            contentHeight = getScreenHeight(context)-getTabHeight()-getToolbarHeight()-getStatusHeight(context);
+        }
         return contentHeight;
     }
 
-    public static void setContentHeight(int contentHeight) {
-        ScreenUtils.contentHeight = contentHeight;
-    }
-
     public static int getTabHeight() {
-        return tabHeight;
+        return tabHeight == 0? (int) SharedPreferencesUtils.getInstance().get(AppConfig.TAB, 0) :tabHeight;
     }
 
     public static void setTabHeight(int tabHeight) {
         ScreenUtils.tabHeight = tabHeight;
+        SharedPreferencesUtils.getInstance().put(AppConfig.TAB,tabHeight);
     }
 
     private ScreenUtils()
@@ -118,6 +129,13 @@ public class ScreenUtils
             e.printStackTrace();
         }
         return statusHeight;
+    }
+
+    private static int getNavigationBarHeight(Context context) {
+        Resources resources = context.getResources();
+        int resourceId = resources.getIdentifier("navigation_bar_height","dimen", "android");
+        int height = resources.getDimensionPixelSize(resourceId);
+        return height;
     }
 
     /**

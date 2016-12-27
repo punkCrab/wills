@@ -24,5 +24,7 @@ public class AppConfig {
     public static final String SP_USER = "sp_user";
 
     public static final String KEYBOARD = "keyboard_height";
+    public static final String TOOLBAR = "toolbar_height";
+    public static final String TAB = "tab_height";
 
 }

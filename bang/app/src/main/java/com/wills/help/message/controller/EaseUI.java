@@ -10,6 +10,7 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
+import com.wills.help.listener.MessageConnectionListener;
 import com.wills.help.message.domain.EaseEmojicon;
 import com.wills.help.message.domain.EaseUser;
 import com.wills.help.message.model.EaseAtMessageHelper;
@@ -111,7 +112,7 @@ public final class EaseUI {
         }else{
             EMClient.getInstance().init(context, options);
         }
-        
+        EMClient.getInstance().addConnectionListener(new MessageConnectionListener());
         initNotifier();
         registerMessageListener();
         

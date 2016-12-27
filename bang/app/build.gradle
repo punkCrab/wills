@@ -3,11 +3,20 @@ apply plugin: 'org.greenrobot.greendao'
 
 android {
     signingConfigs {
-        config {
+        debug {
             keyAlias 'china'
             keyPassword 'lizhaoyong'
             storeFile file('D:/个人材料/keystore.jks')
             storePassword 'lizhaoyong'
+            v2SigningEnabled false
+        }
+
+        release {
+            keyAlias 'china'
+            keyPassword 'lizhaoyong'
+            storeFile file('D:/个人材料/keystore.jks')
+            storePassword 'lizhaoyong'
+            v2SigningEnabled false
         }
     }
     compileSdkVersion 23

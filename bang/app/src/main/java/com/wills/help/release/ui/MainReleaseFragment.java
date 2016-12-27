@@ -5,14 +5,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
-import com.wills.help.login.ui.SettingActivity;
 import com.wills.help.message.ui.MessageActivity;
 import com.wills.help.release.adapter.PagerAdapter;
 import com.wills.help.utils.IntentUtils;
@@ -41,9 +38,8 @@ public class MainReleaseFragment extends BaseFragment{
     public View initView(LayoutInflater inflater) {
         View view = inflater.inflate(R.layout.fragment_mainrelease,null);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.tab_release));
         setHasOptionsMenu(true);
-        getAppCompatActivity().setSupportActionBar(toolbar);
+        toolbar.setTitle(getString(R.string.tab_release));
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         viewPager.setOffscreenPageLimit(2);
@@ -56,25 +52,21 @@ public class MainReleaseFragment extends BaseFragment{
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getAppCompatActivity().getMenuInflater().inflate(R.menu.menu_base, menu);
-        menu.getItem(0).setIcon(R.drawable.msg);
-        menu.getItem(0).setTitle(R.string.tab_msg);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_right:
-                IntentUtils.startActivity(getAppCompatActivity(), MessageActivity.class);
-                break;
-        }
-        return true;
-    }
-
-    @Override
     public void initData(Bundle savedInstanceState) {
-
+        toolbar.inflateMenu(R.menu.menu_base);
+        toolbar.getMenu().getItem(0).setIcon(R.drawable.msg);
+        toolbar.getMenu().getItem(0).setTitle(R.string.tab_msg);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_right:
+                        IntentUtils.startActivity(getAppCompatActivity(), MessageActivity.class);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     private void setViewPager(ViewPager mViewPager){

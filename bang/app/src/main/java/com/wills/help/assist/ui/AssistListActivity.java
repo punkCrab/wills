@@ -83,8 +83,10 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
                     if (swipeRefreshLayout.isRefreshing()){
                         swipeRefreshLayout.setRefreshing(false);
                     }
-                    assistAdapter.setLoadMore(assistAdapter.SUCCESS);
-                    assistList.addAll(getAssistList());
+                    if (assistList.size()<3){
+                        assistAdapter.setLoadMore(assistAdapter.SUCCESS);
+                        assistList.addAll(getAssistList());
+                    }
                     assistAdapter.setList(assistList);
                     break;
             }
@@ -93,7 +95,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
 
     private List<Assist> getAssistList(){
         List<Assist> list = new ArrayList<>();
-        for (int i=0;i<10;i++){
+        for (int i=0;i<3;i++){
             Assist assist = new Assist();
             assist.setId(i);
             list.add(assist);

@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
-import com.wills.help.utils.AppConfig;
-import com.wills.help.utils.SharedPreferencesUtils;
 
 /**
  * com.wills.help.login.ui
@@ -36,10 +36,23 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.rl_about:
                 break;
             case R.id.rl_exit:
-                SharedPreferencesUtils.getInstance().remove(AppConfig.SP_USER);
-                App.getApp().removeUser();
-                App.getApp().setIsLogin(false);
-                finish();
+                App.getApp().exitApp();
+                EMClient.getInstance().logout(true, new EMCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+
+                    }
+
+                    @Override
+                    public void onProgress(int i, String s) {
+
+                    }
+                });
                 break;
         }
     }

@@ -6,10 +6,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
 import com.wills.help.R;
 import com.wills.help.assist.ui.AssistFragment;
 import com.wills.help.home.ui.HomeFragment;
@@ -17,9 +22,11 @@ import com.wills.help.login.ui.LoginActivity;
 import com.wills.help.person.ui.PersonFragment;
 import com.wills.help.release.ui.MainReleaseFragment;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.ScreenUtils;
 import com.wills.help.utils.ToastUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener{
     private FrameLayout frameLayout;
@@ -35,6 +42,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private final int LOGIN = 11;
     private int currentPosition = 0;
     private int prevPosition = 0;
+    private RelativeLayout rl_root;
 //    private BottomNavigationItem msgItem;
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -44,6 +52,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         tags = new String[]{getString(R.string.tab_home), getString(R.string.tab_release) , getString(R.string.tab_assist), getString(R.string.tab_person)};
         initBottomNavigationBar();
         stateCheck(savedInstanceState);
+        EMClient.getInstance().chatManager().addMessageListener(messageListener);
     }
 
     private void initBottomNavigationBar(){
@@ -59,6 +68,19 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 .addItem(new BottomNavigationItem(R.drawable.tab_person, R.string.tab_person).setActiveColorResource(R.color.colorPrimaryDark))
                 .setFirstSelectedPosition(0)
                 .initialise();
+        if (ScreenUtils.getTabHeight() == 0){
+            rl_root = (RelativeLayout) findViewById(R.id.rl_root);
+            rl_root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    int barHeight = bottomNavigationBar.getHeight();
+                    if (barHeight != 0){
+                        rl_root.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        ScreenUtils.setTabHeight(barHeight);
+                    }
+                }
+            });
+        }
         fragments = getFragments();
 //        AddBadge(5);
     }
@@ -196,5 +218,38 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             else if (resultCode==RESULT_CANCELED)
                 bottomNavigationBar.selectTab(prevPosition);
         }
+    }
+
+    EMMessageListener messageListener = new EMMessageListener() {
+        @Override
+        public void onMessageReceived(List<EMMessage> list) {
+            ToastUtils.toast("有新消息");
+        }
+
+        @Override
+        public void onCmdMessageReceived(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageReadAckReceived(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageDeliveryAckReceived(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageChanged(EMMessage emMessage, Object o) {
+
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EMClient.getInstance().chatManager().removeMessageListener(messageListener);
     }
 }

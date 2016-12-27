@@ -74,16 +74,15 @@ public class HomeFragment extends BaseFragment{
         getAppCompatActivity().setSupportActionBar(toolbar);
         appBarLayout = (AppBarLayout) view.findViewById(R.id.appbar);
         collapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
-        if (ScreenUtils.getContentHeight() == 0){
+        if (ScreenUtils.getToolbarHeight() == 0){
             cl_root = (CoordinatorLayout) view.findViewById(R.id.cl_root);
             cl_root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
                     int toolbarHeight = toolbar.getHeight();
-                    int content = cl_root.getHeight();
                     if (toolbarHeight != 0){
                         cl_root.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        ScreenUtils.setContentHeight(content - toolbarHeight);
+                        ScreenUtils.setToolbarHeight(toolbarHeight);
                     }
                 }
             });
@@ -189,7 +188,7 @@ public class HomeFragment extends BaseFragment{
         PagerAdapter adapter = new PagerAdapter(getChildFragmentManager());
         adapter.addFragment(IconFragment.newInstance(0),getString(R.string.home_seek));
         adapter.addFragment(IconFragment.newInstance(1),getString(R.string.home_help));
-        adapter.addFragment(IconFragment.newInstance(2),getString(R.string.home_express));
+        adapter.addFragment(ExpressFragment.newInstance(),getString(R.string.home_express));
         mViewPager.setAdapter(adapter);
     }
 }

@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_itease_layout"
     android:layout_width="match_parent"
-    android:layout_height="59dp"
+    android:layout_height="64dp"
     android:gravity="center_vertical">
 
     <RelativeLayout
         android:id="@+id/avatar_container"
-        android:layout_width="59dp"
+        android:layout_width="64dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true">
 
@@ -74,7 +74,7 @@
         android:paddingLeft="7dp"
         android:paddingTop="7dp"
         android:text="@string/were_mentioned"
-        android:textColor="#e84e40"
+        android:textColor="@color/red"
         android:textSize="14sp"
         android:visibility="gone" />
 

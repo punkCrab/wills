@@ -84,8 +84,10 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
                     if (swipeRefreshLayout.isRefreshing()){
                         swipeRefreshLayout.setRefreshing(false);
                     }
-                    orderAdapter.setLoadMore(orderAdapter.SUCCESS);
-                    orderArrayList.addAll(getAssistList());
+                    if (orderArrayList.size()<3){
+                        orderAdapter.setLoadMore(orderAdapter.SUCCESS);
+                        orderArrayList.addAll(getAssistList());
+                    }
                     orderAdapter.setList(orderArrayList);
                     break;
             }
@@ -94,7 +96,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
 
     private List<Order> getAssistList(){
         List<Order> list = new ArrayList<>();
-        for (int i=0;i<10;i++){
+        for (int i=0;i<3;i++){
             Order order = new Order();
             order.setId(i);
             list.add(order);

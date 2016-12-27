@@ -5,8 +5,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -45,32 +43,28 @@ public class AssistFragment extends BaseFragment implements MapAdapter.MapItemCl
     public View initView(LayoutInflater inflater) {
         View view = inflater.inflate(R.layout.fragment_assist, null);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.tab_assist));
-        getAppCompatActivity().setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
+        toolbar.setTitle(getString(R.string.tab_assist));
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
         return view;
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getAppCompatActivity().getMenuInflater().inflate(R.menu.menu_base, menu);
-        menu.getItem(0).setIcon(R.drawable.msg);
-        menu.getItem(0).setTitle(R.string.tab_msg);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_right:
-                IntentUtils.startActivity(getAppCompatActivity(), MessageActivity.class);
-                break;
-        }
-        return true;
-    }
-
-    @Override
     public void initData(Bundle savedInstanceState) {
+        toolbar.inflateMenu(R.menu.menu_base);
+        toolbar.getMenu().getItem(0).setIcon(R.drawable.msg);
+        toolbar.getMenu().getItem(0).setTitle(R.string.tab_msg);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_right:
+                        IntentUtils.startActivity(getAppCompatActivity(), MessageActivity.class);
+                        break;
+                }
+                return true;
+            }
+        });
         gridLayoutManager = new GridLayoutManager(getAppCompatActivity(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
         mapAdapter = new MapAdapter(getAppCompatActivity(),images);

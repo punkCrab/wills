@@ -26,7 +26,7 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
     public static final int SUCCESS = 4;//加载成功
     public static final int FAIL = 5;//加载失败
     public static final int EMPTY = 6;//全部加载完成
-    private static int STATE = 3;//全部加载完成
+    private static int STATE = 4;//全部加载完成
     private boolean mShowFooter = true;
 
     private List<T> list;

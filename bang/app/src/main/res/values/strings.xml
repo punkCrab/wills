@@ -57,6 +57,10 @@
     <string name="home_seek">求助</string>
     <string name="home_help">帮人</string>
     <string name="home_express">快递</string>
+    <string name="home_express_count">您有%1$s个快递已经到达学校</string>
+    <string name="home_express_send">免费派送</string>
+    <string name="home_express_more">查看更多</string>
+    <string name="express_my">我的快递</string>
 
     <string name="person_release_order">发布订单</string>
     <string name="person_assist_order">帮助订单</string>

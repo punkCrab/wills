@@ -7,8 +7,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -61,7 +59,6 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
         View view = inflater.inflate(R.layout.fragment_person, null);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         setHasOptionsMenu(true);
-        getAppCompatActivity().setSupportActionBar(toolbar);
         appBarLayout = (AppBarLayout) view.findViewById(R.id.appbar);
         collapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
         imageView = (ImageView) view.findViewById(R.id.iv_avatar);
@@ -87,6 +84,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     public void initData(Bundle savedInstanceState) {
         context = getAppCompatActivity().getApplicationContext();
         GlideUtils.getInstance().displayCircleImage(context, url, imageView);
+        toolbar.inflateMenu(R.menu.menu_person);
         tv_release_check.setOnClickListener(this);
         tv_release.setOnClickListener(this);
         tv_release_progress.setOnClickListener(this);
@@ -124,6 +122,20 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
                 IntentUtils.startActivityForResult(getAppCompatActivity(), PhotoSelectorActivity.class,bundle,AppConfig.AVATAR);
             }
         });
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_msg:
+                        IntentUtils.startActivity(getAppCompatActivity(), MessageActivity.class);
+                        break;
+                    case R.id.action_setting:
+                        IntentUtils.startActivity(getAppCompatActivity(), SettingActivity.class);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -142,25 +154,6 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
                 tv_school.setText(sb.toString());
             }
         }
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getAppCompatActivity().getMenuInflater().inflate(R.menu.menu_person, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_msg:
-                IntentUtils.startActivity(getAppCompatActivity(), MessageActivity.class);
-                break;
-            case R.id.action_setting:
-                IntentUtils.startActivity(getAppCompatActivity(), SettingActivity.class);
-                break;
-        }
-        return true;
     }
 
     @Override

@@ -20,7 +20,9 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.hyphenate.EMChatRoomChangeListener;
@@ -68,7 +70,6 @@ import kr.co.namee.permissiongen.PermissionGen;
 import kr.co.namee.permissiongen.PermissionSuccess;
 import rx.Observable;
 import rx.functions.Action1;
-import rx.functions.Func1;
 
 /**
  * you can new an EaseChatFragment to use or you can inherit it to expand.
@@ -102,6 +103,8 @@ import rx.functions.Func1;
     protected EaseVoiceRecorderView voiceRecorderView;
     protected SwipeRefreshLayout swipeRefreshLayout;
     protected ListView listView;
+    protected RelativeLayout rl_content;
+    protected LinearLayout ll_root;
 
     protected boolean isloading;
     protected boolean haveMoreData = true;
@@ -113,9 +116,11 @@ import rx.functions.Func1;
     static final int ITEM_PICTURE = 2;
     static final int ITEM_LOCATION = 3;
     
-    protected int[] itemStrings = { R.string.attach_take_pic, R.string.attach_picture, R.string.attach_location };
-    protected int[] itemdrawables = { R.drawable.ease_chat_takepic_selector, R.drawable.ease_chat_image_selector,
-            R.drawable.ease_chat_location_selector };
+//    protected int[] itemStrings = { R.string.attach_take_pic, R.string.attach_picture, R.string.attach_location };
+    protected int[] itemStrings = { R.string.attach_take_pic, R.string.attach_picture};
+    protected int[] itemdrawables = { R.drawable.ease_chat_takepic_selector, R.drawable.ease_chat_image_selector};
+//    protected int[] itemdrawables = { R.drawable.ease_chat_takepic_selector, R.drawable.ease_chat_image_selector,
+//            R.drawable.ease_chat_location_selector };
     protected int[] itemIds = { ITEM_TAKE_PICTURE, ITEM_PICTURE, ITEM_LOCATION };
     private EMChatRoomChangeListener chatRoomChangeListener;
     private boolean isMessageListInited;
@@ -127,6 +132,8 @@ import rx.functions.Func1;
         View view = inflater.inflate(R.layout.ease_fragment_chat, null);
         // hold to record voice
         //noinspection ConstantConditions
+        ll_root = (LinearLayout) view.findViewById(R.id.ll_root);
+        rl_content = (RelativeLayout) view.findViewById(R.id.rl_content);
         voiceRecorderView = (EaseVoiceRecorderView) view.findViewById(R.id.voice_recorder);
 
         // message list layout
@@ -139,7 +146,7 @@ import rx.functions.Func1;
         inputMenu = (EaseChatInputMenu) view.findViewById(R.id.input_menu);
         registerExtendMenuItem();
         // init input menu
-        inputMenu.init(null);
+        inputMenu.init(ll_root ,rl_content ,null);
         inputMenu.getPrimaryMenu().setVoiceListener(this);
         inputMenu.setChatInputMenuListener(new EaseChatInputMenu.ChatInputMenuListener() {
 
@@ -256,8 +263,7 @@ import rx.functions.Func1;
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                hideKeyboard();
-                inputMenu.hideExtendMenuContainer();
+                inputMenu.hideInputMenu();
                 return false;
             }
         });
@@ -931,17 +937,6 @@ import rx.functions.Func1;
         }
     }
 
-    /**
-     * hide
-     */
-    protected void hideKeyboard() {
-        if (getActivity().getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-            if (getActivity().getCurrentFocus() != null)
-                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
-    
     /**
      * forward message
      * 

@@ -59,7 +59,7 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new MyItemDecoration(getAppCompatActivity(),5));
-        releaseListAdapter = new ReleaseListAdapter(getAppCompatActivity().getApplicationContext(),list,type);
+        releaseListAdapter = new ReleaseListAdapter(getAppCompatActivity(),list,type);
         recyclerView.setAdapter(releaseListAdapter);
         BaseListLoadMoreListener loadMore = new BaseListLoadMoreListener(linearLayoutManager,releaseListAdapter);
         recyclerView.addOnScrollListener(loadMore);
@@ -94,7 +94,7 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
                     if (swipeRefreshLayout.isRefreshing()){
                         swipeRefreshLayout.setRefreshing(false);
                     }
-                    if (list.size()<30){
+                    if (list.size()<3){
                         releaseListAdapter.setLoadMore(releaseListAdapter.SUCCESS);
                         list.addAll(getRelease());
                     }else {
@@ -108,7 +108,7 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
 
     private ArrayList<Release> getRelease(){
         ArrayList<Release> list = new ArrayList<>();
-        for (int i =0 ; i<10 ;i++){
+        for (int i =0 ; i<3 ;i++){
             Release release = new Release();
             release.setName("快递小哥吴彦祖");
             list.add(release);

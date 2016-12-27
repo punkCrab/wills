@@ -53,7 +53,7 @@
             android:id="@+id/tv_release_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="帮我去快递"
+            android:text="帮我取快递"
             android:textColor="@color/textPrimary"
             android:textSize="16sp" />
 

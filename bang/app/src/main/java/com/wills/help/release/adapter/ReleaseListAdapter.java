@@ -1,6 +1,7 @@
 package com.wills.help.release.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,10 @@ import android.widget.TextView;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseListAdapter;
+import com.wills.help.message.EaseConstant;
+import com.wills.help.message.ui.ChatActivity;
 import com.wills.help.release.model.Release;
+import com.wills.help.utils.IntentUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +63,14 @@ public class ReleaseListAdapter extends BaseListAdapter<Release>{
                 ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
                 ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
             }
+            ((ReleaseHolder)holder).iv_release_msg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(EaseConstant.EXTRA_USER_ID,"weixiaohuan");
+                    IntentUtils.startActivity(context,ChatActivity.class,bundle);
+                }
+            });
         }
     }
 

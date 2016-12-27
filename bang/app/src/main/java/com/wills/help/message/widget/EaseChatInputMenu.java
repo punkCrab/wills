@@ -2,11 +2,13 @@ package com.wills.help.message.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -18,6 +20,7 @@ import com.wills.help.message.utils.EaseSmileUtils;
 import com.wills.help.message.widget.emojicon.EaseEmojiconMenu;
 import com.wills.help.message.widget.emojicon.EaseEmojiconMenuBase;
 import com.wills.help.utils.KeyBoardUtils;
+import com.wills.help.utils.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +46,8 @@ public class EaseChatInputMenu extends LinearLayout {
     private ChatInputMenuListener listener;
     private Context context;
     private boolean inited;
+    private View root,contentView;
+    private int KeyboardHeight = 0;
 
     public EaseChatInputMenu(Context context, AttributeSet attrs, int defStyle) {
         this(context, attrs);
@@ -80,10 +85,21 @@ public class EaseChatInputMenu extends LinearLayout {
      * @param emojiconGroupList --will use default if null
      */
     @SuppressLint("InflateParams")
-    public void init(List<EaseEmojiconGroupEntity> emojiconGroupList) {
+    public void init(View rootView ,View contentView ,List<EaseEmojiconGroupEntity> emojiconGroupList) {
+        root = rootView;
+        this.contentView = contentView;
         if(inited){
             return;
         }
+        root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                root.getWindowVisibleDisplayFrame(r);
+                int screenHeight = ScreenUtils.getScreenHeight(context);
+                KeyboardHeight = screenHeight-(r.bottom-r.top)-ScreenUtils.getStatusHeight(context);
+            }
+        });
         // primary menu, use default if no customized one
         if(chatPrimaryMenu == null){
             chatPrimaryMenu = (EaseChatPrimaryMenu) layoutInflater.inflate(R.layout.ease_layout_chat_primary_menu, null);
@@ -95,7 +111,7 @@ public class EaseChatInputMenu extends LinearLayout {
             emojiconMenu = (EaseEmojiconMenu) layoutInflater.inflate(R.layout.ease_layout_emojicon_menu, null);
             if(emojiconGroupList == null){
                 emojiconGroupList = new ArrayList<EaseEmojiconGroupEntity>();
-                emojiconGroupList.add(new EaseEmojiconGroupEntity(R.drawable.ee_1,  Arrays.asList(EaseDefaultEmojiconDatas.getData())));
+                emojiconGroupList.add(new EaseEmojiconGroupEntity(R.drawable.d_taikaixin,  Arrays.asList(EaseDefaultEmojiconDatas.getData())));
             }
             ((EaseEmojiconMenu)emojiconMenu).init(emojiconGroupList);
         }
@@ -104,14 +120,28 @@ public class EaseChatInputMenu extends LinearLayout {
         emojiconMenuContainer.addView(emojiconMenu);
         processChatMenu();
         chatExtendMenu.init();
-        
         inited = true;
     }
-    
-    public void init(){
-        init(null);
+
+    private void lockContentHeight() {
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) contentView.getLayoutParams();
+        params.height = contentView.getHeight();
+        params.weight = 0.0F;
     }
-    
+
+    private void unlockContentHeightDelayed() {
+        chatPrimaryMenu.getEditText().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ((LinearLayout.LayoutParams) contentView.getLayoutParams()).weight = 1.0F;
+            }
+        }, 200L);
+    }
+
+    private boolean isKeyboardOpen(){
+        return KeyboardHeight==0?false:true;
+    }
+
     /**
      * set custom emojicon menu
      * @param customEmojiconMenu
@@ -255,23 +285,32 @@ public class EaseChatInputMenu extends LinearLayout {
      */
     protected void toggleMore() {
         if (chatExtendMenuContainer.getVisibility() == View.GONE) {
-            hideKeyboard();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    chatExtendMenuContainer.setVisibility(View.VISIBLE);
-                    chatExtendMenu.setVisibility(View.VISIBLE);
-                    emojiconMenu.setVisibility(View.GONE);
-                    chatPrimaryMenu.canEdit(false);
-                }
-            }, 100);
-        } else {
-            if (emojiconMenu.getVisibility() == View.VISIBLE) {
-                emojiconMenu.setVisibility(View.GONE);
+            if (isKeyboardOpen()){
+                lockContentHeight();
+                chatExtendMenuContainer.setVisibility(View.VISIBLE);
                 chatExtendMenu.setVisibility(View.VISIBLE);
-            } else {
+                emojiconMenu.setVisibility(View.GONE);
+                hideKeyboard();
+                unlockContentHeightDelayed();
+            }else {
+                chatExtendMenuContainer.setVisibility(View.VISIBLE);
+                chatExtendMenu.setVisibility(View.VISIBLE);
+                emojiconMenu.setVisibility(View.GONE);
+            }
+        } else {
+            if (chatExtendMenu.getVisibility() == View.VISIBLE) {
+                lockContentHeight();
                 chatExtendMenuContainer.setVisibility(View.GONE);
-                chatPrimaryMenu.canEdit(true);
-                KeyBoardUtils.openKeybord(context,chatPrimaryMenu.getEditText(),100);
+                chatExtendMenu.setVisibility(View.GONE);
+                KeyBoardUtils.openKeybord(context, chatPrimaryMenu.getEditText());
+                unlockContentHeightDelayed();
+                lockContentHeight();
+                chatExtendMenu.setVisibility(View.VISIBLE);
+                KeyBoardUtils.openKeybord(context, chatPrimaryMenu.getEditText());
+                unlockContentHeightDelayed();
+            } else {
+                chatExtendMenu.setVisibility(View.VISIBLE);
+                emojiconMenu.setVisibility(View.GONE);
             }
         }
     }
@@ -281,23 +320,29 @@ public class EaseChatInputMenu extends LinearLayout {
      */
     protected void toggleEmojicon() {
         if (chatExtendMenuContainer.getVisibility() == View.GONE) {
-//            hideKeyboard();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    chatExtendMenuContainer.setVisibility(View.VISIBLE);
-                    chatExtendMenu.setVisibility(View.GONE);
-                    emojiconMenu.setVisibility(View.VISIBLE);
-                }
-            }, 100);
+            if (isKeyboardOpen()){
+                lockContentHeight();
+                chatExtendMenuContainer.setVisibility(View.VISIBLE);
+                chatExtendMenu.setVisibility(View.GONE);
+                emojiconMenu.setVisibility(View.VISIBLE);
+                hideKeyboard();
+                unlockContentHeightDelayed();
+            }else {
+                chatExtendMenuContainer.setVisibility(View.VISIBLE);
+                chatExtendMenu.setVisibility(View.GONE);
+                emojiconMenu.setVisibility(View.VISIBLE);
+            }
         } else {
             if (emojiconMenu.getVisibility() == View.VISIBLE) {
+                lockContentHeight();
                 chatExtendMenuContainer.setVisibility(View.GONE);
                 emojiconMenu.setVisibility(View.GONE);
+                KeyBoardUtils.openKeybord(context,chatPrimaryMenu.getEditText());
+                unlockContentHeightDelayed();
             } else {
                 chatExtendMenu.setVisibility(View.GONE);
                 emojiconMenu.setVisibility(View.VISIBLE);
             }
-
         }
     }
 
@@ -312,10 +357,28 @@ public class EaseChatInputMenu extends LinearLayout {
      * hide extend menu
      */
     public void hideExtendMenuContainer() {
-        chatExtendMenu.setVisibility(View.GONE);
-        emojiconMenu.setVisibility(View.GONE);
-        chatExtendMenuContainer.setVisibility(View.GONE);
-        chatPrimaryMenu.onExtendMenuContainerHide();
+        if (chatExtendMenuContainer.getVisibility() == View.VISIBLE){
+            lockContentHeight();
+            chatExtendMenu.setVisibility(View.GONE);
+            emojiconMenu.setVisibility(View.GONE);
+            chatExtendMenuContainer.setVisibility(View.GONE);
+            chatPrimaryMenu.onExtendMenuContainerHide();
+            KeyBoardUtils.openKeybord(context,chatPrimaryMenu.getEditText());
+            unlockContentHeightDelayed();
+        }
+        KeyBoardUtils.openKeybord(context,chatPrimaryMenu.getEditText());
+    }
+
+    public void hideInputMenu(){
+        if (chatExtendMenuContainer.getVisibility() == View.VISIBLE){
+            chatExtendMenu.setVisibility(View.GONE);
+            emojiconMenu.setVisibility(View.GONE);
+            chatExtendMenuContainer.setVisibility(View.GONE);
+            chatPrimaryMenu.onExtendMenuContainerHide();
+        }
+        if (isKeyboardOpen()){
+            hideKeyboard();
+        }
     }
 
     /**
@@ -328,7 +391,10 @@ public class EaseChatInputMenu extends LinearLayout {
         if (chatExtendMenuContainer.getVisibility() == View.VISIBLE) {
             hideExtendMenuContainer();
             return false;
-        } else {
+        } else if(isKeyboardOpen()){
+            hideKeyboard();
+            return false;
+        }else {
             return true;
         }
 

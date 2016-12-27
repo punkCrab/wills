@@ -24,6 +24,9 @@
         android:divider="@color/colorDivider"
         android:dividerHeight="0.5dp"
         hyphenate:cvsListPrimaryTextSize="16sp"
+        hyphenate:cvsListPrimaryTextColor="@color/textPrimary"
+        hyphenate:cvsListSecondaryTextColor="@color/textSecondary"
+        hyphenate:cvsListSecondaryTextSize="14sp"
          />
 
 </LinearLayout>

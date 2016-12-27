@@ -43,11 +43,17 @@ public class KeyBoardUtils
      * @param mContext
      *            上下文
      */
-    public static void openKeybord( Context mContext , EditText mEditText)
+    public static void openKeybord(final Context mContext , final EditText mEditText)
     {
-        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(mEditText, InputMethodManager.RESULT_SHOWN);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+        mEditText.requestFocus();
+        mEditText.post(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(mEditText, 0);
+//                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+            }
+        });
     }
 
     public static void openKeybord(final Context mContext , final EditText mEditText , int time)

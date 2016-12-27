@@ -82,6 +82,12 @@ public class App extends MultiDexApplication {
         return isLogin;
     }
 
+    public void exitApp(){
+        SharedPreferencesUtils.getInstance().remove(AppConfig.SP_USER);
+        removeUser();
+        setIsLogin(false);
+    }
+
     private class ObserverUser implements Observer{
 
         @Override

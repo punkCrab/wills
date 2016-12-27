@@ -14,16 +14,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wills.help.R;
 import com.wills.help.message.ui.EaseChatFragment;
-import com.wills.help.utils.KeyBoardUtils;
-import com.wills.help.utils.ScreenUtils;
 
 
 /**
@@ -68,7 +63,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
         buttonMore = (Button) findViewById(R.id.btn_more);
         btn_face = (Button) findViewById(R.id.btn_face);
         btn_keyboard = (Button) findViewById(R.id.btn_keyboard);
-        editText.setBackgroundResource(R.drawable.ease_input_bar_bg_normal);
+        editText.setBackgroundResource(R.drawable.ease_input_bar_bg_active);
 
         btn_keyboard.setOnClickListener(this);
         buttonSend.setOnClickListener(this);
@@ -196,13 +191,11 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
                 listener.onEditTextClicked();
         } else if (id == R.id.btn_face) {
             showKeyboard();
-            KeyBoardUtils.closeKeybord(context,editText);
             if(listener != null){
                 listener.onToggleEmojiconClicked();
             }
         } else if (id == R.id.btn_keyboard){
             showFace();
-            KeyBoardUtils.openKeybord(context,editText,100);
             if(listener != null){
                 listener.onEditTextClicked();
             }
@@ -267,8 +260,6 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
             buttonMore.setVisibility(View.GONE);
             buttonSend.setVisibility(View.VISIBLE);
         }
-        editText.requestFocus();
-        KeyBoardUtils.openKeybord(context,editText,100);
     }
     
     @Override
@@ -289,15 +280,6 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
     @Override
     public EditText getEditText() {
         return editText;
-    }
-
-    @Override
-    public void canEdit(boolean isEdit) {
-        if (isEdit){
-//            editText.setBackgroundResource(R.drawable.ease_input_bar_bg_active);
-        }else {
-//            editText.setBackgroundResource(R.drawable.ease_input_bar_bg_normal);
-        }
     }
 
 }

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:hyphenate="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="#f2f0eb" >
-
+    android:background="#f2f0eb"
+    android:orientation="vertical">
 
 
     <RelativeLayout
+        android:id="@+id/rl_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/input_menu" >
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <com.wills.help.message.widget.EaseChatMessageList
             android:id="@+id/message_list"
@@ -29,7 +30,5 @@
     <com.wills.help.message.widget.EaseChatInputMenu
         android:id="@+id/input_menu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
-
-</RelativeLayout>
+        android:layout_height="wrap_content" />
+</LinearLayout>
