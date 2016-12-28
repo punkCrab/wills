@@ -19,11 +19,15 @@ import android.widget.ImageButton;
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMConversationListener;
 import com.hyphenate.EMError;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
 import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
+import com.wills.help.message.controller.EaseUI;
 import com.wills.help.message.widget.EaseConversationList;
+import com.wills.help.utils.AppManager;
 import com.wills.help.utils.KeyBoardUtils;
 
 import java.util.ArrayList;
@@ -47,15 +51,42 @@ public class EaseConversationListFragment extends BaseFragment{
 
     protected boolean isConflict;
     
-    protected EMConversationListener convListener = new EMConversationListener(){
+//    protected EMConversationListener convListener = new EMConversationListener(){
+//
+//		@Override
+//		public void onCoversationUpdate() {
+//			refresh();
+//		}
+//
+//    };
 
-		@Override
-		public void onCoversationUpdate() {
-			refresh();
-		}
-    	
+    EMMessageListener messageListener = new EMMessageListener() {
+        @Override
+        public void onMessageReceived(List<EMMessage> list) {
+            refresh();
+        }
+
+        @Override
+        public void onCmdMessageReceived(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageReadAckReceived(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageDeliveryAckReceived(List<EMMessage> list) {
+
+        }
+
+        @Override
+        public void onMessageChanged(EMMessage emMessage, Object o) {
+
+        }
     };
-    
+
     @Override
     public View initView(LayoutInflater inflater) {
         View view = inflater.inflate(R.layout.ease_fragment_conversation_list, null);
@@ -84,7 +115,7 @@ public class EaseConversationListFragment extends BaseFragment{
         }
 
         EMClient.getInstance().addConnectionListener(connectionListener);
-
+        EMClient.getInstance().chatManager().addMessageListener(messageListener);
         query.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 conversationListView.filter(s);
@@ -270,6 +301,7 @@ public class EaseConversationListFragment extends BaseFragment{
     public void onDestroy() {
         super.onDestroy();
         EMClient.getInstance().removeConnectionListener(connectionListener);
+        EMClient.getInstance().chatManager().removeMessageListener(messageListener);
     }
     
     @Override

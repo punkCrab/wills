@@ -78,7 +78,7 @@
             android:layout_marginTop="15dp"
             android:drawableLeft="@drawable/release_time"
             android:drawablePadding="5dp"
-            android:text="截止时间至11-11日"
+            android:text="截止时间至11-11 11：11"
             android:textColor="@color/textPrimary"
             android:textSize="12sp" />
 

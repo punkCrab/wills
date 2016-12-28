@@ -96,9 +96,9 @@ public class HomeFragment extends BaseFragment{
         nestedScrollView = (NestedScrollView) view.findViewById(R.id.nsv);
         viewPager.setOffscreenPageLimit(1);
         setViewPager(viewPager);
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.home_express)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.home_seek)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.home_help)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.home_express)));
         tabLayout.setupWithViewPager(viewPager);
         return view;
     }
@@ -186,9 +186,9 @@ public class HomeFragment extends BaseFragment{
 
     private void setViewPager(ViewPager mViewPager){
         PagerAdapter adapter = new PagerAdapter(getChildFragmentManager());
+        adapter.addFragment(ExpressFragment.newInstance(),getString(R.string.home_express));
         adapter.addFragment(IconFragment.newInstance(0),getString(R.string.home_seek));
         adapter.addFragment(IconFragment.newInstance(1),getString(R.string.home_help));
-        adapter.addFragment(ExpressFragment.newInstance(),getString(R.string.home_express));
         mViewPager.setAdapter(adapter);
     }
 }

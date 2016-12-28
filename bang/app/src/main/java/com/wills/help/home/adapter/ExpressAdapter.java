@@ -1,6 +1,7 @@
 package com.wills.help.home.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,10 @@ import android.widget.TextView;
 import com.wills.help.R;
 import com.wills.help.base.BaseListAdapter;
 import com.wills.help.home.model.Express;
+import com.wills.help.message.EaseConstant;
+import com.wills.help.message.ui.ChatActivity;
+import com.wills.help.release.ui.ReleaseActivity;
+import com.wills.help.utils.IntentUtils;
 
 import java.util.List;
 
@@ -44,7 +49,9 @@ public class ExpressAdapter extends BaseListAdapter<Express>{
             ((ExpressHolder)holder).btn_send.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("type",1);
+                    IntentUtils.startActivity(context,ReleaseActivity.class,bundle);
                 }
             });
         }

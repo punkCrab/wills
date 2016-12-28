@@ -2,19 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_itease_layout"
     android:layout_width="match_parent"
-    android:layout_height="64dp"
+    android:layout_height="68dp"
     android:gravity="center_vertical">
 
     <RelativeLayout
         android:id="@+id/avatar_container"
-        android:layout_width="64dp"
+        android:layout_width="68dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true">
 
         <ImageView
             android:id="@+id/avatar"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:scaleType="fitXY"
@@ -24,9 +24,10 @@
             android:id="@+id/unread_msg_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="3dp"
+            android:layout_alignRight="@+id/avatar"
+            android:layout_alignTop="@+id/avatar"
+            android:layout_marginRight="-3dp"
+            android:layout_marginTop="-3dp"
             android:background="@drawable/ease_unread_count_bg"
             android:gravity="center"
             android:textColor="@android:color/white"
@@ -81,14 +82,15 @@
     <TextView
         android:id="@+id/message"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/time"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/name"
         android:layout_toRightOf="@id/mentioned"
+        android:layout_marginLeft="7dp"
+        android:paddingBottom="6dp"
+        android:gravity="center_vertical"
         android:ellipsize="end"
-        android:padding="7dp"
         android:singleLine="true"
         android:textColor="@color/textSecondary"
-        android:textSize="14sp" />
+        android:textSize="14sp"/>
 
 </RelativeLayout>

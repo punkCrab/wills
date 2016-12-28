@@ -15,12 +15,15 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.util.EasyUtils;
 import com.wills.help.R;
 import com.wills.help.assist.ui.AssistFragment;
 import com.wills.help.home.ui.HomeFragment;
 import com.wills.help.login.ui.LoginActivity;
+import com.wills.help.message.controller.EaseUI;
 import com.wills.help.person.ui.PersonFragment;
 import com.wills.help.release.ui.MainReleaseFragment;
+import com.wills.help.utils.AppManager;
 import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.ScreenUtils;
 import com.wills.help.utils.ToastUtils;
@@ -223,7 +226,14 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     EMMessageListener messageListener = new EMMessageListener() {
         @Override
         public void onMessageReceived(List<EMMessage> list) {
-            ToastUtils.toast("有新消息");
+            if (!EasyUtils.isAppRunningForeground(context)){
+                EaseUI.getInstance().getNotifier().onNewMesg(list);
+            }else {
+                String currentActivity = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
+                if (!currentActivity.equals("MessageActivity")&&!currentActivity.equals("ChatActivity")){
+                    EaseUI.getInstance().getNotifier().onNewMesg(list);
+                }
+            }
         }
 
         @Override

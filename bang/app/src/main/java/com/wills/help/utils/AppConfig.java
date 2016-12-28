@@ -7,6 +7,7 @@ package com.wills.help.utils;
  */
 
 public class AppConfig {
+    public static String PKG_NAME = "com.wills.help";
     public static String VERSION = "1.0.0";
     public static final String HOST = "http://59.110.62.75/think/";
     public static boolean TEST = true;

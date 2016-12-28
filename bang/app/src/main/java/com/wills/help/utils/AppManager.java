@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import java.util.List;
 import java.util.Stack;
 
 public class AppManager {
@@ -31,6 +32,16 @@ public class AppManager {
             activityStack=new Stack<Activity>();
         }
         activityStack.add(activity);
+    }
+
+    /**
+     * 删除
+     * @param activity
+     */
+    public void removeActivity(Activity activity){
+        if(activityStack!=null){
+            activityStack.remove(activity);
+        }
     }
     /**
      * 获取当前Activity（堆栈中最后一个压入的）
@@ -87,5 +98,18 @@ public class AppManager {
             activityMgr.restartPackage(context.getPackageName());
             System.exit(0);
         } catch (Exception e) { }
+    }
+
+    public static boolean isAppRunning(Context context){
+        boolean isAppRunning = false;
+        ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(100);
+        for (ActivityManager.RunningTaskInfo info : list) {
+            if (info.topActivity.getPackageName().equals(AppConfig.PKG_NAME) && info.baseActivity.getPackageName().equals(AppConfig.PKG_NAME)) {
+                isAppRunning = true;
+                break;
+            }
+        }
+        return isAppRunning;
     }
 }

@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.umeng.analytics.MobclickAgent;
 import com.wills.help.message.controller.EaseUI;
@@ -24,6 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected BaseLayout baseLayout;
     protected Context context;
     private String title;//用于Umeng统计
+    private InputMethodManager inputManager;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 return;
             }
         }
+        inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         initViews(savedInstanceState);
     }
 
@@ -45,7 +49,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onResume();
         MobclickAgent.onPageStart(title);
         MobclickAgent.onResume(context);
-        EaseUI.getInstance().getNotifier().reset();
+        if (getClass().getSimpleName().equals("MessageActivity")
+                ||getClass().getSimpleName().equals("ChatActivity")){
+            EaseUI.getInstance().getNotifier().reset();
+        }
     }
 
     @Override
@@ -55,10 +62,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         MobclickAgent.onPause(context);
     }
 
+    public void hideKeyboard() {
+        if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (getCurrentFocus() != null)
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        hideKeyboard();
+        AppManager.getAppManager().removeActivity(this);
+    }
+
     protected void setBaseView(int layoutResId){
         baseLayout = new BaseLayout(this,layoutResId,true);
         setContentView(baseLayout);

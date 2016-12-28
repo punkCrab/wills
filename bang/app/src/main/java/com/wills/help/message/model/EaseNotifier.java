@@ -30,6 +30,8 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.EasyUtils;
 import com.wills.help.message.controller.EaseUI;
+import com.wills.help.message.ui.MessageActivity;
+import com.wills.help.utils.AppManager;
 
 import java.util.HashSet;
 import java.util.List;
@@ -146,12 +148,12 @@ public class EaseNotifier {
             return;
         }
         // check if app running background
-        if (!EasyUtils.isAppRunningForeground(appContext)) {
+//        if (!EasyUtils.isAppRunningForeground(appContext)) {
             EMLog.d(TAG, "app is running in backgroud");
             sendNotification(messages, false);
-        } else {
-            sendNotification(messages, true);
-        }
+//        } else {
+//            sendNotification(messages, true);
+//        }
         vibrateAndPlayTone(messages.get(messages.size()-1));
     }
 
@@ -229,7 +231,12 @@ public class EaseNotifier {
                                                                         .setWhen(System.currentTimeMillis())
                                                                         .setAutoCancel(true);
 
-            Intent msgIntent = appContext.getPackageManager().getLaunchIntentForPackage(packageName);
+            Intent msgIntent;
+            if (AppManager.isAppRunning(appContext)){
+                msgIntent = new Intent(appContext, MessageActivity.class);
+            }else {
+                msgIntent  = appContext.getPackageManager().getLaunchIntentForPackage(packageName);
+            }
             if (notificationInfoProvider != null) {
                 msgIntent = notificationInfoProvider.getLaunchIntent(message);
             }
@@ -268,12 +275,12 @@ public class EaseNotifier {
             // mBuilder.setNumber(notificationNum);
             Notification notification = mBuilder.build();
 
-            if (isForeground) {
-                notificationManager.notify(foregroundNotifyID, notification);
-                notificationManager.cancel(foregroundNotifyID);
-            } else {
+//            if (isForeground) {
+//                notificationManager.notify(foregroundNotifyID, notification);
+//                notificationManager.cancel(foregroundNotifyID);
+//            } else {
                 notificationManager.notify(notifyID, notification);
-            }
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();

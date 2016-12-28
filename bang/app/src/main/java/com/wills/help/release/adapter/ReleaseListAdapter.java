@@ -14,6 +14,7 @@ import com.wills.help.base.BaseListAdapter;
 import com.wills.help.message.EaseConstant;
 import com.wills.help.message.ui.ChatActivity;
 import com.wills.help.release.model.Release;
+import com.wills.help.release.ui.ReleaseActivity;
 import com.wills.help.utils.IntentUtils;
 
 import java.util.ArrayList;
@@ -29,10 +30,12 @@ public class ReleaseListAdapter extends BaseListAdapter<Release>{
 
     private int type;
     private Context context;
+    private List<Release> list;
 
     public ReleaseListAdapter(Context context, List<Release> list) {
         super(context, list);
         this.context = context;
+        this.list = list;
     }
 
     public ReleaseListAdapter(Context context) {
@@ -44,6 +47,7 @@ public class ReleaseListAdapter extends BaseListAdapter<Release>{
         super(context, list);
         this.type = type;
         this.context = context;
+        this.list = list;
     }
 
     @Override
@@ -56,12 +60,9 @@ public class ReleaseListAdapter extends BaseListAdapter<Release>{
     protected void BindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ReleaseHolder){
             if (type == 0){
-                ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                changeView(holder,list.get(position).getState());
             }else if(type == 1){
-                ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                changeView(holder,4);
             }
             ((ReleaseHolder)holder).iv_release_msg.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,6 +72,55 @@ public class ReleaseListAdapter extends BaseListAdapter<Release>{
                     IntentUtils.startActivity(context,ChatActivity.class,bundle);
                 }
             });
+        }
+    }
+
+    private void changeView(RecyclerView.ViewHolder holder , final int state){
+        switch (state){
+            case 1://发布
+                ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                ((ReleaseHolder)holder).tv_release_change.setVisibility(View.VISIBLE);
+                ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_change));
+                ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("type",0);
+                        IntentUtils.startActivity(context,ReleaseActivity.class,bundle);
+                    }
+                });
+                break;
+            case 2://接单
+                ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                ((ReleaseHolder)holder).tv_release_change.setVisibility(View.INVISIBLE);
+                break;
+            case 3://送达
+                ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                ((ReleaseHolder)holder).tv_release_change.setVisibility(View.VISIBLE);
+                ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_ok));
+                ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+                break;
+            case 4://已完成
+                ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_evaluation));
+                ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+                break;
         }
     }
 

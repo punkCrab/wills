@@ -13,14 +13,23 @@
  */
 package com.wills.help.message.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
+import android.widget.RelativeLayout;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
@@ -31,16 +40,18 @@ import com.wills.help.R;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.message.model.EaseImageCache;
 import com.wills.help.utils.GlideUtils;
+import com.wills.help.utils.ScreenUtils;
 
 import java.io.File;
 
 import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * download and show original image
  * 
  */
-public class EaseShowBigImageActivity extends BaseActivity {
+public class EaseShowBigImageActivity extends BaseActivity implements PhotoViewAttacher.OnPhotoTapListener{
 	private static final String TAG = "ShowBigImage"; 
 	private ProgressDialog pd;
 	private PhotoView image;
@@ -49,16 +60,38 @@ public class EaseShowBigImageActivity extends BaseActivity {
 	private Bitmap bitmap;
 	private boolean isDownloaded;
 	private Uri uri;
+	private boolean full = false;
+	Toolbar toolbar;
 
 	@Override
 	protected void initViews(Bundle savedInstanceState) {
-		setBaseView(R.layout.ease_activity_show_big_image);
-		setBaseTitle(getString(R.string.attach_picture));
+		setNoActionBarView(R.layout.ease_activity_show_big_image);
 		image = (PhotoView) findViewById(R.id.image);
 		default_res = getIntent().getIntExtra("default_image", R.drawable.ease_default_avatar);
 		uri = getIntent().getParcelableExtra("uri");
 		localFilePath = getIntent().getExtras().getString("localUrl");
 		String msgId = getIntent().getExtras().getString("messageId");
+		image.setOnPhotoTapListener(this);
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		RelativeLayout.LayoutParams viewParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		viewParams.setMargins(0, ScreenUtils.getStatusHeight(context),0,0);
+		toolbar.setLayoutParams(viewParams);
+		toolbar.setTitle(getString(R.string.attach_picture));
+		setSupportActionBar(toolbar);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				finish();
+			}
+		});
+		if (Build.VERSION.SDK_INT >= 21) {
+			View decorView = getWindow().getDecorView();
+			int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+					| View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+			decorView.setSystemUiVisibility(option);
+			getWindow().setNavigationBarColor(Color.TRANSPARENT);
+		}
 		EMLog.d(TAG, "show big msgId:" + msgId );
 
 		//show the image if it exist in local path
@@ -177,5 +210,55 @@ public class EaseShowBigImageActivity extends BaseActivity {
 		if (isDownloaded)
 			setResult(RESULT_OK);
 		finish();
+	}
+
+	@Override
+	public void onPhotoTap(View view, float v, float v1) {
+		full(!full);
+	}
+
+	private void full(boolean enable) {
+		if (enable) {
+			full = true;
+			WindowManager.LayoutParams lp = getWindow().getAttributes();
+			lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+			getWindow().setAttributes(lp);
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+			setAnimator(0);
+		} else {
+			full = false;
+			WindowManager.LayoutParams attr = getWindow().getAttributes();
+			attr.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
+			getWindow().setAttributes(attr);
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+			setAnimator(1);
+		}
+	}
+
+	private void setAnimator(final int type) {
+		ObjectAnimator animator = null;
+		int distance = findViewById(R.id.toolbar).getHeight() + ScreenUtils.getStatusHeight(context);
+		if (type == 0) {
+			animator = ObjectAnimator.ofFloat(findViewById(R.id.toolbar), "translationY", -distance);
+			animator.addListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					super.onAnimationEnd(animation);
+					getSupportActionBar().hide();
+				}
+			});
+		} else {
+			animator = ObjectAnimator.ofFloat(findViewById(R.id.toolbar), "translationY", -distance, 0);
+			animator.addListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationStart(Animator animation) {
+					super.onAnimationStart(animation);
+					getSupportActionBar().show();
+				}
+			});
+		}
+		animator.setDuration(200);
+		animator.setInterpolator(new LinearInterpolator());
+		animator.start();
 	}
 }

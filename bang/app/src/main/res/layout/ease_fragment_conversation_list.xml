@@ -27,6 +27,8 @@
         hyphenate:cvsListPrimaryTextColor="@color/textPrimary"
         hyphenate:cvsListSecondaryTextColor="@color/textSecondary"
         hyphenate:cvsListSecondaryTextSize="14sp"
+        hyphenate:cvsListTimeTextColor="@color/textSecondary"
+        hyphenate:cvsListTimeTextSize="14sp"
          />
 
 </LinearLayout>

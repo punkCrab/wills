@@ -111,6 +111,7 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
         for (int i =0 ; i<3 ;i++){
             Release release = new Release();
             release.setName("快递小哥吴彦祖");
+            release.setState(i+1);
             list.add(release);
         }
         return list;
