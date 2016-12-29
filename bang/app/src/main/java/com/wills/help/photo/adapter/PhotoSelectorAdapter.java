@@ -24,15 +24,18 @@ public class PhotoSelectorAdapter extends MBaseAdapter<PhotoModel> {
 	private PhotoItem.onItemClickListener mCallback;
 	private OnClickListener cameraListener;
 	private int action;
+	private ArrayList<PhotoModel> selected;
 
 	private PhotoSelectorAdapter(Context context, ArrayList<PhotoModel> models) {
 		super(context, models);
 	}
 
-	public PhotoSelectorAdapter(Context context, ArrayList<PhotoModel> models, int screenWidth,int action,
+	public PhotoSelectorAdapter(Context context, ArrayList<PhotoModel> models,
+								ArrayList<PhotoModel> selected , int screenWidth,int action,
 								PhotoItem.onPhotoItemCheckedListener listener, PhotoItem.onItemClickListener mCallback, OnClickListener cameraListener) {
 		this(context, models);
 		setItemWidth(screenWidth);
+		this.selected = selected;
 		this.action = action;
 		this.listener = listener;
 		this.mCallback = mCallback;
@@ -66,6 +69,13 @@ public class PhotoSelectorAdapter extends MBaseAdapter<PhotoModel> {
 				item = (PhotoItem) convertView;
 			}
 			item.setImageDrawable(models.get(position));
+			models.get(position).setChecked(false);
+			for (PhotoModel model:selected){
+				if (model.getOriginalPath().equals(models.get(position).getOriginalPath())){
+					models.get(position).setChecked(true);
+					break;
+				}
+			}
 			item.setSelected(models.get(position).isChecked());
 			item.setOnClickListener(mCallback, position);
 		}

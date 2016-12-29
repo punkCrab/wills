@@ -56,7 +56,7 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 	private AlbumAdapter albumAdapter;
 	private RelativeLayout layoutAlbum , layoutBar;
 	private View view;
-	private ArrayList<PhotoModel> selected;
+	public static ArrayList<PhotoModel> selected;
 	private int action = 0;
 	private File cameraPath;
 
@@ -82,7 +82,7 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 			tv_line_ar.setVisibility(View.INVISIBLE);
 		}
 		view.setOnClickListener(this);
-		photoAdapter = new PhotoSelectorAdapter(getApplicationContext(), new ArrayList<PhotoModel>(),ScreenUtils.getScreenWidth(this),action, this, this, this);
+		photoAdapter = new PhotoSelectorAdapter(getApplicationContext(), new ArrayList<PhotoModel>(),selected ,ScreenUtils.getScreenWidth(this),action, this, this, this);
 		gvPhotos.setAdapter(photoAdapter);
 		albumAdapter = new AlbumAdapter(getApplicationContext(), new ArrayList<AlbumModel>());
 		lvAblum.setAdapter(albumAdapter);
@@ -160,17 +160,22 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 		if (requestCode == AppConfig.CAMERA && resultCode == RESULT_OK) {
 			CameraUtils.insertCamera(context,cameraPath);
 			PhotoModel photoModel = new PhotoModel(cameraPath.getPath());
+			photoModel.setChecked(true);
+			selected.add(photoModel);
+			photoSelectorDomain.getReccent(reccentListener);
 			if (action == AppConfig.PHOTO){
 				ArrayList<PhotoModel> photo = new ArrayList<>();
 				photo.add(photoModel);
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("photos", photo);
-				IntentUtils.startActivity(this, PhotoPreviewActivity.class, bundle);
+				IntentUtils.startActivityForResult(this, PhotoPreviewActivity.class, bundle,AppConfig.PREV);
 			}else if (action == AppConfig.AVATAR){
 				startPhotoZoom(photoModel.getOriginalPath());
 			}
 		}else if (requestCode == AppConfig.AVATAR && resultCode == RESULT_OK){
 			//裁剪处理完上传
+		}else if (requestCode == AppConfig.PREV&&resultCode==RESULT_OK){
+			ok();
 		}
 	}
 
@@ -190,7 +195,7 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 	private void priview() {
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("photos", selected);
-		IntentUtils.startActivity(this, PhotoPreviewActivity.class, bundle);
+		IntentUtils.startActivityForResult(this, PhotoPreviewActivity.class, bundle,AppConfig.PREV);
 	}
 
 	private void album() {
@@ -258,7 +263,7 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 		else
 			bundle.putInt("position", position);
 		bundle.putString("album", tvAlbum.getText().toString());
-		IntentUtils.startActivity(this, PhotoPreviewActivity.class, bundle);
+		IntentUtils.startActivityForResult(this, PhotoPreviewActivity.class, bundle,AppConfig.PREV);
 	}
 
 	private void startPhotoZoom(String string){
@@ -276,9 +281,11 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 	@Override
 	public void onCheckedChanged(PhotoModel photoModel, CompoundButton buttonView, boolean isChecked) {
 		if (isChecked) {
+			photoModel.setChecked(true);
 			selected.add(photoModel);
 			tvPreview.setEnabled(true);
 		} else {
+			photoModel.setChecked(false);
 			selected.remove(photoModel);
 		}
 		tvPreview.setText("预览(" + selected.size() + ")");
@@ -295,6 +302,19 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 			hideAlbum();
 		} else
 			super.onBackPressed();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (selected.isEmpty()) {
+			tvPreview.setEnabled(false);
+			tvPreview.setText("预览");
+		}else {
+			tvPreview.setEnabled(true);
+			tvPreview.setText("预览(" + selected.size() + ")");
+		}
+		photoAdapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -340,7 +360,7 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 				photos.add(0, new PhotoModel());
 			photoAdapter.update(photos);
 			gvPhotos.smoothScrollToPosition(0);
-			reset();
+//			reset();
 		}
 	};
 }

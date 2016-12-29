@@ -18,6 +18,7 @@ public class AppConfig {
     public static final int AVATAR = 100;
     public static final int PHOTO = 101;
     public static final int CAMERA = 102;
+    public static final int PREV = 103;
 
     public static final int CACHE_VERSION = 1;
     public static final int CACHE_TIME = 30*24*60*1000;

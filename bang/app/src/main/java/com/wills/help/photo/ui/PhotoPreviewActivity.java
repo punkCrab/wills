@@ -24,6 +24,7 @@ import com.wills.help.utils.ScreenUtils;
 
 import java.util.List;
 
+
 /**
  * com.wills.help.photo.ui
  * Created by lizhaoyong
@@ -69,6 +70,25 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoSelectorA
             decorView.setSystemUiVisibility(option);
             getWindow().setNavigationBarColor(Color.TRANSPARENT);
         }
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (photos.get(current).isChecked()){
+                    checkBox.setChecked(false);
+                    for (int i = 0;i<PhotoSelectorActivity.selected.size();i++){
+                        if (PhotoSelectorActivity.selected.get(i).getOriginalPath().equals(photos.get(current).getOriginalPath())){
+                            PhotoSelectorActivity.selected.remove(i);
+                            break;
+                        }
+                    }
+                    photos.get(current).setChecked(false);
+                }else {
+                    checkBox.setChecked(true);
+                    photos.get(current).setChecked(true);
+                    PhotoSelectorActivity.selected.add(photos.get(current));
+                }
+            }
+        });
         photoHandler = new PhotoHandler(context);
         initData(getIntent().getExtras());
     }
@@ -82,13 +102,22 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoSelectorA
             photos = (List<PhotoModel>) extras.getSerializable("photos");
             current = extras.getInt("position" , 0);
             setPhotos();
+            checkBox.setChecked(true);
         }else if (extras.containsKey("album")){
             String albumName = extras.getString("album");
             current = extras.getInt("position");
             if (!TextUtils.isEmpty(albumName)&& albumName.equals(PhotoSelectorActivity.RECCENT_PHOTO)){
-                photoHandler.getReccent(this);
+                photoHandler.getReccent( this);
             }else {
                 photoHandler.getAlbum(albumName,this);
+            }
+            if (current == 0){
+                for (PhotoModel model:PhotoSelectorActivity.selected){
+                    if (model.getOriginalPath().equals(photos.get(current).getOriginalPath())){
+                        checkBox.setChecked(true);
+                        break;
+                    }
+                }
             }
         }
     }
@@ -117,6 +146,8 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoSelectorA
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_right:
+                setResult(RESULT_OK);
+                finish();
                 break;
         }
         return true;
@@ -136,6 +167,17 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoSelectorA
     @Override
     public void onPageSelected(int position) {
         current = position;
+        for (PhotoModel model:PhotoSelectorActivity.selected){
+            if (model.getOriginalPath().equals(photos.get(position).getOriginalPath())){
+                photos.get(position).setChecked(true);
+                break;
+            }
+        }
+        if (photos.get(position).isChecked()){
+            checkBox.setChecked(true);
+        }else {
+            checkBox.setChecked(false);
+        }
         updateTitle();
     }
 
