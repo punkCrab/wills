@@ -110,7 +110,17 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
         ArrayList<Release> list = new ArrayList<>();
         for (int i =0 ; i<3 ;i++){
             Release release = new Release();
-            release.setName("快递小哥吴彦祖");
+            switch (i){
+                case 0:
+                    release.setName("weixiaohuan");
+                    break;
+                case 1:
+                    release.setName("leewills");
+                    break;
+                case 2:
+                    release.setName("wuyao");
+                    break;
+            }
             release.setState(i+1);
             list.add(release);
         }

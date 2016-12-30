@@ -891,12 +891,24 @@ import rx.functions.Action1;
      * select local image
      */
     protected void selectPicFromLocal() {
+        PermissionGen.with(this)
+                .addRequestCode(120)
+                .permissions(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                .request();
+    }
+    @PermissionSuccess(requestCode = 120)
+    public void picSuccess(){
         Bundle bundle = new Bundle();
         bundle.putInt("action", AppConfig.PHOTO);
         IntentUtils.startActivityForResult(getAppCompatActivity(), PhotoSelectorActivity.class,bundle,AppConfig.PHOTO);
     }
-
-
+    @PermissionFail(requestCode = 120)
+    public void picFail(){
+        ToastUtils.toast("permission is not granted");
+    }
 
     /**
      * clear the conversation history

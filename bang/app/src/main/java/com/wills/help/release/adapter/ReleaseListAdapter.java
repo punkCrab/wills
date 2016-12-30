@@ -57,7 +57,7 @@ public class ReleaseListAdapter extends BaseListAdapter<Release>{
     }
 
     @Override
-    protected void BindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    protected void BindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ReleaseHolder){
             if (type == 0){
                 changeView(holder,list.get(position).getState());
@@ -68,7 +68,7 @@ public class ReleaseListAdapter extends BaseListAdapter<Release>{
                 @Override
                 public void onClick(View view) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(EaseConstant.EXTRA_USER_ID,"weixiaohuan");
+                    bundle.putString(EaseConstant.EXTRA_USER_ID,list.get(position).getName());
                     IntentUtils.startActivity(context,ChatActivity.class,bundle);
                 }
             });
