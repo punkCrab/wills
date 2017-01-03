@@ -20,6 +20,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.wills.help.R;
 
+import java.io.ByteArrayOutputStream;
+
 /**
  * Glide加载图片工具类
  * 作者：user on 2016/9/13 10:23
@@ -120,14 +122,37 @@ public class GlideUtils {
     }
 
     /**
-     * 加载 圆形图片
-     *
-     * @param view
+     * 圆形图片
+     * @param context
      * @param url
+     * @param view
      */
     public void displayCircleImage(final Context context, String url, ImageView view) {
 
         Glide.with(context).load(url).asBitmap().centerCrop().into(new BitmapImageViewTarget(view){
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable =
+                        RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                circularBitmapDrawable.setCircular(true);
+                view.setImageDrawable(circularBitmapDrawable);
+            }
+        });
+    }
+
+    /**
+     * 圆形图片
+     * @param context
+     * @param bitmap
+     * @param view
+     */
+    public void displayCircleImage(final Context context, Bitmap bitmap, ImageView view) {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] bytes=baos.toByteArray();
+
+        Glide.with(context).load(bytes).asBitmap().centerCrop().into(new BitmapImageViewTarget(view){
             @Override
             protected void setResource(Bitmap resource) {
                 RoundedBitmapDrawable circularBitmapDrawable =

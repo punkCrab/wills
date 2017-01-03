@@ -36,7 +36,7 @@ public class OrderAdapter extends BaseListAdapter<Order>{
     @Override
     protected void BindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof OrderHolder){
-            GlideUtils.getInstance().displayCircleImage(context ,R.drawable.example_assist_item ,((OrderHolder)holder).imageView);
+            GlideUtils.getInstance().displayCircleImage(context ,R.drawable.default_circle ,((OrderHolder)holder).imageView);
         }
     }
 

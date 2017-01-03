@@ -220,6 +220,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 bottomNavigationBar.selectTab(currentPosition);
             else if (resultCode==RESULT_CANCELED)
                 bottomNavigationBar.selectTab(prevPosition);
+        }else{
+            personFragment.onActivityResult(requestCode,resultCode,data);
         }
     }
 

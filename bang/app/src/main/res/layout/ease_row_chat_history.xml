@@ -62,7 +62,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="7dp"
         android:layout_toRightOf="@id/avatar_container"
-        android:src="@drawable/ease_msg_state_fail_resend"
+        android:src="@drawable/warn_s"
         android:visibility="gone" />
 
     <TextView

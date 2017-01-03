@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.wills.help.R;
 import com.wills.help.photo.model.PhotoModel;
+import com.wills.help.photo.ui.PhotoSelectorActivity;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.GlideUtils;
 
@@ -45,7 +46,7 @@ public class PhotoItem extends LinearLayout implements OnCheckedChangeListener, 
 		setOnClickListener(this);
 		ivPhoto = (ImageView) findViewById(R.id.iv_photo_lpsi);
 		cbPhoto = (CheckBox) findViewById(R.id.cb_photo_lpsi);
-		if (action == AppConfig.AVATAR){
+		if (action == AppConfig.AVATAR || PhotoSelectorActivity.MAX == 1){
 			cbPhoto.setVisibility(View.INVISIBLE);
 		}else if (action == AppConfig.PHOTO){
 			cbPhoto.setOnCheckedChangeListener(this);
@@ -63,7 +64,6 @@ public class PhotoItem extends LinearLayout implements OnCheckedChangeListener, 
 		} else {
 			ivPhoto.clearColorFilter();
 		}
-		photo.setChecked(isChecked);
 	}
 
 	public void setImageDrawable(final PhotoModel photo) {

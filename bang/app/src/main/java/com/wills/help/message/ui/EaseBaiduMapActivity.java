@@ -23,7 +23,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -56,8 +55,6 @@ public class EaseBaiduMapActivity extends BaseActivity {
 	FrameLayout mMapViewContainer = null;
 	LocationClient mLocClient;
 	public MyLocationListenner myListener = new MyLocationListenner();
-
-	Button sendButton = null;
 
 	EditText indexText = null;
 	int index = 0;
@@ -92,7 +89,6 @@ public class EaseBaiduMapActivity extends BaseActivity {
 		setBaseView(R.layout.ease_activity_baidumap);
 		setBaseTitle(getString(R.string.attach_location));
 		mMapView = (MapView) findViewById(R.id.bmapView);
-		sendButton = (Button) findViewById(R.id.btn_location_send);
 		Intent intent = getIntent();
 		double latitude = intent.getDoubleExtra("latitude", 0);
 		LocationMode mCurrentMode = LocationMode.NORMAL;
@@ -122,7 +118,6 @@ public class EaseBaiduMapActivity extends BaseActivity {
 	}
 
 	private void showMap(double latitude, double longtitude, String address) {
-		sendButton.setVisibility(View.GONE);
 		LatLng llA = new LatLng(latitude, longtitude);
 		CoordinateConverter converter= new CoordinateConverter();
 		converter.coord(llA);
@@ -215,7 +210,6 @@ public class EaseBaiduMapActivity extends BaseActivity {
 			}
 			Log.d("map", "On location change received:" + location);
 			Log.d("map", "addr:" + location.getAddrStr());
-			sendButton.setEnabled(true);
 			if (progressDialog != null) {
 				progressDialog.dismiss();
 			}

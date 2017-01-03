@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -304,9 +306,10 @@ import rx.functions.Action1;
             @Override
             public void onBubbleLongClick(EMMessage message) {
                 contextMenuMessage = message;
-                if(chatFragmentHelper != null){
-                    chatFragmentHelper.onMessageBubbleLongClick(message);
-                }
+//                if(chatFragmentHelper != null){
+//                    chatFragmentHelper.onMessageBubbleLongClick(message);
+//                }
+                showAlert(message);
             }
             
             @Override
@@ -318,6 +321,28 @@ import rx.functions.Action1;
             }
 
         });
+    }
+
+    private void showAlert(final EMMessage message){
+        final String[] strings = new String[]{getString(R.string.copy),getString(R.string.delete)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getAppCompatActivity());
+        builder.setItems(strings, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i){
+                    case 0:
+                        ClipboardManager cm = (ClipboardManager) getAppCompatActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                        cm.setText(EaseCommonUtils.getMessageDigest(message,getAppCompatActivity()));
+                        ToastUtils.toast(getString(R.string.copied));
+                        break;
+                    case 1:
+                        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(toChatUsername);
+                        conversation.removeMessage(message.getMsgId());
+                        messageList.refresh();
+                        break;
+                }
+            }
+        }).show();
     }
 
     protected void setRefreshLayoutListener() {

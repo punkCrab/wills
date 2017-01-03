@@ -60,7 +60,7 @@
 
     <string name="home_seek">求助</string>
     <string name="home_help">帮人</string>
-    <string name="home_express">快递</string>
+    <string name="home_express">为你解邮</string>
     <string name="home_express_count">您有%1$s个快递已经到达学校</string>
     <string name="home_express_send">免费派送</string>
     <string name="home_express_more">查看更多</string>
@@ -80,12 +80,22 @@
     <string name="person_wallet">我的钱包</string>
 
     <string name="identification">在校生认证</string>
+    <string name="id_name">请输入姓名</string>
+    <string name="id_sno">请输入学号</string>
+    <string name="id_grade">请选择年级</string>
+    <string name="id_specialty">请选择专业</string>
+    <string name="id_photo">*上传拿一卡通的自拍</string>
+    <string name="upload">上传</string>
+    <string name="reupload">重新上传</string>
+    <string name="approve">认证</string>
+
     <string name="wallet">我的钱包</string>
 
     <string name="ok">确定</string>
     <string name="photo_preview">预览</string>
     <string name="photo_choose">选择</string>
     <string name="camera_error">拍照失败</string>
+    <string name="photo_max">最多只能选择%1$s张照片</string>
 
     <string name="pay_amount">金额</string>
     <string name="pay_ali">支付宝</string>
@@ -93,7 +103,6 @@
     <string name="pay">支付</string>
     <string name="pay_wx">微信支付</string>
     <string name="pay_wx_content">推荐微信用户使用</string>
-
 
 
 
@@ -128,6 +137,7 @@
     <string name="connect_failuer_toast">请检查网络或稍候重试</string>
     <string name="network_unavailable">网络连接不可用，请检查网络</string>
     <string name="copy">复制</string>
+    <string name="copied">已复制到粘贴板</string>
     <string name="forward">转发</string>
     <string name="button_logout">退出登录</string>
     <string name="button_uploadlog">上传运行日志</string>

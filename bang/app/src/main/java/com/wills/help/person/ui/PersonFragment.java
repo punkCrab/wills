@@ -2,6 +2,7 @@ package com.wills.help.person.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -18,13 +19,10 @@ import com.wills.help.listener.AppBarStateChangeListener;
 import com.wills.help.login.ui.LoginActivity;
 import com.wills.help.login.ui.SettingActivity;
 import com.wills.help.message.ui.MessageActivity;
-import com.wills.help.photo.model.PhotoModel;
 import com.wills.help.photo.ui.PhotoSelectorActivity;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
-
-import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -141,17 +139,10 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0 && resultCode == RESULT_OK){
-            if (data != null && data.getExtras() != null){
-                @SuppressWarnings("unchecked")
-                List<PhotoModel> photos = (List<PhotoModel>) data.getExtras().getSerializable("photos");
-                if (photos == null || photos.isEmpty())
-                    return;
-                StringBuffer sb = new StringBuffer();
-                for (PhotoModel photo : photos) {
-                    sb.append(photo.getOriginalPath() + "\r\n");
-                }
-                tv_school.setText(sb.toString());
+        if (requestCode == AppConfig.AVATAR && resultCode == RESULT_OK){
+            if (data != null){
+                Bitmap bitmap = data.getParcelableExtra("avatar");
+                GlideUtils.getInstance().displayCircleImage(getAppCompatActivity(),bitmap,imageView);
             }
         }
     }

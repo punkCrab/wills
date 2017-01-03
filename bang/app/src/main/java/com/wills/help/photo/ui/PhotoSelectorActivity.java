@@ -5,6 +5,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -47,7 +48,7 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 		OnItemClickListener, OnClickListener {
 
 	public static final String RECCENT_PHOTO = "最近照片";
-
+	public static int MAX = 9;
 	private GridView gvPhotos;
 	private ListView lvAblum;
 	private TextView tvAlbum, tvPreview , tv_line_ar;
@@ -65,6 +66,7 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 		setBaseView(R.layout.photo_selector);
 		setBaseTitle(RECCENT_PHOTO);
 		action = getIntent().getExtras().getInt("action" , 0);
+		MAX = getIntent().getExtras().getInt("size",9);
 		photoSelectorDomain = new PhotoHandler(getApplicationContext());
 		selected = new ArrayList<PhotoModel>();
 		gvPhotos = (GridView) findViewById(R.id.gv_photos_ar);
@@ -161,19 +163,22 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 			CameraUtils.insertCamera(context,cameraPath);
 			PhotoModel photoModel = new PhotoModel(cameraPath.getPath());
 			photoModel.setChecked(true);
-			selected.add(photoModel);
 			photoSelectorDomain.getReccent(reccentListener);
 			if (action == AppConfig.PHOTO){
-				ArrayList<PhotoModel> photo = new ArrayList<>();
-				photo.add(photoModel);
+				selected.add(photoModel);
 				Bundle bundle = new Bundle();
-				bundle.putSerializable("photos", photo);
+				bundle.putSerializable("photos", selected);
 				IntentUtils.startActivityForResult(this, PhotoPreviewActivity.class, bundle,AppConfig.PREV);
 			}else if (action == AppConfig.AVATAR){
 				startPhotoZoom(photoModel.getOriginalPath());
 			}
 		}else if (requestCode == AppConfig.AVATAR && resultCode == RESULT_OK){
 			//裁剪处理完上传
+			Bitmap bm = data.getParcelableExtra("data");
+			Intent intent = new Intent();
+			intent.putExtra("avatar",bm);
+			setResult(RESULT_OK,intent);
+			finish();
 		}else if (requestCode == AppConfig.PREV&&resultCode==RESULT_OK){
 			ok();
 		}
@@ -252,7 +257,12 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 		if (action==AppConfig.AVATAR){
 			startPhotoZoom(((PhotoModel)photoAdapter.getItem(position)).getOriginalPath());
 		}else if (action==AppConfig.PHOTO){
-			priviewAlbum(position);
+			if (MAX == 1){
+				selected.add((PhotoModel)photoAdapter.getItem(position));
+				ok();
+			}else {
+				priviewAlbum(position);
+			}
 		}
 	}
 
@@ -273,6 +283,9 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 		intent.putExtra("crop", "true");
 		intent.putExtra("aspectX", 1);
 		intent.putExtra("aspectY", 1);
+		intent.putExtra("outputX", 300);
+		intent.putExtra("outputY", 300);
+		intent.putExtra("scale", true);
 		intent.putExtra("return-data", true);
 		intent.putExtra("noFaceDetection", true);
 		startActivityForResult(intent , AppConfig.AVATAR);
@@ -280,19 +293,18 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 
 	@Override
 	public void onCheckedChanged(PhotoModel photoModel, CompoundButton buttonView, boolean isChecked) {
+		photoModel.setChecked(isChecked);
 		if (isChecked) {
-			photoModel.setChecked(true);
 			selected.add(photoModel);
-			tvPreview.setEnabled(true);
 		} else {
-			photoModel.setChecked(false);
 			selected.remove(photoModel);
 		}
-		tvPreview.setText("预览(" + selected.size() + ")");
-
 		if (selected.isEmpty()) {
 			tvPreview.setEnabled(false);
 			tvPreview.setText("预览");
+		}else {
+			tvPreview.setText("预览(" + selected.size() + ")");
+			tvPreview.setEnabled(true);
 		}
 	}
 

@@ -111,14 +111,6 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoSelectorA
             }else {
                 photoHandler.getAlbum(albumName,this);
             }
-            if (current == 0){
-                for (PhotoModel model:PhotoSelectorActivity.selected){
-                    if (model.getOriginalPath().equals(photos.get(current).getOriginalPath())){
-                        checkBox.setChecked(true);
-                        break;
-                    }
-                }
-            }
         }
     }
 
@@ -156,6 +148,16 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoSelectorA
     @Override
     public void onPhotoLoaded(List<PhotoModel> photos) {
         this.photos = photos;
+        if (PhotoSelectorActivity.selected!=null&&PhotoSelectorActivity.selected.size()>0){
+            if (current == 0){
+                for (PhotoModel model:PhotoSelectorActivity.selected){
+                    if (model.getOriginalPath().equals(photos.get(current).getOriginalPath())){
+                        checkBox.setChecked(true);
+                        break;
+                    }
+                }
+            }
+        }
         setPhotos();
     }
 
