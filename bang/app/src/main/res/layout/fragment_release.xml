@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/common_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -98,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:background="@null"
-                android:text="红绿灯圆通快递"
+                android:text="@string/address_hint"
                 android:textColor="@color/textSecondary"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -162,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:background="@null"
-                android:hint="请输入议价范围"
+                android:hint="@string/release_bargain_hint"
                 android:textColor="@color/textSecondary"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -281,7 +282,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:background="@null"
-                android:hint="请输入地址"
+                android:hint="@string/address_hint"
                 android:textColor="@color/textSecondary"
                 android:textSize="16sp" />
         </LinearLayout>

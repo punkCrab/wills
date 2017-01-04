@@ -8,7 +8,12 @@
 
     <string name="setting_exit">退出登录</string>
     <string name="setting_about">关于交大帮</string>
+    <string name="setting_msg">新消息提醒</string>
     <string name="setting">设置</string>
+    <string name="setting_notice">接受新消息通知</string>
+    <string name="setting_voice">声音</string>
+    <string name="setting_shake">震动</string>
+    <string name="setting_notice_des">若关闭，当收到新消息时，将不会通知</string>
 
     <string name="register_submit">注册</string>
     <string name="register_phone">请输入您的手机号码</string>
@@ -44,6 +49,7 @@
     <string name="release_from_address">详细地址</string>
     <string name="release_money">薪酬金额</string>
     <string name="release_bargain">议价范围</string>
+    <string name="release_bargain_hint">请输入议价范围</string>
     <string name="release_time">起止时间</string>
     <string name="release_send">送达地址</string>
     <string name="release_send_address">详细地址</string>
@@ -65,6 +71,11 @@
     <string name="home_express_send">免费派送</string>
     <string name="home_express_more">查看更多</string>
     <string name="express_my">我的快递</string>
+    <string name="send_des">您的快递已经到达</string>
+    <string name="send_site">校内服务站</string>
+    <string name="send_address">请填写最后一公里详细地址</string>
+    <string name="send_choose_address">选择地址</string>
+    <string name="address_hint">请填写详细地址</string>
 
     <string name="person_release_order">发布订单</string>
     <string name="person_assist_order">帮助订单</string>
@@ -106,7 +117,7 @@
 
 
 
-
+    <string name="check_msg">查看消息</string>
     <string name="text_ack_msg">已读</string>
     <string name="text_delivered_msg">送达</string>
     <string name="back">返回</string>

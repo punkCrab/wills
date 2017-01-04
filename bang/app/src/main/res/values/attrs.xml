@@ -33,16 +33,6 @@
         <attr name="numColumns" format="integer"/>
     </declare-styleable>
 
-    
-    <declare-styleable name="EaseSwitchButton">
-        <attr name="switchOpenImage" format="reference"/>
-        <attr name="switchCloseImage" format="reference"/>
-        <attr name="switchStatus">
-            <enum name="open" value="0"/>
-            <enum name="close" value="1"/>
-        </attr>
-    </declare-styleable>
-    
      <declare-styleable name="EaseImageView">
         <attr name="ease_border_color" format="color" />
         <attr name="ease_border_width" format="dimension" />

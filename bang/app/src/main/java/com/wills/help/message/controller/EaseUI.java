@@ -1,6 +1,5 @@
 package com.wills.help.message.controller;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -15,8 +14,9 @@ import com.wills.help.message.domain.EaseEmojicon;
 import com.wills.help.message.domain.EaseUser;
 import com.wills.help.message.model.EaseAtMessageHelper;
 import com.wills.help.message.model.EaseNotifier;
+import com.wills.help.utils.AppConfig;
+import com.wills.help.utils.SharedPreferencesUtils;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -51,22 +51,7 @@ public final class EaseUI {
      */
     private EaseNotifier notifier = null;
     
-    /**
-     * save foreground Activity which registered eventlistener
-     */
-    private List<Activity> activityList = new ArrayList<Activity>();
-    
-    public void pushActivity(Activity activity){
-        if(!activityList.contains(activity)){
-            activityList.add(0,activity); 
-        }
-    }
-    
-    public void popActivity(Activity activity){
-        activityList.remove(activity);
-    }
-    
-    
+
     private EaseUI(){}
     
     /**
@@ -177,10 +162,7 @@ public final class EaseUI {
         return notifier;
     }
     
-    public boolean hasForegroundActivies(){
-        return activityList.size() != 0;
-    }
-    
+
     /**
      * set user profile provider
      */
@@ -304,18 +286,17 @@ public final class EaseUI {
 
         @Override
         public boolean isMsgNotifyAllowed(EMMessage message) {
-            // TODO Auto-generated method stub
-            return true;
+            return (boolean)SharedPreferencesUtils.getInstance().get(AppConfig.IM_NOTICE,true);
         }
 
         @Override
         public boolean isMsgSoundAllowed(EMMessage message) {
-            return true;
+            return (boolean)SharedPreferencesUtils.getInstance().get(AppConfig.IM_VOICE,true);
         }
 
         @Override
         public boolean isMsgVibrateAllowed(EMMessage message) {
-            return true;
+            return (boolean)SharedPreferencesUtils.getInstance().get(AppConfig.IM_SHAKE,true);
         }
 
         @Override

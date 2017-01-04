@@ -12,9 +12,7 @@ import android.widget.TextView;
 import com.wills.help.R;
 import com.wills.help.base.BaseListAdapter;
 import com.wills.help.home.model.Express;
-import com.wills.help.message.EaseConstant;
-import com.wills.help.message.ui.ChatActivity;
-import com.wills.help.release.ui.ReleaseActivity;
+import com.wills.help.home.ui.SendActivity;
 import com.wills.help.utils.IntentUtils;
 
 import java.util.List;
@@ -51,7 +49,7 @@ public class ExpressAdapter extends BaseListAdapter<Express>{
                 public void onClick(View view) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("type",1);
-                    IntentUtils.startActivity(context,ReleaseActivity.class,bundle);
+                    IntentUtils.startActivity(context,SendActivity.class,bundle);
                 }
             });
         }

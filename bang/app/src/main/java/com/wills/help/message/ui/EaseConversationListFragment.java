@@ -17,7 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.hyphenate.EMConnectionListener;
-import com.hyphenate.EMConversationListener;
 import com.hyphenate.EMError;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
@@ -27,7 +26,6 @@ import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.message.controller.EaseUI;
 import com.wills.help.message.widget.EaseConversationList;
-import com.wills.help.utils.AppManager;
 import com.wills.help.utils.KeyBoardUtils;
 
 import java.util.ArrayList;
@@ -63,7 +61,10 @@ public class EaseConversationListFragment extends BaseFragment{
     EMMessageListener messageListener = new EMMessageListener() {
         @Override
         public void onMessageReceived(List<EMMessage> list) {
-            refresh();
+            for (EMMessage message : list){
+                refresh();
+                EaseUI.getInstance().getNotifier().vibrateAndPlayTone(message);
+            }
         }
 
         @Override
@@ -110,6 +111,14 @@ public class EaseConversationListFragment extends BaseFragment{
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     EMConversation conversation = conversationListView.getItem(position);
                     listItemClickListener.onListItemClicked(conversation);
+                }
+            });
+            conversationListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    EMConversation conversation = conversationListView.getItem(i);
+                    listItemClickListener.OnListItemLongClicked(conversation);
+                    return true;
                 }
             });
         }
@@ -318,6 +327,7 @@ public class EaseConversationListFragment extends BaseFragment{
          * @param conversation -- clicked item
          */
         void onListItemClicked(EMConversation conversation);
+        void OnListItemLongClicked(EMConversation conversation);
     }
     
     /**

@@ -9,6 +9,7 @@ import com.hyphenate.chat.EMClient;
 import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
+import com.wills.help.utils.IntentUtils;
 
 /**
  * com.wills.help.login.ui
@@ -18,7 +19,7 @@ import com.wills.help.base.BaseActivity;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener{
 
-    private RelativeLayout rl_about,rl_exit;
+    private RelativeLayout rl_about,rl_exit,rl_msg;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -26,7 +27,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         setBaseTitle(getString(R.string.setting));
         rl_about = (RelativeLayout) findViewById(R.id.rl_about);
         rl_exit = (RelativeLayout) findViewById(R.id.rl_exit);
+        rl_msg = (RelativeLayout) findViewById(R.id.rl_msg);
         rl_about.setOnClickListener(this);
+        rl_msg.setOnClickListener(this);
         rl_exit.setOnClickListener(this);
     }
 
@@ -34,6 +37,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.rl_about:
+                break;
+            case R.id.rl_msg:
+                IntentUtils.startActivity(context,MessageSettingActivity.class);
                 break;
             case R.id.rl_exit:
                 App.getApp().exitApp();

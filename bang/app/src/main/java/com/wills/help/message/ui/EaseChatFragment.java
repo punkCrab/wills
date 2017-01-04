@@ -435,7 +435,6 @@ import rx.functions.Action1;
         super.onResume();
         if(isMessageListInited)
             messageList.refresh();
-        EaseUI.getInstance().pushActivity(getActivity());
         // register the event listener when enter the foreground
         EMClient.getInstance().chatManager().addMessageListener(this);
         
@@ -452,7 +451,6 @@ import rx.functions.Action1;
         EMClient.getInstance().chatManager().removeMessageListener(this);
 
         // remove activity from foreground activity list
-        EaseUI.getInstance().popActivity(getActivity());
     }
 
     @Override

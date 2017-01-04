@@ -28,9 +28,9 @@ import android.support.v4.app.NotificationCompat;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.util.EMLog;
-import com.hyphenate.util.EasyUtils;
 import com.wills.help.message.controller.EaseUI;
 import com.wills.help.message.ui.MessageActivity;
+import com.wills.help.message.utils.EaseCommonUtils;
 import com.wills.help.utils.AppManager;
 
 import java.util.HashSet;
@@ -90,7 +90,7 @@ public class EaseNotifier {
 
         audioManager = (AudioManager) appContext.getSystemService(Context.AUDIO_SERVICE);
         vibrator = (Vibrator) appContext.getSystemService(Context.VIBRATOR_SERVICE);
-        
+        setNotificationInfoProvider(new NotificationInfoProvider());
         return this;
     }
     
@@ -128,13 +128,13 @@ public class EaseNotifier {
         }
         
         // check if app running background
-        if (!EasyUtils.isAppRunningForeground(appContext)) {
-            EMLog.d(TAG, "app is running in backgroud");
+//        if (!EasyUtils.isAppRunningForeground(appContext)) {
+//            EMLog.d(TAG, "app is running in backgroud");
             sendNotification(message, false);
-        } else {
-            sendNotification(message, true);
-
-        }
+//        } else {
+//            sendNotification(message, true);
+//
+//        }
         
         vibrateAndPlayTone(message);
     }
@@ -208,11 +208,8 @@ public class EaseNotifier {
                 break;
             }
             
-            PackageManager packageManager = appContext.getPackageManager();
-            String appname = (String) packageManager.getApplicationLabel(appContext.getApplicationInfo());
-            
             // notification title
-            String contentTitle = appname;
+            String contentTitle = null;
             if (notificationInfoProvider != null) {
                 String customNotifyText = notificationInfoProvider.getDisplayedText(message);
                 String customCotentTitle = notificationInfoProvider.getTitle(message);
@@ -223,6 +220,10 @@ public class EaseNotifier {
                 if (customCotentTitle != null){
                     contentTitle = customCotentTitle;
                 }   
+            }else {
+                PackageManager packageManager = appContext.getPackageManager();
+                String appName = (String) packageManager.getApplicationLabel(appContext.getApplicationInfo());
+                contentTitle = appName;
             }
 
             // create and send notificaiton
@@ -231,14 +232,16 @@ public class EaseNotifier {
                                                                         .setWhen(System.currentTimeMillis())
                                                                         .setAutoCancel(true);
 
-            Intent msgIntent;
-            if (AppManager.isAppRunning(appContext)){
-                msgIntent = new Intent(appContext, MessageActivity.class);
-            }else {
-                msgIntent  = appContext.getPackageManager().getLaunchIntentForPackage(packageName);
-            }
+            Intent msgIntent = new Intent();
+
             if (notificationInfoProvider != null) {
                 msgIntent = notificationInfoProvider.getLaunchIntent(message);
+            }else {
+                if (AppManager.isAppRunning(appContext)){
+                    msgIntent = new Intent(appContext, MessageActivity.class);
+                }else {
+                    msgIntent  = appContext.getPackageManager().getLaunchIntentForPackage(packageName);
+                }
             }
 
             PendingIntent pendingIntent = PendingIntent.getActivity(appContext, notifyID, msgIntent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -252,8 +255,7 @@ public class EaseNotifier {
             }
 
             int fromUsersNum = fromUsers.size();
-            String summaryBody = msgs[6].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2",Integer.toString(notificationNum));
-            
+            String summaryBody = null;
             if (notificationInfoProvider != null) {
                 // lastest text
                 String customSummaryBody = notificationInfoProvider.getLatestText(message, fromUsersNum,notificationNum);
@@ -266,6 +268,8 @@ public class EaseNotifier {
                 if (smallIcon != 0){
                     mBuilder.setSmallIcon(smallIcon);
                 }
+            }else {
+                summaryBody = msgs[6].replaceFirst("%1", Integer.toString(fromUsersNum)).replaceFirst("%2",Integer.toString(notificationNum));
             }
 
             mBuilder.setContentTitle(contentTitle);
@@ -408,5 +412,44 @@ public class EaseNotifier {
          * @return null- will use the default icon
          */
         Intent getLaunchIntent(EMMessage message);
+    }
+
+    public class NotificationInfoProvider implements EaseNotificationInfoProvider{
+
+        @Override
+        public String getDisplayedText(EMMessage message) {
+            String ticker = EaseCommonUtils.getMessageDigest(message, appContext);
+            if(message.getType() == EMMessage.Type.TXT){
+                ticker = ticker.replaceAll("\\[.{2,3}\\]", "[表情]");
+            }
+            return message.getFrom() + ": " + ticker;
+        }
+
+        @Override
+        public String getLatestText(EMMessage message, int fromUsersNum, int messageNum) {
+            String content = EaseCommonUtils.getMessageDigest(message,appContext);
+            return content;
+        }
+
+        @Override
+        public String getTitle(EMMessage message) {
+            return message.getFrom();
+        }
+
+        @Override
+        public int getSmallIcon(EMMessage message) {
+            return 0;
+        }
+
+        @Override
+        public Intent getLaunchIntent(EMMessage message) {
+            Intent intent = new Intent();
+            if (AppManager.isAppRunning(appContext)){
+                intent = new Intent(appContext, MessageActivity.class);
+            }else {
+                intent  = appContext.getPackageManager().getLaunchIntentForPackage(packageName);
+            }
+            return intent;
+        }
     }
 }

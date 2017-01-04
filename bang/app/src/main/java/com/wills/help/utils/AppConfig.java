@@ -29,4 +29,7 @@ public class AppConfig {
     public static final String TOOLBAR = "toolbar_height";
     public static final String TAB = "tab_height";
 
+    public static final String IM_NOTICE = "im_notice";
+    public static final String IM_VOICE = "im_voice";
+    public static final String IM_SHAKE = "im_shake";
 }
