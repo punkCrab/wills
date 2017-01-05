@@ -13,33 +13,68 @@
         android:layout_marginTop="50dp"
         android:src="@drawable/default_circle" />
 
-    <EditText
-        android:id="@+id/et_username"
+
+    <LinearLayout
+        android:id="@+id/ll_username"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/iv_avatar"
         android:layout_marginTop="20dp"
         android:background="@color/white"
-        android:padding="5dp"
-        android:textColor="@color/textSecondary" />
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_horizontal_margin">
 
-    <EditText
-        android:id="@+id/et_password"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/register_phone" />
+
+        <EditText
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:background="@null"
+            android:hint="@string/register_phone"
+            android:textColor="@color/textSecondary"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_password"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/et_username"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_username"
         android:layout_marginTop="1dp"
         android:background="@color/white"
-        android:padding="5dp"
-        android:textColor="@color/textSecondary" />
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/register_pwd" />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:background="@null"
+            android:hint="@string/register_pwd"
+            android:textColor="@color/textSecondary"
+            android:textSize="16sp"
+            android:inputType="textPassword"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/et_password"
+        android:layout_below="@id/ll_password"
         android:layout_margin="20dp"
-        android:background="@drawable/btn_selector"
+        android:background="@color/button_gray"
+        android:enabled="false"
         android:clickable="true"
         android:text="@string/login"
         android:textColor="@color/white" />

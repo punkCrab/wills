@@ -278,9 +278,12 @@ import rx.functions.Action1;
             
             @Override
             public void onUserAvatarClick(String username) {
-                if(chatFragmentHelper != null){
-                    chatFragmentHelper.onAvatarClick(username);
-                }
+//                if(chatFragmentHelper != null){
+//                    chatFragmentHelper.onAvatarClick(username);
+//                }
+                Bundle bundle = new Bundle();
+                bundle.putString("name",username);
+                IntentUtils.startActivity(getAppCompatActivity(),UserDetailsActivity.class,bundle);
             }
             
             @Override

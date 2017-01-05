@@ -28,7 +28,7 @@ public class HttpManager {
                             .baseUrl(AppConfig.HOST)
                             .client(genericClient())
 //                            .addConverterFactory(GsonConverterFactory.create())
-                            .addConverterFactory(CustomGsonConverterFactory.create())
+                            .addConverterFactory(MyConverterFactory.create())
                             .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
                             .build();
                 }

@@ -3,6 +3,8 @@ package com.wills.help.utils;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * com.wills.help.utils
@@ -39,5 +41,11 @@ public class StringUtils {
                 buffer.append(Integer.toHexString(0xFF & bytes[i]));
         }
         return buffer.toString();
+    }
+
+    public static boolean availablePhone(String phoneNumber) {
+        Pattern pattern = Pattern.compile("^((13[0-9])|(15[0-9])|(18[0-9])|(17[0-9])|(14[0-9]))\\d{8}$");
+        Matcher m = pattern.matcher(phoneNumber);
+        return m.matches();
     }
 }

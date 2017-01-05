@@ -13,17 +13,17 @@ import rx.Observable;
 /**
  * com.wills.help.login.model
  * Created by lizhaoyong
- * 2016/12/9.
+ * 2017/1/5.
  */
 
-public interface RegisterModel {
+public interface ResetModel {
 
-    @POST("register")
+    @POST("forget")
     @FormUrlEncoded
     Observable<Empty> getCode(@Field("username") String phone);
 
-    @POST("registercheck")
+    @POST("forgetcheck")
     @FormUrlEncoded
-    Observable<User> submitRegister(@FieldMap Map<String , String > map);
+    Observable<Empty> reset(@FieldMap Map<String , String > map);
 
 }

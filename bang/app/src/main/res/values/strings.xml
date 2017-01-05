@@ -5,24 +5,31 @@
     <string name="unlogin">忘记密码?</string>
     <string name="register">注册新用户</string>
     <string name="back_exit">再按一次退出程序</string>
+    <string name="reset_password">重置密码</string>
 
     <string name="setting_exit">退出登录</string>
     <string name="setting_about">关于交大帮</string>
     <string name="setting_msg">新消息提醒</string>
+    <string name="setting_cache">清理缓存文件</string>
     <string name="setting">设置</string>
     <string name="setting_notice">接受新消息通知</string>
     <string name="setting_voice">声音</string>
     <string name="setting_shake">震动</string>
     <string name="setting_notice_des">若关闭，当收到新消息时，将不会通知</string>
+    <string name="setting_cache_clear">确定要清除缓存吗？</string>
+    <string name="setting_exit_content">确定要退出登录吗？</string>
 
     <string name="register_submit">注册</string>
     <string name="register_phone">请输入您的手机号码</string>
     <string name="register_pwd">请输入密码</string>
     <string name="register_pwd_ok">请再次输入密码</string>
+    <string name="register_pwd_warn">两次密码输入不一致</string>
     <string name="register_code">请输入您收到的验证码</string>
     <string name="register_code_fetch">点击获取验证码</string>
     <string name="register_code_fetched">%1$s秒后重新发送</string>
     <string name="register_code_again">重新获取验证码</string>
+    <string name="phone_error">请输入正确的手机号码</string>
+    <string name="register_success">注册成功</string>
 
     <string name="error_net_fail">网络连接失败</string>
     <string name="error_net_parse">解析异常</string>
@@ -115,8 +122,8 @@
     <string name="pay_wx">微信支付</string>
     <string name="pay_wx_content">推荐微信用户使用</string>
 
-
-
+    <string name="user_details">详细资料</string>
+    <string name="send_msg">发消息</string>
     <string name="check_msg">查看消息</string>
     <string name="text_ack_msg">已读</string>
     <string name="text_delivered_msg">送达</string>

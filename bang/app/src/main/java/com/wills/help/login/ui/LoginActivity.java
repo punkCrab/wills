@@ -1,7 +1,11 @@
 package com.wills.help.login.ui;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -39,6 +43,7 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
     Button btn_login;
     private LoginPresenterImpl loginInfoPresenter;
     private RelativeLayout relativeLayout;
+    private final int REGISTER = 12;//注册
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -65,6 +70,8 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
         btn_login = (Button) findViewById(R.id.btn_login);
         et_username = (EditText) findViewById(R.id.et_username);
         et_password = (EditText) findViewById(R.id.et_password);
+        et_username.addTextChangedListener(new EditTextChange());
+        et_password.addTextChangedListener(new EditTextChange());
         loginInfoPresenter = new LoginPresenterImpl(this);
         btn_login.setOnClickListener(this);
         tv_register.setOnClickListener(this);
@@ -99,14 +106,15 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
                 String user = et_username.getText().toString();
                 String pwd = et_password.getText().toString();
                 Map<String,String> map = new HashMap<>();
-                map.put("username","15652956043");
-                map.put("password", "qqq");
+                map.put("username","15311437664");
+                map.put("password", "123456");
                 loginInfoPresenter.login(map);
                 break;
             case R.id.tv_register:
-                IntentUtils.startActivity(context,RegisterActivity.class);
+                IntentUtils.startActivityForResult(LoginActivity.this,RegisterActivity.class,REGISTER);
                 break;
             case R.id.tv_unlogin:
+                IntentUtils.startActivity(context,ResetActivity.class);
                 break;
         }
     }
@@ -115,5 +123,39 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
     protected void backClick() {
         setResult(RESULT_CANCELED);
         super.backClick();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REGISTER&&resultCode==RESULT_OK){
+            setResult(RESULT_OK);
+            finish();
+        }
+    }
+
+    public class EditTextChange implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (!TextUtils.isEmpty(et_username.getText().toString())&&
+                    !TextUtils.isEmpty(et_password.getText().toString())){
+                btn_login.setEnabled(true);
+                btn_login.setBackgroundResource(R.drawable.btn_selector);
+            }else {
+                btn_login.setEnabled(false);
+                btn_login.setBackgroundResource(R.color.button_gray);
+            }
+        }
     }
 }

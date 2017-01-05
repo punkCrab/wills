@@ -1,5 +1,7 @@
 package com.wills.help.login.view;
 
+import com.wills.help.login.model.User;
+
 /**
  * com.wills.help.login.view
  * Created by lizhaoyong
@@ -7,5 +9,5 @@ package com.wills.help.login.view;
  */
 
 public interface RegisterView {
-    void setRegister(boolean register);
+    void setRegister(User user);
 }

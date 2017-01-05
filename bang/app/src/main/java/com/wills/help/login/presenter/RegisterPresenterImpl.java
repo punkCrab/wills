@@ -1,6 +1,7 @@
 package com.wills.help.login.presenter;
 
 import com.wills.help.login.model.RegisterModelImpl;
+import com.wills.help.login.model.User;
 import com.wills.help.login.view.RegisterView;
 import com.wills.help.net.ApiSubscriber;
 import com.wills.help.net.Empty;
@@ -34,7 +35,6 @@ public class RegisterPresenterImpl implements RegisterPresenter{
                 .subscribe(new ApiSubscriber<Empty>() {
                     @Override
                     public void onCompleted() {
-                        ToastUtils.toast("完成");
                     }
 
                     @Override
@@ -49,15 +49,15 @@ public class RegisterPresenterImpl implements RegisterPresenter{
         registerModel.submitRegister(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiSubscriber<Empty>() {
+                .subscribe(new ApiSubscriber<User>() {
                     @Override
                     public void onCompleted() {
 
                     }
 
                     @Override
-                    public void onNext(Empty o) {
-
+                    public void onNext(User user) {
+                        registerView.setRegister(user);
                     }
                 });
     }

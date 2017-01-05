@@ -18,32 +18,32 @@ import retrofit2.Retrofit;
  * 2016/11/7.
  */
 
-public class CustomGsonConverterFactory extends Converter.Factory {
+public class MyConverterFactory extends Converter.Factory {
 
     private final Gson gson;
 
-    private CustomGsonConverterFactory(Gson gson) {
+    private MyConverterFactory(Gson gson) {
         if (gson == null) throw new NullPointerException("gson == null");
         this.gson = gson;
     }
 
-    public static CustomGsonConverterFactory create() {
+    public static MyConverterFactory create() {
         return create(new Gson());
     }
 
-    public static CustomGsonConverterFactory create(Gson gson) {
-        return new CustomGsonConverterFactory(gson);
+    public static MyConverterFactory create(Gson gson) {
+        return new MyConverterFactory(gson);
     }
 
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
         TypeAdapter<?> adapter = gson.getAdapter(TypeToken.get(type));
-        return new CustomGsonResponseBodyConverter<>(gson, adapter);
+        return new MyResponseBodyConverter<>(gson, adapter);
     }
 
     @Override
     public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations, Annotation[] methodAnnotations, Retrofit retrofit) {
         TypeAdapter<?> adapter = gson.getAdapter(TypeToken.get(type));
-        return new CustomGsonRequestBodyConverter<>(gson, adapter);
+        return new MyRequestBodyConverter<>(gson, adapter);
     }
 }

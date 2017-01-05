@@ -32,6 +32,7 @@ public class User implements Serializable{
      * typename :
      * usergroup : 0
      * authid : 1
+     * createtime : 1
      */
 
     private UserInfo data;
@@ -74,6 +75,7 @@ public class User implements Serializable{
         private String typename;
         private String usergroup;
         private String authid;
+        private String createtime;
 
         public String getUserid() {
             return userid;
@@ -179,6 +181,14 @@ public class User implements Serializable{
             this.authid = authid;
         }
 
+        public String getCreatetime() {
+            return createtime;
+        }
+
+        public void setCreatetime(String createtime) {
+            this.createtime = createtime;
+        }
+
         @Override
         public String toString() {
             return "UserInfo{" +
@@ -195,6 +205,7 @@ public class User implements Serializable{
                     ", typename='" + typename + '\'' +
                     ", usergroup='" + usergroup + '\'' +
                     ", authid='" + authid + '\'' +
+                    ", createtime='" + createtime + '\'' +
                     '}';
         }
     }

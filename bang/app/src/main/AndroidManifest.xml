@@ -78,6 +78,7 @@
         </activity>
         <activity android:name=".login.ui.LoginActivity"></activity>
         <activity android:name=".login.ui.RegisterActivity"></activity>
+        <activity android:name=".login.ui.ResetActivity"></activity>
         <activity android:name=".login.ui.SettingActivity"></activity>
         <activity android:name=".login.ui.MessageSettingActivity"></activity>
         <activity android:name=".person.ui.IdentificationActivity"></activity>
@@ -94,6 +95,7 @@
             android:launchMode="singleTask"></activity>
         <activity android:name=".message.ui.EaseShowBigImageActivity" />
         <activity android:name=".message.ui.EaseBaiduMapActivity" />
+        <activity android:name=".message.ui.UserDetailsActivity" />
         <activity android:name=".assist.ui.AssistActivity" />
         <activity android:name=".home.ui.ExpressListActivity" />
         <activity android:name=".release.ui.ReleaseActivity" />

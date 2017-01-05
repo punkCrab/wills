@@ -23,11 +23,11 @@ import static okhttp3.internal.Util.UTF_8;
  * 2016/11/7.
  */
 
-final class CustomGsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
+final class MyResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     private final Gson gson;
     private final TypeAdapter<T> adapter;
 
-    CustomGsonResponseBodyConverter(Gson gson, TypeAdapter<T> adapter) {
+    MyResponseBodyConverter(Gson gson, TypeAdapter<T> adapter) {
         this.gson = gson;
         this.adapter = adapter;
     }
