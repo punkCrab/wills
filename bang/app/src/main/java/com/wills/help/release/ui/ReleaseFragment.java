@@ -14,8 +14,18 @@ import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
 import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker;
 import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
+import com.wills.help.db.bean.OrderTypeInfo;
+import com.wills.help.db.bean.PointInfo;
+import com.wills.help.db.manager.OrderTypeInfoHelper;
+import com.wills.help.db.manager.PointInfoHelper;
 import com.wills.help.pay.ui.PayActivity;
 import com.wills.help.utils.IntentUtils;
+
+import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * com.wills.help.release.ui
@@ -29,9 +39,9 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
     private EditText et_release_from_address,et_release_money,et_release_bargain,et_release_send_address;
     private Button btn_submit;
     private int timeType = 0;
-    String[] state = new String[]{"取快递","买零食"};
+    String[] state ;
     String[] str = new String[]{"申通","圆通","中通","顺风","韵达"};
-    String[] address = new String[]{"北京交通大学第七教学楼","北京交通大学第八教学楼","北京交通大学第九教学楼"};
+    String[] address;
     public static ReleaseFragment newInstance() {
         
         Bundle args = new Bundle();
@@ -60,6 +70,32 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void initData(Bundle savedInstanceState) {
         initListener();
+        OrderTypeInfoHelper.getInstance().queryAll()
+                .doOnNext(new Action1<List<OrderTypeInfo>>() {
+                    @Override
+                    public void call(List<OrderTypeInfo> orderTypeInfos) {
+                        state = new String[orderTypeInfos.size()];
+                        for (int i=0;i<orderTypeInfos.size();i++){
+                            state[i] = orderTypeInfos.get(i).getOrdertype();
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+        PointInfoHelper.getInstance().queryAll()
+                .doOnNext(new Action1<List<PointInfo>>() {
+                    @Override
+                    public void call(List<PointInfo> pointInfos) {
+                        address = new String[pointInfos.size()];
+                        for (int i=0;i<pointInfos.size();i++){
+                            address[i] = pointInfos.get(i).getPosname();
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     private void initListener(){
@@ -126,5 +162,4 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
             }
         }).show();
     }
-
 }

@@ -1,4 +1,4 @@
-package com.wills.help.base;
+package com.wills.help.login.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -9,6 +9,10 @@ import android.widget.ImageView;
 
 import com.umeng.analytics.MobclickAgent;
 import com.wills.help.R;
+import com.wills.help.base.App;
+import com.wills.help.base.BaseActivity;
+import com.wills.help.base.MainActivity;
+import com.wills.help.login.presenter.ConfigPresenterImpl;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.SharedPreferencesUtils;
@@ -18,6 +22,7 @@ import com.wills.help.utils.SharedPreferencesUtils;
  */
 public class FlashActivity extends BaseActivity {
     ImageView iv_flash;
+    private ConfigPresenterImpl configPresenter;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -27,6 +32,9 @@ public class FlashActivity extends BaseActivity {
     }
 
     private void initEvents() {
+        configPresenter = new ConfigPresenterImpl();
+//        configPresenter.getPoint();
+        configPresenter.getOrderType();
         if (TextUtils.isEmpty((String) SharedPreferencesUtils.getInstance().get(AppConfig.SP_USER,"")))
             App.getApp().setIsLogin(false);
         else

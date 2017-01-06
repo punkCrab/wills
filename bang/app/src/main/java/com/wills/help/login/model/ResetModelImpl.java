@@ -1,5 +1,6 @@
 package com.wills.help.login.model;
 
+import com.wills.help.net.Empty;
 import com.wills.help.net.HttpManager;
 
 import java.util.Map;
@@ -19,11 +20,11 @@ public class ResetModelImpl {
         resetModel = HttpManager.getInstance().create(ResetModel.class);
     }
 
-    public Observable getCode(String phone){
+    public Observable<Empty> getCode(String phone){
         return resetModel.getCode(phone);
     }
 
-    public Observable reset(Map<String,String> map){
+    public Observable<Empty> reset(Map<String,String> map){
         return resetModel.reset(map);
     }
 }

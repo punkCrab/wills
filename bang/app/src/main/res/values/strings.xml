@@ -77,6 +77,7 @@
     <string name="home_express_count">您有%1$s个快递已经到达学校</string>
     <string name="home_express_send">免费派送</string>
     <string name="home_express_more">查看更多</string>
+    <string name="home_news">Top 10 热点资讯</string>
     <string name="express_my">我的快递</string>
     <string name="send_des">您的快递已经到达</string>
     <string name="send_site">校内服务站</string>

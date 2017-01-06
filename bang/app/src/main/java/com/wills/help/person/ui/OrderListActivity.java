@@ -30,7 +30,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     RecyclerView recyclerView;
     OrderAdapter orderAdapter;
     LinearLayoutManager linearLayoutManager;
-    ArrayList<Order> orderArrayList = new ArrayList<>();
+    List<Order> orderArrayList = new ArrayList<>();
 
     @Override
     protected void initViews(Bundle savedInstanceState) {

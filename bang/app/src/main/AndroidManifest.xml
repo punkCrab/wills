@@ -69,7 +69,7 @@
             android:windowSoftInputMode="stateHidden|adjustPan"
             android:launchMode="singleTask"></activity>
         <activity android:name=".assist.ui.AssistListActivity"></activity>
-        <activity android:name=".base.FlashActivity">
+        <activity android:name=".login.ui.FlashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -100,6 +100,7 @@
         <activity android:name=".home.ui.ExpressListActivity" />
         <activity android:name=".release.ui.ReleaseActivity" />
         <activity android:name=".home.ui.SendActivity" />
+        <activity android:name=".base.WebViewActivity" />
 
         <!-- alipay sdk begin -->
 

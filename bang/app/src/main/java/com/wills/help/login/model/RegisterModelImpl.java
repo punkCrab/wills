@@ -1,5 +1,6 @@
 package com.wills.help.login.model;
 
+import com.wills.help.net.Empty;
 import com.wills.help.net.HttpManager;
 
 import java.util.Map;
@@ -20,11 +21,11 @@ public class RegisterModelImpl {
         registerModel = HttpManager.getInstance().create(RegisterModel.class);
     }
 
-    public Observable getCode(String phone){
+    public Observable<Empty> getCode(String phone){
         return registerModel.getCode(phone);
     }
 
-    public Observable submitRegister(Map<String,String> map){
+    public Observable<User> submitRegister(Map<String,String> map){
         return registerModel.submitRegister(map);
     }
 }

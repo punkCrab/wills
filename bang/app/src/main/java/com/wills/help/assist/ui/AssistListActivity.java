@@ -30,7 +30,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     RecyclerView recyclerView;
     AssistAdapter assistAdapter;
     LinearLayoutManager linearLayoutManager;
-    ArrayList<Assist> assistList = new ArrayList<>();
+    List<Assist> assistList = new ArrayList<>();
 
     @Override
     protected void initViews(Bundle savedInstanceState) {

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.wills.help.R;
 import com.wills.help.listener.BaseListLoadMoreListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -126,7 +125,7 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    public void setList(ArrayList<T> list){
+    public void setList(List<T> list){
         this.list = list;
         this.notifyDataSetChanged();
     }

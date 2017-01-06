@@ -17,7 +17,6 @@ import com.wills.help.release.model.Release;
 import com.wills.help.release.ui.ReleaseActivity;
 import com.wills.help.utils.IntentUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +42,7 @@ public class ReleaseListAdapter extends BaseListAdapter<Release>{
         this.context = context;
     }
 
-    public ReleaseListAdapter(Context context, ArrayList<Release> list,int type) {
+    public ReleaseListAdapter(Context context, List<Release> list,int type) {
         super(context, list);
         this.type = type;
         this.context = context;

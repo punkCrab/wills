@@ -13,6 +13,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
 import com.wills.help.R;
+import com.wills.help.home.model.Banner;
 import com.wills.help.utils.GlideUtils;
 
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
  * @since 2015-3-21
  */
 
-public class AutoScrollPoster extends AutoScrollableView<Banner>{
+public class AutoScrollPoster extends AutoScrollableView<com.wills.help.home.model.Banner.BannerInfo>{
 
     private static final String TAG = "AutoScrollPoster";
 
@@ -39,7 +40,7 @@ public class AutoScrollPoster extends AutoScrollableView<Banner>{
 
     private LinearLayout linearLayout;
     private ImageView currentImageView;
-    private List<Banner> picLists;
+    private List<Banner.BannerInfo> picLists;
 
     private Context context;
 
@@ -61,7 +62,7 @@ public class AutoScrollPoster extends AutoScrollableView<Banner>{
      * 设置圆点
      * @param linearLayout
      */
-    public void setIndicateLayout(Context context , AutoScrollPoster autoScrollPoster , List<Banner> picLists, LinearLayout linearLayout){
+    public void setIndicateLayout(Context context , AutoScrollPoster autoScrollPoster , List<com.wills.help.home.model.Banner.BannerInfo> picLists, LinearLayout linearLayout){
         this.context=context;
         this.picLists = picLists;
         this.linearLayout = linearLayout;
@@ -104,12 +105,12 @@ public class AutoScrollPoster extends AutoScrollableView<Banner>{
             imageView.setScaleType(mScaleType);
         }
 
-        final Banner picbean = (Banner) getItem(position);
+        final Banner.BannerInfo picbean = (Banner.BannerInfo) getItem(position);
         // Load image, decode it to Bitmap and display Bitmap in ImageView (or any other view
         //  which implements ImageAware interface)
         // mImageLoader.displayImage(imageUri, imageView);
-        if (!TextUtils.isEmpty(picbean.getImgUrl())){
-            GlideUtils.getInstance().displayImage(context,picbean.getImgUrl(),imageView);
+        if (!TextUtils.isEmpty(picbean.getRequesturl())){
+            GlideUtils.getInstance().displayImage(context,picbean.getRequesturl(),imageView);
             view.addView(imageLayout, 0);
         }else {
             imageView.setImageResource(R.drawable.flash);
@@ -122,7 +123,7 @@ public class AutoScrollPoster extends AutoScrollableView<Banner>{
             @Override
             public void onClick(View v) {
                 if (mOnItemViewClickListener != null) {
-                    mOnItemViewClickListener.onItemViewClick(v, picbean.getPagerUrl());
+                    mOnItemViewClickListener.onItemViewClick(v, picbean.getRequesturl());
                 }
             }
         });
@@ -178,7 +179,7 @@ public class AutoScrollPoster extends AutoScrollableView<Banner>{
             for(int i = 0; i < count; i++){
                 ImageView img = new ImageView(getContext());
                 img.setImageResource(R.drawable.banner_false);
-                img.setPadding(10, 0, 0, 0);
+                img.setPadding(0, 0, 0, 0);
                 linearLayout.addView(img);
             }
             swicherChange(0);

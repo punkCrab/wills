@@ -1,7 +1,6 @@
 package com.wills.help.home.adapter;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +22,11 @@ import java.util.List;
  * 2016/12/26.
  */
 
-public class ExpressAdapter extends BaseListAdapter<Express>{
+public class ExpressAdapter extends BaseListAdapter<Express.ExpressInfo>{
     private Context context;
-    private List<Express> list;
+    private List<Express.ExpressInfo> list;
 
-    public ExpressAdapter(Context context, List<Express> list) {
+    public ExpressAdapter(Context context, List<Express.ExpressInfo> list) {
         super(context, list);
         this.context = context;
         this.list = list;
@@ -43,13 +42,11 @@ public class ExpressAdapter extends BaseListAdapter<Express>{
     @Override
     protected void BindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ExpressHolder){
-            ((ExpressHolder)holder).tv_info.setText(list.get(position).getExpressName()+":"+list.get(position).getExpressNo());
+            ((ExpressHolder)holder).tv_info.setText(list.get(position).getDeliveryid());
             ((ExpressHolder)holder).btn_send.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("type",1);
-                    IntentUtils.startActivity(context,SendActivity.class,bundle);
+                    IntentUtils.startActivity(context,SendActivity.class);
                 }
             });
         }

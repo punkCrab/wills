@@ -7,6 +7,7 @@
 
     <dimen name="page_divider">10dp</dimen>
     <dimen name="page_divider_thin">1dp</dimen>
+    <dimen name="web_progress_height">3dp</dimen>
 
     <!-- Album相关 -->
     <dimen name="albumitem_height">100dp</dimen>

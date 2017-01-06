@@ -1,8 +1,6 @@
 package com.wills.help.home.ui;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -23,13 +21,17 @@ import android.widget.LinearLayout;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
+import com.wills.help.base.WebViewActivity;
 import com.wills.help.home.adapter.NewsAdapter;
+import com.wills.help.home.model.Banner;
 import com.wills.help.home.model.News;
+import com.wills.help.home.presenter.HomePresenterImpl;
+import com.wills.help.home.view.HomeView;
 import com.wills.help.listener.AppBarStateChangeListener;
 import com.wills.help.release.adapter.PagerAdapter;
+import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.ScreenUtils;
 import com.wills.help.widget.banner.AutoScrollPoster;
-import com.wills.help.widget.banner.Banner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,7 @@ import java.util.List;
  * 2016/11/8.
  */
 
-public class HomeFragment extends BaseFragment{
+public class HomeFragment extends BaseFragment implements HomeView{
 
     AutoScrollPoster poster;
     LinearLayout linearLayout;
@@ -54,9 +56,11 @@ public class HomeFragment extends BaseFragment{
     Toolbar toolbar;
     NestedScrollView nestedScrollView;
     NewsAdapter newsAdapter;
-    List<News> newsList = new ArrayList<>();
+    List<News.NewsInfo> newsList;
     Context context;
     private CoordinatorLayout cl_root;
+    private HomePresenterImpl homePresenter;
+    private List<Banner.BannerInfo> bannerList;
 
     public static HomeFragment newInstance() {
         
@@ -120,7 +124,6 @@ public class HomeFragment extends BaseFragment{
                 }
             }
         });
-        initBanner();
         linearLayoutManager = new LinearLayoutManager(getAppCompatActivity());
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         linearLayoutManager.setAutoMeasureEnabled(true);
@@ -129,45 +132,28 @@ public class HomeFragment extends BaseFragment{
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setFocusable(false);
-        newsAdapter = new NewsAdapter(context,newsList);
-        newsAdapter.setFooter(false);
-        recyclerView.setAdapter(newsAdapter);
         nestedScrollView.smoothScrollTo(0,20);
+        homePresenter = new HomePresenterImpl(this);
+        homePresenter.getBanner();
+        homePresenter.getNews();
     }
 
     private void initBanner(){
         poster.needLoadAnimation(false);
         poster.setScaleType(ImageView.ScaleType.FIT_XY);
-        poster.setIndicateLayout(context,poster,getBanner(),linearLayout);
+        poster.setIndicateLayout(context,poster,bannerList,linearLayout);
         poster.startAutoScroll(5*1000);
         poster.setOnItemViewClickListener(new AutoScrollPoster.OnItemViewClickListener() {
             @Override
             public void onItemViewClick(View view, Object object) {
                 String url = (String)object;
                 if (!TextUtils.isEmpty(url)&&url.startsWith("http")) {
-                    Intent intent = new Intent();
-                    intent.setAction("android.intent.action.VIEW");
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    Uri content_url = Uri.parse(url);
-                    intent.setData(content_url);
-                    context.startActivity(intent);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("url",url);
+                    IntentUtils.startActivity(getAppCompatActivity(), WebViewActivity.class,bundle);
                 }
             }
         });
-    }
-
-    private List<Banner> getBanner(){
-        List<Banner> list = new ArrayList<>();
-        Banner banner = new Banner();
-        banner.setImgUrl("http://imgsrc.baidu.com/forum/pic/item/060828381f30e924fb6171ae4c086e061c95f76c.jpg");
-        list.add(banner);
-        Banner banner1 = new Banner();
-        banner1.setImgUrl("http://s10.sinaimg.cn/mw690/001b6pKdgy6TM1Zifr369&690");
-        list.add(banner1);
-        Banner banner2 = new Banner();
-        banner2.setImgUrl("http://fujian.people.com.cn/NMediaFile/2014/0421/LOCAL201404210847000005010313338.jpg");
-        list.add(banner2);
-        return list;
     }
 
     @Override
@@ -190,5 +176,27 @@ public class HomeFragment extends BaseFragment{
         adapter.addFragment(IconFragment.newInstance(0),getString(R.string.home_seek));
         adapter.addFragment(IconFragment.newInstance(1),getString(R.string.home_help));
         mViewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void setBanner(List<com.wills.help.home.model.Banner.BannerInfo> banner) {
+        bannerList = new ArrayList<>();
+        bannerList.addAll(banner);
+        initBanner();
+    }
+
+    @Override
+    public void setNews(List<News.NewsInfo> news) {
+        if (newsList == null){
+            newsList = new ArrayList<>();
+            newsAdapter = new NewsAdapter(getAppCompatActivity(),newsList);
+            newsAdapter.setFooter(false);
+            recyclerView.setAdapter(newsAdapter);
+        }
+        if (news!=null&&news.size()>0){
+            newsList.addAll(news);
+            newsAdapter.setList(newsList);
+        }
+
     }
 }

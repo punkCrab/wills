@@ -18,6 +18,7 @@ import com.wills.help.release.model.Release;
 import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * com.wills.help.release.ui
@@ -32,7 +33,7 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     ReleaseListAdapter releaseListAdapter;
-    ArrayList<Release> list = new ArrayList<>();
+    List<Release> list = new ArrayList<>();
 
     public static ReleaseListFragment newInstance(int type) {
         Bundle args = new Bundle();

@@ -11,10 +11,14 @@ import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.home.adapter.ExpressAdapter;
 import com.wills.help.home.model.Express;
+import com.wills.help.home.presenter.ExpressPresenterImpl;
+import com.wills.help.home.view.ExpressView;
 import com.wills.help.utils.IntentUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * com.wills.help.home.ui
@@ -22,13 +26,14 @@ import java.util.List;
  * 2016/12/26.
  */
 
-public class ExpressFragment extends BaseFragment{
+public class ExpressFragment extends BaseFragment implements ExpressView{
 
     private TextView tv_count , tv_more;
     private RecyclerView recyclerView;
     private ExpressAdapter adapter ;
     private LinearLayoutManager linearLayoutManager;
-    private List<Express> expressList;
+    private List<Express.ExpressInfo> expressList;
+    private ExpressPresenterImpl expressPresenter;
 
     public static ExpressFragment newInstance() {
         
@@ -50,11 +55,13 @@ public class ExpressFragment extends BaseFragment{
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        expressPresenter = new ExpressPresenterImpl(this);
+        Map<String,String> map = new HashMap<>();
+        map.put("username","15652956043");
+        expressPresenter.getExpress(map);
         tv_count.setText(String.format(getAppCompatActivity().getString(R.string.home_express_count),String.valueOf(5)));
         linearLayoutManager = new LinearLayoutManager(getAppCompatActivity());
-        adapter = new ExpressAdapter(getAppCompatActivity() ,getExpress());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
         tv_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,20 +70,13 @@ public class ExpressFragment extends BaseFragment{
         });
     }
 
-    public List<Express> getExpress(){
-        Express express1 = new Express();
-        express1.setExpressName("申通快递");
-        express1.setExpressNo("1523214526");
-        Express express2 = new Express();
-        express2.setExpressName("中通快递");
-        express2.setExpressNo("8523214522");
-        Express express3 = new Express();
-        express3.setExpressName("圆通快递");
-        express3.setExpressNo("2523214533");
-        List<Express> list = new ArrayList<>();
-        list.add(express1);
-        list.add(express2);
-        list.add(express3);
-        return list;
+    @Override
+    public void setExpress(List<Express.ExpressInfo> express) {
+        if (expressList == null){
+            expressList = new ArrayList<>();
+        }
+        expressList.addAll(express);
+        adapter = new ExpressAdapter(getAppCompatActivity() ,expressList);
+        recyclerView.setAdapter(adapter);
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cl_root"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/common_bg">
@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="?attr/colorPrimary"
-            app:titleEnabled="false"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false">
 
             <include layout="@layout/banner"></include>
 
@@ -61,6 +61,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"></android.support.v4.view.ViewPager>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/activity_vertical_margin"
+                android:text="@string/home_news"
+                android:background="@color/common_bg"
+                android:textColor="@color/red" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list"
