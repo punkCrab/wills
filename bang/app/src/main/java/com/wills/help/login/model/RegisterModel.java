@@ -1,13 +1,10 @@
 package com.wills.help.login.model;
 
 import com.wills.help.net.Empty;
+import com.wills.help.net.HttpManager;
 
 import java.util.Map;
 
-import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.POST;
 import rx.Observable;
 
 /**
@@ -16,14 +13,13 @@ import rx.Observable;
  * 2016/12/9.
  */
 
-public interface RegisterModel {
+public class RegisterModel {
 
-    @POST("register")
-    @FormUrlEncoded
-    Observable<Empty> getCode(@Field("username") String phone);
+    public Observable<Empty> getCode(String phone){
+        return HttpManager.getApiInterface().getRegisterCode(phone);
+    }
 
-    @POST("registercheck")
-    @FormUrlEncoded
-    Observable<User> submitRegister(@FieldMap Map<String , String > map);
-
+    public Observable<User> submitRegister(Map<String,String> map){
+        return HttpManager.getApiInterface().submitRegister(map);
+    }
 }

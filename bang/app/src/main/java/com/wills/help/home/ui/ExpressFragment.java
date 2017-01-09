@@ -26,7 +26,7 @@ import java.util.Map;
  * 2016/12/26.
  */
 
-public class ExpressFragment extends BaseFragment implements ExpressView{
+public class ExpressFragment extends BaseFragment implements ExpressView , HomeFragment.ExpressListener{
 
     private TextView tv_count , tv_more;
     private RecyclerView recyclerView;
@@ -38,12 +38,11 @@ public class ExpressFragment extends BaseFragment implements ExpressView{
     public static ExpressFragment newInstance() {
         
         Bundle args = new Bundle();
-        
         ExpressFragment fragment = new ExpressFragment();
         fragment.setArguments(args);
         return fragment;
     }
-    
+
     @Override
     public View initView(LayoutInflater inflater) {
         View view = inflater.inflate(R.layout.fragment_home_express,null);
@@ -55,10 +54,9 @@ public class ExpressFragment extends BaseFragment implements ExpressView{
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        ((HomeFragment)getParentFragment()).setExpressListener(this);
         expressPresenter = new ExpressPresenterImpl(this);
-        Map<String,String> map = new HashMap<>();
-        map.put("username","15652956043");
-        expressPresenter.getExpress(map);
+        expressPresenter.getExpress(getMap());
         tv_count.setText(String.format(getAppCompatActivity().getString(R.string.home_express_count),String.valueOf(5)));
         linearLayoutManager = new LinearLayoutManager(getAppCompatActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -78,5 +76,20 @@ public class ExpressFragment extends BaseFragment implements ExpressView{
         expressList.addAll(express);
         adapter = new ExpressAdapter(getAppCompatActivity() ,expressList);
         recyclerView.setAdapter(adapter);
+    }
+
+    private Map<String ,String> getMap(){
+        Map<String,String> map = new HashMap<>();
+        map.put("username","15652956043");
+        return map;
+    }
+
+    @Override
+    public void expressRefresh() {
+        if (expressPresenter == null){
+            expressPresenter = new ExpressPresenterImpl(this);
+        }
+        expressList= new ArrayList<>();
+        expressPresenter.getExpress(getMap());
     }
 }

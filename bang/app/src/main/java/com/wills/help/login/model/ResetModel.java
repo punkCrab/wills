@@ -1,13 +1,10 @@
 package com.wills.help.login.model;
 
 import com.wills.help.net.Empty;
+import com.wills.help.net.HttpManager;
 
 import java.util.Map;
 
-import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.POST;
 import rx.Observable;
 
 /**
@@ -16,14 +13,13 @@ import rx.Observable;
  * 2017/1/5.
  */
 
-public interface ResetModel {
+public class ResetModel {
 
-    @POST("forget")
-    @FormUrlEncoded
-    Observable<Empty> getCode(@Field("username") String phone);
+    public Observable<Empty> getCode(String phone){
+        return HttpManager.getApiInterface().getResetCode(phone);
+    }
 
-    @POST("forgetcheck")
-    @FormUrlEncoded
-    Observable<Empty> reset(@FieldMap Map<String , String > map);
-
+    public Observable<Empty> reset(Map<String,String> map){
+        return HttpManager.getApiInterface().reset(map);
+    }
 }

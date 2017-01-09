@@ -2,7 +2,7 @@ package com.wills.help.login.presenter;
 
 import com.wills.help.db.manager.OrderTypeInfoHelper;
 import com.wills.help.db.manager.PointInfoHelper;
-import com.wills.help.login.model.ConfigModelImpl;
+import com.wills.help.login.model.ConfigModel;
 import com.wills.help.login.model.OrderType;
 import com.wills.help.login.model.Point;
 import com.wills.help.net.ApiSubscriber;
@@ -19,10 +19,10 @@ import rx.schedulers.Schedulers;
 
 public class ConfigPresenterImpl implements ConfigPresenter{
 
-    ConfigModelImpl configModel;
+    ConfigModel configModel;
 
     public ConfigPresenterImpl() {
-        configModel = new ConfigModelImpl();
+        configModel = new ConfigModel();
     }
 
     @Override

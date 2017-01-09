@@ -1,7 +1,7 @@
 package com.wills.help.home.presenter;
 
 import com.wills.help.home.model.Express;
-import com.wills.help.home.model.ExpressModelImpl;
+import com.wills.help.home.model.ExpressModel;
 import com.wills.help.home.view.ExpressView;
 import com.wills.help.net.ApiSubscriber;
 
@@ -17,12 +17,12 @@ import rx.schedulers.Schedulers;
  */
 
 public class ExpressPresenterImpl implements ExpressPresenter{
-    ExpressModelImpl expressModel;
+    ExpressModel expressModel;
     ExpressView expressView;
 
     public ExpressPresenterImpl(ExpressView expressView) {
         this.expressView = expressView;
-        expressModel = new ExpressModelImpl();
+        expressModel = new ExpressModel();
     }
 
     @Override

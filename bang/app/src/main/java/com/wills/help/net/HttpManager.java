@@ -18,7 +18,7 @@ public class HttpManager {
 
     public static Retrofit retrofit;
     private static final int DEFAULT_TIMEOUT = 20;
-
+    public static ApiInterface apiInterface;
 
     public static Retrofit getInstance(){
         if (retrofit == null){
@@ -35,6 +35,21 @@ public class HttpManager {
             }
         }
         return retrofit;
+    }
+
+    /**
+     * 获取接口
+     * @return
+     */
+    public static ApiInterface getApiInterface(){
+        if (apiInterface == null){
+            synchronized (ApiInterface.class){
+                if (apiInterface == null){
+                    apiInterface = getInstance().create(ApiInterface.class);
+                }
+            }
+        }
+        return apiInterface;
     }
 
     public static OkHttpClient genericClient(){

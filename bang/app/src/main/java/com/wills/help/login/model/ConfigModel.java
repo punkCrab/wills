@@ -1,6 +1,7 @@
 package com.wills.help.login.model;
 
-import retrofit2.http.GET;
+import com.wills.help.net.HttpManager;
+
 import rx.Observable;
 
 /**
@@ -9,11 +10,13 @@ import rx.Observable;
  * 2017/1/6.
  */
 
-public interface ConfigModel {
+public class ConfigModel {
 
-    @GET("poslist")
-    Observable<Point> getPoint();
+    public Observable<Point> getPoint(){
+        return HttpManager.getApiInterface().getPoint();
+    }
 
-    @GET("ordertypelist")
-    Observable<OrderType> getOrderType();
+    public Observable<OrderType> getOrderType(){
+        return HttpManager.getApiInterface().getOrderType();
+    }
 }

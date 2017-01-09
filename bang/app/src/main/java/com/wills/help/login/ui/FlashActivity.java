@@ -33,7 +33,7 @@ public class FlashActivity extends BaseActivity {
 
     private void initEvents() {
         configPresenter = new ConfigPresenterImpl();
-//        configPresenter.getPoint();
+        configPresenter.getPoint();
         configPresenter.getOrderType();
         if (TextUtils.isEmpty((String) SharedPreferencesUtils.getInstance().get(AppConfig.SP_USER,"")))
             App.getApp().setIsLogin(false);

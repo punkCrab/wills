@@ -8,7 +8,8 @@
     <string name="reset_password">重置密码</string>
 
     <string name="setting_exit">退出登录</string>
-    <string name="setting_about">关于交大帮</string>
+    <string name="setting_about">关于我们</string>
+    <string name="setting_account">帐户与安全</string>
     <string name="setting_msg">新消息提醒</string>
     <string name="setting_cache">清理缓存文件</string>
     <string name="setting">设置</string>
@@ -18,6 +19,16 @@
     <string name="setting_notice_des">若关闭，当收到新消息时，将不会通知</string>
     <string name="setting_cache_clear">确定要清除缓存吗？</string>
     <string name="setting_exit_content">确定要退出登录吗？</string>
+    <string name="avatar">头像</string>
+    <string name="nickname">昵称</string>
+    <string name="nickname_change_des">好名字可以让你的朋友更容易记住你。</string>
+    <string name="nickname_change">更改名字</string>
+    <string name="phone">手机号</string>
+    <string name="sex">性别</string>
+    <string name="school">学校</string>
+    <string name="my_address">我的常用地址</string>
+
+
 
     <string name="register_submit">注册</string>
     <string name="register_phone">请输入您的手机号码</string>
@@ -412,7 +423,6 @@
     <string name="illegal_user_name">用户名不合法</string>
     <string name="robot_chat">环信小助手</string>
     <string name="title_user_profile">个人资料</string>
-    <string name="nickname">昵称</string>
     <string name="dl_title_upload_photo">上传头像</string>
     <string name="dl_msg_local_upload">本地上传</string>
     <string name="dl_msg_take_photo">拍照上传</string>

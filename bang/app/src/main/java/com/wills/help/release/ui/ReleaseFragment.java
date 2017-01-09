@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,9 +21,11 @@ import com.wills.help.db.manager.OrderTypeInfoHelper;
 import com.wills.help.db.manager.PointInfoHelper;
 import com.wills.help.pay.ui.PayActivity;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.ScreenUtils;
 
 import java.util.List;
 
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -40,8 +43,9 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
     private Button btn_submit;
     private int timeType = 0;
     String[] state ;
-    String[] str = new String[]{"申通","圆通","中通","顺风","韵达"};
+    String[] stateId;
     String[] address;
+    String[] addressId;
     public static ReleaseFragment newInstance() {
         
         Bundle args = new Bundle();
@@ -75,27 +79,62 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
                     @Override
                     public void call(List<OrderTypeInfo> orderTypeInfos) {
                         state = new String[orderTypeInfos.size()];
+                        stateId = new String[orderTypeInfos.size()];
                         for (int i=0;i<orderTypeInfos.size();i++){
                             state[i] = orderTypeInfos.get(i).getOrdertype();
+                            stateId[i] = orderTypeInfos.get(i).getTypeid();
                         }
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(new Subscriber<List<OrderTypeInfo>>() {
+                    @Override
+                    public void onCompleted() {
+                        tv_release_state.setText(state[0]);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<OrderTypeInfo> orderTypeInfos) {
+
+                    }
+                });
         PointInfoHelper.getInstance().queryAll()
                 .doOnNext(new Action1<List<PointInfo>>() {
                     @Override
                     public void call(List<PointInfo> pointInfos) {
                         address = new String[pointInfos.size()];
+                        addressId = new String[pointInfos.size()];
                         for (int i=0;i<pointInfos.size();i++){
                             address[i] = pointInfos.get(i).getPosname();
+                            addressId[i] = pointInfos.get(i).getPosname();
                         }
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(new Subscriber<List<PointInfo>>() {
+                    @Override
+                    public void onCompleted() {
+                        tv_release_from.setText(address[0]);
+                        tv_release_send.setText(address[0]);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<PointInfo> pointInfos) {
+
+                    }
+                });
     }
 
     private void initListener(){
@@ -114,7 +153,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
                 showAlert(state,tv_release_state);
                 break;
             case R.id.tv_release_from:
-                showAlert(str,tv_release_from);
+                showAlert(address,tv_release_from);
                 break;
             case R.id.tv_release_time_start:
                 timeType = 1;
@@ -160,6 +199,13 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
             public void onClick(DialogInterface dialogInterface, int i) {
                 textView.setText(strings[i]);
             }
-        }).show();
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        if (strings.length>10){
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.height = 3*ScreenUtils.getScreenHeight(getAppCompatActivity())/4;
+            dialog.getWindow().setAttributes(params);
+        }
     }
 }

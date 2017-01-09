@@ -96,7 +96,7 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_base,menu);
-		menu.getItem(0).setTitle("确定");
+		menu.getItem(0).setTitle(getString(R.string.ok));
 		return true;
 	}
 

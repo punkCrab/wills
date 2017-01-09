@@ -2,7 +2,7 @@ package com.wills.help.login.presenter;
 
 
 import com.wills.help.base.App;
-import com.wills.help.login.model.LoginModelImpl;
+import com.wills.help.login.model.LoginModel;
 import com.wills.help.login.model.User;
 import com.wills.help.login.view.LoginView;
 import com.wills.help.net.ApiSubscriber;
@@ -22,12 +22,12 @@ import rx.schedulers.Schedulers;
  */
 
 public class LoginPresenterImpl implements LoginPresenter {
-    private LoginModelImpl loginInfoModel;
+    private LoginModel loginInfoModel;
     private LoginView loginInfoView;
 
     public LoginPresenterImpl(LoginView loginInfoView) {
         this.loginInfoView = loginInfoView;
-        loginInfoModel = new LoginModelImpl();
+        loginInfoModel = new LoginModel();
     }
 
     @Override

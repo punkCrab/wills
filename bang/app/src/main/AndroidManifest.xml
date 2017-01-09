@@ -83,6 +83,8 @@
         <activity android:name=".login.ui.MessageSettingActivity"></activity>
         <activity android:name=".person.ui.IdentificationActivity"></activity>
         <activity android:name=".person.ui.WalletActivity"></activity>
+        <activity android:name=".person.ui.InformationActivity"></activity>
+        <activity android:name=".person.ui.ChangeNameActivity"></activity>
         <activity android:name=".photo.ui.PhotoSelectorActivity" />
         <activity android:name=".person.ui.OrderListActivity"></activity>
         <activity android:name=".photo.ui.PhotoPreviewActivity" />

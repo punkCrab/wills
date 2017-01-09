@@ -1,6 +1,6 @@
 package com.wills.help.login.presenter;
 
-import com.wills.help.login.model.RegisterModelImpl;
+import com.wills.help.login.model.RegisterModel;
 import com.wills.help.login.model.User;
 import com.wills.help.login.view.RegisterView;
 import com.wills.help.net.ApiSubscriber;
@@ -20,11 +20,11 @@ import rx.schedulers.Schedulers;
 
 public class RegisterPresenterImpl implements RegisterPresenter{
     private RegisterView registerView;
-    private RegisterModelImpl registerModel;
+    private RegisterModel registerModel;
 
     public RegisterPresenterImpl(RegisterView registerView) {
         this.registerView = registerView;
-        registerModel = new RegisterModelImpl();
+        registerModel = new RegisterModel();
     }
 
     @Override

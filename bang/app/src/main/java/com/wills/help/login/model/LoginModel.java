@@ -1,10 +1,10 @@
 package com.wills.help.login.model;
 
+
+import com.wills.help.net.HttpManager;
+
 import java.util.Map;
 
-import retrofit2.http.FieldMap;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.POST;
 import rx.Observable;
 
 /**
@@ -13,10 +13,11 @@ import rx.Observable;
  * 2016/10/20.
  */
 
-public interface LoginModel {
+public class LoginModel {
 
-    @POST("login")
-    @FormUrlEncoded
-    Observable<User> login(@FieldMap Map<String , String> map);
+
+    public Observable<User> login(Map<String,String> map) {
+        return HttpManager.getApiInterface().login(map);
+    }
 
 }

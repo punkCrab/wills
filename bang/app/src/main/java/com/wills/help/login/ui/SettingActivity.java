@@ -23,22 +23,24 @@ import com.wills.help.utils.IntentUtils;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener{
 
-    private RelativeLayout rl_about,rl_exit,rl_msg,rl_cache;
-    private TextView tv_cache;
+    private RelativeLayout rl_cache;
+    private TextView tv_cache,tv_about,tv_exit ,tv_msg,tv_account;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setBaseView(R.layout.activity_setting);
         setBaseTitle(getString(R.string.setting));
-        rl_about = (RelativeLayout) findViewById(R.id.rl_about);
-        rl_exit = (RelativeLayout) findViewById(R.id.rl_exit);
-        rl_msg = (RelativeLayout) findViewById(R.id.rl_msg);
+        tv_about = (TextView) findViewById(R.id.tv_about);
+        tv_exit = (TextView) findViewById(R.id.tv_exit);
+        tv_msg = (TextView) findViewById(R.id.tv_msg);
+        tv_account = (TextView) findViewById(R.id.tv_account);
         rl_cache = (RelativeLayout) findViewById(R.id.rl_cache);
         tv_cache = (TextView) findViewById(R.id.tv_cache);
-        rl_about.setOnClickListener(this);
-        rl_msg.setOnClickListener(this);
-        rl_exit.setOnClickListener(this);
+        tv_about.setOnClickListener(this);
+        tv_msg.setOnClickListener(this);
+        tv_exit.setOnClickListener(this);
         rl_cache.setOnClickListener(this);
+        tv_account.setOnClickListener(this);
         try {
             tv_cache.setText(CacheCleanUtils.getTotalCacheSize(context));
         } catch (Exception e) {
@@ -49,9 +51,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.rl_about:
+            case R.id.tv_about:
                 break;
-            case R.id.rl_msg:
+            case R.id.tv_msg:
+                IntentUtils.startActivity(context,MessageSettingActivity.class);
+                break;
+            case R.id.tv_account:
                 IntentUtils.startActivity(context,MessageSettingActivity.class);
                 break;
             case R.id.rl_cache:
@@ -73,7 +78,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         });
                 builder.show();
                 break;
-            case R.id.rl_exit:
+            case R.id.tv_exit:
                 AlertDialog.Builder exit = new AlertDialog.Builder(context)
                         .setMessage(getString(R.string.setting_exit_content))
                         .setCancelable(true)

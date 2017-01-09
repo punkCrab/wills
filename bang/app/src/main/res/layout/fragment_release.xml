@@ -32,7 +32,6 @@
                 android:drawablePadding="5dp"
                 android:drawableRight="@drawable/release_arrow"
                 android:gravity="center"
-                android:text="取快递"
                 android:textColor="@color/textSecondary"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -67,7 +66,6 @@
                 android:drawablePadding="5dp"
                 android:drawableRight="@drawable/release_arrow"
                 android:gravity="center"
-                android:text="北交大南门"
                 android:textColor="@color/textSecondary"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -250,7 +248,6 @@
                 android:drawablePadding="5dp"
                 android:drawableRight="@drawable/release_arrow"
                 android:gravity="center"
-                android:text="北京交通大学第九教学楼"
                 android:textColor="@color/textSecondary"
                 android:textSize="16sp" />
         </LinearLayout>

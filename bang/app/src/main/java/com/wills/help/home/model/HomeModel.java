@@ -1,6 +1,7 @@
 package com.wills.help.home.model;
 
-import retrofit2.http.GET;
+import com.wills.help.net.HttpManager;
+
 import rx.Observable;
 
 /**
@@ -9,11 +10,12 @@ import rx.Observable;
  * 2017/1/6.
  */
 
-public interface HomeModel {
+public class HomeModel {
 
-    @GET("bannerlist")
-    Observable<Banner> getBanner();
-
-    @GET("newslist")
-    Observable<News> getNews();
+    public Observable<Banner> getBanner(){
+        return HttpManager.getApiInterface().getBanner();
+    }
+    public Observable<News> getNews(){
+        return HttpManager.getApiInterface().getNews();
+    }
 }

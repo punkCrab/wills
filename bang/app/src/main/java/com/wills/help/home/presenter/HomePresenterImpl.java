@@ -1,7 +1,7 @@
 package com.wills.help.home.presenter;
 
 import com.wills.help.home.model.Banner;
-import com.wills.help.home.model.HomeModelImpl;
+import com.wills.help.home.model.HomeModel;
 import com.wills.help.home.model.News;
 import com.wills.help.home.view.HomeView;
 import com.wills.help.net.ApiSubscriber;
@@ -16,12 +16,12 @@ import rx.schedulers.Schedulers;
  */
 
 public class HomePresenterImpl implements HomePresenter{
-    HomeModelImpl homeModel;
+    HomeModel homeModel;
     HomeView homeView;
 
     public HomePresenterImpl(HomeView homeView) {
         this.homeView = homeView;
-        homeModel = new HomeModelImpl();
+        homeModel = new HomeModel();
     }
 
     @Override

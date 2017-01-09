@@ -2,7 +2,6 @@ package com.wills.help.person.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -19,10 +18,10 @@ import com.wills.help.listener.AppBarStateChangeListener;
 import com.wills.help.login.ui.LoginActivity;
 import com.wills.help.login.ui.SettingActivity;
 import com.wills.help.message.ui.MessageActivity;
-import com.wills.help.photo.ui.PhotoSelectorActivity;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.ToastUtils;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -115,9 +114,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("action", AppConfig.AVATAR);
-                IntentUtils.startActivityForResult(getAppCompatActivity(), PhotoSelectorActivity.class,bundle,AppConfig.AVATAR);
+                IntentUtils.startActivityForResult(getAppCompatActivity(), InformationActivity.class,AppConfig.AVATAR);
             }
         });
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -140,10 +137,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.AVATAR && resultCode == RESULT_OK){
-            if (data != null){
-                Bitmap bitmap = data.getParcelableExtra("avatar");
-                GlideUtils.getInstance().displayCircleImage(getAppCompatActivity(),bitmap,imageView);
-            }
+            ToastUtils.toast("更换成功");
         }
     }
 

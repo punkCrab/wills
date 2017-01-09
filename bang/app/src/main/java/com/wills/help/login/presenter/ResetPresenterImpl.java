@@ -1,6 +1,6 @@
 package com.wills.help.login.presenter;
 
-import com.wills.help.login.model.ResetModelImpl;
+import com.wills.help.login.model.ResetModel;
 import com.wills.help.login.view.ResetView;
 import com.wills.help.net.ApiSubscriber;
 import com.wills.help.net.Empty;
@@ -19,11 +19,11 @@ import rx.schedulers.Schedulers;
 
 public class ResetPresenterImpl implements ResetPresenter {
     ResetView resetView;
-    ResetModelImpl resetModel;
+    ResetModel resetModel;
 
     public ResetPresenterImpl(ResetView resetView) {
         this.resetView = resetView;
-        resetModel = new ResetModelImpl();
+        resetModel = new ResetModel();
     }
 
     @Override

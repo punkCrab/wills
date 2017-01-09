@@ -8,6 +8,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,12 +43,13 @@ import java.util.List;
  * 2016/11/8.
  */
 
-public class HomeFragment extends BaseFragment implements HomeView{
+public class HomeFragment extends BaseFragment implements HomeView ,SwipeRefreshLayout.OnRefreshListener{
 
     AutoScrollPoster poster;
     LinearLayout linearLayout;
     LinearLayout ll_icon;
     RecyclerView recyclerView;
+    SwipeRefreshLayout swipeRefreshLayout;
     ViewPager viewPager;
     TabLayout tabLayout;
     LinearLayoutManager linearLayoutManager;
@@ -61,6 +63,7 @@ public class HomeFragment extends BaseFragment implements HomeView{
     private CoordinatorLayout cl_root;
     private HomePresenterImpl homePresenter;
     private List<Banner.BannerInfo> bannerList;
+    private ExpressListener expressListener;
 
     public static HomeFragment newInstance() {
         
@@ -74,6 +77,10 @@ public class HomeFragment extends BaseFragment implements HomeView{
     @Override
     public View initView(LayoutInflater inflater) {
         View view = inflater.inflate(R.layout.fragment_home, null);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl);
+        swipeRefreshLayout.setNestedScrollingEnabled(false);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark,R.color.colorPrimary, R.color.colorPrimaryLight,R.color.colorAccent);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         getAppCompatActivity().setSupportActionBar(toolbar);
         appBarLayout = (AppBarLayout) view.findViewById(R.id.appbar);
@@ -98,7 +105,7 @@ public class HomeFragment extends BaseFragment implements HomeView{
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         nestedScrollView = (NestedScrollView) view.findViewById(R.id.nsv);
-        viewPager.setOffscreenPageLimit(1);
+        viewPager.setOffscreenPageLimit(2);
         setViewPager(viewPager);
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.home_express)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.home_seek)));
@@ -116,11 +123,14 @@ public class HomeFragment extends BaseFragment implements HomeView{
                 if (state == State.EXPANDED){
                     //展开状态
                     toolbar.setTitle("");
+                    swipeRefreshLayout.setEnabled(true);
                 }else if (state == State.COLLAPSED){
                     //折叠
                     toolbar.setTitle(getString(R.string.app_name));
+                    swipeRefreshLayout.setEnabled(false);
                 }else {
                     toolbar.setTitle("");
+                    swipeRefreshLayout.setEnabled(false);
                 }
             }
         });
@@ -136,9 +146,11 @@ public class HomeFragment extends BaseFragment implements HomeView{
         homePresenter = new HomePresenterImpl(this);
         homePresenter.getBanner();
         homePresenter.getNews();
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     private void initBanner(){
+        swipeRefreshLayout.setRefreshing(false);
         poster.needLoadAnimation(false);
         poster.setScaleType(ImageView.ScaleType.FIT_XY);
         poster.setIndicateLayout(context,poster,bannerList,linearLayout);
@@ -199,4 +211,26 @@ public class HomeFragment extends BaseFragment implements HomeView{
         }
 
     }
+
+    @Override
+    public void onRefresh() {
+        if (homePresenter == null){
+            homePresenter = new HomePresenterImpl(this);
+        }
+        homePresenter.getBanner();
+        newsList = new ArrayList<>();
+        homePresenter.getNews();
+        if (expressListener!=null){
+            expressListener.expressRefresh();
+        }
+    }
+
+    public void setExpressListener(ExpressListener expressListener) {
+        this.expressListener = expressListener;
+    }
+
+    public interface ExpressListener{
+        void expressRefresh();
+    }
+
 }

@@ -1,10 +1,9 @@
 package com.wills.help.home.model;
 
+import com.wills.help.net.HttpManager;
+
 import java.util.Map;
 
-import retrofit2.http.FieldMap;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.POST;
 import rx.Observable;
 
 /**
@@ -13,8 +12,9 @@ import rx.Observable;
  * 2017/1/6.
  */
 
-public interface ExpressModel {
-    @POST("deliverylist")
-    @FormUrlEncoded
-    Observable<Express> getExpress(@FieldMap Map<String , String > map);
+public class ExpressModel {
+
+    public Observable<Express> getExpress(Map<String ,String> map){
+        return HttpManager.getApiInterface().getExpress(map);
+    }
 }
