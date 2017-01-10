@@ -6,6 +6,8 @@ import com.wills.help.home.model.News;
 import com.wills.help.login.model.OrderType;
 import com.wills.help.login.model.Point;
 import com.wills.help.login.model.User;
+import com.wills.help.release.model.Release;
+import com.wills.help.release.model.ReleaseList;
 
 import java.util.Map;
 
@@ -106,4 +108,17 @@ public interface ApiInterface {
     @GET("newslist")
     Observable<News> getNews();
 
+    /**
+     * 发布
+     * @param map
+     * @return
+     */
+    @POST("release")
+    @FormUrlEncoded
+    Observable<Release> release(@FieldMap Map<String , String > map);
+
+
+    @POST("getorder")
+    @FormUrlEncoded
+    Observable<ReleaseList> getReleaseList(@FieldMap Map<String , String > map);
 }

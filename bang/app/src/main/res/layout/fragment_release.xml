@@ -93,11 +93,11 @@
 
             <EditText
                 android:id="@+id/et_release_from_address"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:background="@null"
-                android:text="@string/address_hint"
+                android:hint="@string/address_hint"
                 android:textColor="@color/textSecondary"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -125,96 +125,20 @@
 
             <EditText
                 android:id="@+id/et_release_money"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:background="@null"
-                android:text="3元"
                 android:textColor="@color/textSecondary"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@color/colorDividerLight"></View>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:padding="@dimen/activity_horizontal_margin">
+                android:textSize="16sp"
+                android:inputType="numberDecimal"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/release_bargain"
-                android:textColor="@color/textSecondary"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/et_release_bargain"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:background="@null"
-                android:hint="@string/release_bargain_hint"
-                android:textColor="@color/textSecondary"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@color/colorDividerLight"></View>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:padding="@dimen/activity_horizontal_margin">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/release_time"
-                android:textColor="@color/textSecondary"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tv_release_time_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:background="@drawable/release_shape"
-                android:gravity="center"
-                android:text="12:00"
-                android:textColor="@color/textSecondary"
-                android:textSize="16sp" />
-
-            <View
-                android:layout_width="15dp"
-                android:layout_height="1dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@color/colorPrimaryDark"></View>
-
-            <TextView
-                android:id="@+id/tv_release_time_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/release_shape"
-                android:gravity="center"
-                android:text="13:00"
-                android:textColor="@color/textSecondary"
-                android:textSize="16sp" />
+                android:text="@string/yuan"
+                android:textColor="@color/orange"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -275,7 +199,7 @@
 
             <EditText
                 android:id="@+id/et_release_send_address"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:background="@null"
@@ -289,7 +213,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/btn_submit_height"
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:background="@drawable/btn_selector"
+            android:background="@color/button_gray"
+            android:enabled="false"
             android:text="@string/release_submit"
             android:textColor="@color/white"
             android:textSize="18sp" />

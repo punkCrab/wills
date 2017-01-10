@@ -16,7 +16,7 @@ import com.wills.help.widget.MyRadioGroup;
  */
 
 public class PayActivity extends BaseActivity{
-    private TextView tv_amount;
+    private TextView tv_amount , tv_send , tv_from;
     private MyRadioGroup rg_pay;
     private Button button;
     @Override
@@ -24,6 +24,8 @@ public class PayActivity extends BaseActivity{
         setBaseView(R.layout.activity_pay);
         setBaseTitle(getString(R.string.pay));
         tv_amount = (TextView) findViewById(R.id.tv_amount);
+        tv_send = (TextView) findViewById(R.id.tv_send);
+        tv_from = (TextView) findViewById(R.id.tv_from);
         rg_pay = (MyRadioGroup) findViewById(R.id.rg_pay);
         button = (Button) findViewById(R.id.btn_submit);
         rg_pay.setOnCheckedChangeListener(new MyRadioGroup.OnCheckedChangeListener() {

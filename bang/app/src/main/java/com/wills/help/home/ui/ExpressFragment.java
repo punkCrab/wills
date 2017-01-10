@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.wills.help.R;
+import com.wills.help.base.App;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.home.adapter.ExpressAdapter;
 import com.wills.help.home.model.Express;
@@ -80,7 +81,7 @@ public class ExpressFragment extends BaseFragment implements ExpressView , HomeF
 
     private Map<String ,String> getMap(){
         Map<String,String> map = new HashMap<>();
-        map.put("username","15652956043");
+        map.put("userid", App.getApp().getUser().getUserid());
         return map;
     }
 

@@ -1,8 +1,6 @@
 package com.wills.help.release.ui;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,14 +9,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.wills.help.R;
+import com.wills.help.base.App;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.listener.BaseListLoadMoreListener;
 import com.wills.help.release.adapter.ReleaseListAdapter;
-import com.wills.help.release.model.Release;
+import com.wills.help.release.model.ReleaseInfo;
+import com.wills.help.release.model.ReleaseList;
+import com.wills.help.release.presenter.ReleaseListPresenterImpl;
+import com.wills.help.release.view.ReleaseListView;
 import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * com.wills.help.release.ui
@@ -26,14 +30,17 @@ import java.util.List;
  * 2016/11/14.
  */
 
-public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener , BaseListLoadMoreListener.LoadMoreListener{
+public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener , BaseListLoadMoreListener.LoadMoreListener , ReleaseListView{
 
     private int type = 0;//0进行中1已完成
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     ReleaseListAdapter releaseListAdapter;
-    List<Release> list = new ArrayList<>();
+    List<ReleaseInfo> releaseInfoList = new ArrayList<>();
+    ReleaseListPresenterImpl releaseListPresenter;
+    private int page = 1;
+    private int count = 0;
 
     public static ReleaseListFragment newInstance(int type) {
         Bundle args = new Bundle();
@@ -55,12 +62,13 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
     @Override
     public void initData(Bundle savedInstanceState) {
         type = getArguments().getInt("type");
+        releaseListPresenter = new ReleaseListPresenterImpl(this);
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getAppCompatActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new MyItemDecoration(getAppCompatActivity(),5));
-        releaseListAdapter = new ReleaseListAdapter(getAppCompatActivity(),list,type);
+        releaseListAdapter = new ReleaseListAdapter(getAppCompatActivity(), releaseInfoList,type);
         recyclerView.setAdapter(releaseListAdapter);
         BaseListLoadMoreListener loadMore = new BaseListLoadMoreListener(linearLayoutManager,releaseListAdapter);
         recyclerView.addOnScrollListener(loadMore);
@@ -72,59 +80,48 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
 
     @Override
     public void onRefresh() {
-        if(list != null) {
-            list.clear();
+        if(releaseInfoList != null) {
+            releaseInfoList.clear();
+            page = 1;
         }
-        handler.sendEmptyMessageDelayed(1,2000);
+        releaseListPresenter.getReleaseList(getMap());
     }
 
     @Override
     public void loadMore() {
-        if (list==null){
-            list = new ArrayList<>();
+        if (count>releaseInfoList.size()){
+            releaseListPresenter.getReleaseList(getMap());
+        }else {
+            releaseListAdapter.setLoadMore(releaseListAdapter.EMPTY);
         }
-        handler.sendEmptyMessageDelayed(1,2000);
     }
 
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what){
-                case 1:
-                    if (swipeRefreshLayout.isRefreshing()){
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                    if (list.size()<3){
-                        releaseListAdapter.setLoadMore(releaseListAdapter.SUCCESS);
-                        list.addAll(getRelease());
-                    }else {
-                        releaseListAdapter.setLoadMore(releaseListAdapter.EMPTY);
-                    }
-                    releaseListAdapter.setList(list);
-                    break;
-            }
+    private Map<String , String> getMap(){
+        Map<String , String> map = new HashMap<>();
+        map.put("releaseuserid", App.getApp().getUser().getUserid());
+        if (type == 0){
+            map.put("action", "0");
+        }else {
+            map.put("action", "1");
         }
-    };
+        map.put("page", page+"");
+        return map;
+    }
 
-    private ArrayList<Release> getRelease(){
-        ArrayList<Release> list = new ArrayList<>();
-        for (int i =0 ; i<3 ;i++){
-            Release release = new Release();
-            switch (i){
-                case 0:
-                    release.setName("weixiaohuan");
-                    break;
-                case 1:
-                    release.setName("leewills");
-                    break;
-                case 2:
-                    release.setName("wuyao");
-                    break;
-            }
-            release.setState(i+1);
-            list.add(release);
+    @Override
+    public void setReleaseList(ReleaseList releaseList) {
+        if (swipeRefreshLayout.isRefreshing()){
+            swipeRefreshLayout.setRefreshing(false);
         }
-        return list;
+        count = releaseList.getCount();
+        if (releaseInfoList == null ){
+            releaseInfoList = new ArrayList<>();
+        }
+        if (releaseList.getData().size()>0){
+            releaseListAdapter.setLoadMore(releaseListAdapter.SUCCESS);
+            releaseInfoList.addAll(releaseList.getData());
+            releaseListAdapter.setList(releaseInfoList);
+            page++;
+        }
     }
 }

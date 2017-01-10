@@ -13,7 +13,8 @@ import com.wills.help.R;
 import com.wills.help.base.BaseListAdapter;
 import com.wills.help.message.EaseConstant;
 import com.wills.help.message.ui.ChatActivity;
-import com.wills.help.release.model.Release;
+import com.wills.help.pay.ui.PayActivity;
+import com.wills.help.release.model.ReleaseInfo;
 import com.wills.help.release.ui.ReleaseActivity;
 import com.wills.help.utils.IntentUtils;
 
@@ -25,13 +26,13 @@ import java.util.List;
  * 2016/11/14.
  */
 
-public class ReleaseListAdapter extends BaseListAdapter<Release>{
+public class ReleaseListAdapter extends BaseListAdapter<ReleaseInfo>{
 
     private int type;
     private Context context;
-    private List<Release> list;
+    private List<ReleaseInfo> list;
 
-    public ReleaseListAdapter(Context context, List<Release> list) {
+    public ReleaseListAdapter(Context context, List<ReleaseInfo> list) {
         super(context, list);
         this.context = context;
         this.list = list;
@@ -42,7 +43,7 @@ public class ReleaseListAdapter extends BaseListAdapter<Release>{
         this.context = context;
     }
 
-    public ReleaseListAdapter(Context context, List<Release> list,int type) {
+    public ReleaseListAdapter(Context context, List<ReleaseInfo> list, int type) {
         super(context, list);
         this.type = type;
         this.context = context;
@@ -58,16 +59,26 @@ public class ReleaseListAdapter extends BaseListAdapter<Release>{
     @Override
     protected void BindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ReleaseHolder){
+            final ReleaseInfo releaseInfo = list.get(position);
             if (type == 0){
-                changeView(holder,list.get(position).getState());
+                changeView(holder,Integer.parseInt(releaseInfo.getStateid()));
             }else if(type == 1){
                 changeView(holder,4);
             }
+            if (releaseInfo.getOrdertype().equals("1")){
+                ((ReleaseHolder)holder).tv_release_state.setText(context.getString(R.string.help_express));
+            }else if (releaseInfo.getOrdertype().equals("2")){
+                ((ReleaseHolder)holder).tv_release_state.setText(context.getString(R.string.help_buy));
+            }
+            ((ReleaseHolder)holder).tv_release_address.setText(releaseInfo.getDesdetail());
+            ((ReleaseHolder)holder).tv_release_money.setText(releaseInfo.getMoney()+context.getString(R.string.yuan));
+            ((ReleaseHolder)holder).tv_release_time.setText(releaseInfo.getCreatetime()+"发布");
+            ((ReleaseHolder)holder).tv_name.setText(releaseInfo.getReleasename());
             ((ReleaseHolder)holder).iv_release_msg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(EaseConstant.EXTRA_USER_ID,list.get(position).getName());
+                    bundle.putString(EaseConstant.EXTRA_USER_ID,releaseInfo.getReleasename());
                     IntentUtils.startActivity(context,ChatActivity.class,bundle);
                 }
             });
@@ -76,6 +87,16 @@ public class ReleaseListAdapter extends BaseListAdapter<Release>{
 
     private void changeView(RecyclerView.ViewHolder holder , final int state){
         switch (state){
+            case 0:
+                ((ReleaseHolder)holder).tv_release_change.setVisibility(View.VISIBLE);
+                ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.pay));
+                ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        IntentUtils.startActivity(context,PayActivity.class);
+                    }
+                });
+                break;
             case 1://发布
                 ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
                 ((ReleaseHolder)holder).tv_release_change.setVisibility(View.VISIBLE);

@@ -218,7 +218,7 @@ public class EaseChatInputMenu extends LinearLayout {
 
             @Override
             public void onToggleVoiceBtnClicked() {
-                hideExtendMenuContainer();
+                voiceClick();
             }
 
             @Override
@@ -367,6 +367,22 @@ public class EaseChatInputMenu extends LinearLayout {
             unlockContentHeightDelayed();
         }
         KeyBoardUtils.openKeybord(context,chatPrimaryMenu.getEditText());
+    }
+
+    public void voiceClick(){
+        if (chatExtendMenuContainer.getVisibility() == View.VISIBLE || isKeyboardOpen()){
+            if (chatExtendMenuContainer.getVisibility() == View.VISIBLE){
+                chatExtendMenu.setVisibility(View.GONE);
+                emojiconMenu.setVisibility(View.GONE);
+                chatExtendMenuContainer.setVisibility(View.GONE);
+                chatPrimaryMenu.onExtendMenuContainerHide();
+            }
+            if (isKeyboardOpen()){
+                hideKeyboard();
+            }
+        }else {
+            KeyBoardUtils.openKeybord(context,chatPrimaryMenu.getEditText());
+        }
     }
 
     public void hideInputMenu(){

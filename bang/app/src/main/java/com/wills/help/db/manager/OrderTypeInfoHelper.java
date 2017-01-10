@@ -31,12 +31,12 @@ public class OrderTypeInfoHelper implements IDBHelper<OrderTypeInfo>{
 
     @Override
     public Observable<OrderTypeInfo> insertData(OrderTypeInfo orderTypeInfo) {
-        return orderTypeInfoDao.rx().insert(orderTypeInfo);
+        return orderTypeInfoDao.rx().insertOrReplace(orderTypeInfo);
     }
 
     @Override
     public Observable<Iterable<OrderTypeInfo>> insertData(List<OrderTypeInfo> list) {
-        return orderTypeInfoDao.rx().insertInTx(list);
+        return orderTypeInfoDao.rx().insertOrReplaceInTx(list);
     }
 
     @Override

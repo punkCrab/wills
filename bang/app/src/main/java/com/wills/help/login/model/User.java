@@ -76,6 +76,15 @@ public class User implements Serializable{
         private String usergroup;
         private String authid;
         private String createtime;
+        private String school;
+
+        public String getSchool() {
+            return school;
+        }
+
+        public void setSchool(String school) {
+            this.school = school;
+        }
 
         public String getUserid() {
             return userid;
@@ -206,6 +215,7 @@ public class User implements Serializable{
                     ", usergroup='" + usergroup + '\'' +
                     ", authid='" + authid + '\'' +
                     ", createtime='" + createtime + '\'' +
+                    ", school='" + school + '\'' +
                     '}';
         }
     }

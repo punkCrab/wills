@@ -8,9 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.appeaser.sublimepickerlibrary.SublimePickerFragment;
-import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
-import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker;
 import com.wills.help.R;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.pay.ui.PayActivity;
@@ -22,8 +19,8 @@ import com.wills.help.utils.IntentUtils;
 
 public class ReleaseActivity extends BaseActivity implements View.OnClickListener{
 
-    private TextView tv_release_state,tv_release_from,tv_release_time_start,tv_release_time_end,tv_release_send;
-    private EditText et_release_from_address,et_release_money,et_release_bargain,et_release_send_address;
+    private TextView tv_release_state,tv_release_from,tv_release_send;
+    private EditText et_release_from_address,et_release_money,et_release_send_address;
     private Button btn_submit;
     private int timeType = 0;
     String[] state = new String[]{"取快递","买零食"};
@@ -43,12 +40,9 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
     private void initLayout(){
         tv_release_state = (TextView) findViewById(R.id.tv_release_state);
         tv_release_from = (TextView) findViewById(R.id.tv_release_from);
-        tv_release_time_start = (TextView) findViewById(R.id.tv_release_time_start);
-        tv_release_time_end = (TextView) findViewById(R.id.tv_release_time_end);
         tv_release_send = (TextView) findViewById(R.id.tv_release_send);
         et_release_from_address = (EditText) findViewById(R.id.et_release_from_address);
         et_release_money = (EditText) findViewById(R.id.et_release_money);
-        et_release_bargain = (EditText) findViewById(R.id.et_release_bargain);
         et_release_send_address = (EditText) findViewById(R.id.et_release_send_address);
         btn_submit = (Button) findViewById(R.id.btn_submit);
         if (type == 1){
@@ -60,8 +54,6 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
     private void initListener(){
         tv_release_state.setOnClickListener(this);
         tv_release_from.setOnClickListener(this);
-        tv_release_time_start.setOnClickListener(this);
-        tv_release_time_end.setOnClickListener(this);
         tv_release_send.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
     }
@@ -74,18 +66,6 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.tv_release_from:
                 showAlert(str,tv_release_from);
-                break;
-            case R.id.tv_release_time_start:
-                timeType = 1;
-                SublimePickerFragment start = SublimePickerFragment.newInstance(SublimePickerFragment.TIME_TIME);
-                start.setCallback(callback);
-                start.show(getSupportFragmentManager(), "RELEASE_START");
-                break;
-            case R.id.tv_release_time_end:
-                timeType = 2;
-                SublimePickerFragment end = SublimePickerFragment.newInstance(SublimePickerFragment.TIME_TIME);
-                end.setCallback(callback);
-                end.show(getSupportFragmentManager(), "RELEASE_START");
                 break;
             case R.id.tv_release_send:
                 showAlert(address,tv_release_send);
@@ -105,20 +85,4 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
             }
         }).show();
     }
-
-    SublimePickerFragment.Callback callback = new SublimePickerFragment.Callback() {
-        @Override
-        public void onCancelled() {
-
-        }
-
-        @Override
-        public void onDateTimeRecurrenceSet(SelectedDate selectedDate, String hourOfDay, String minute, SublimeRecurrencePicker.RecurrenceOption recurrenceOption, String recurrenceRule) {
-            if (timeType == 1){
-                tv_release_time_start.setText(hourOfDay+":"+minute);
-            }else if (timeType == 2){
-                tv_release_time_end.setText(hourOfDay+":"+minute);
-            }
-        }
-    };
 }

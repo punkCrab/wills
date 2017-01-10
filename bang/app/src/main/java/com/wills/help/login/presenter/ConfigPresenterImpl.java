@@ -17,7 +17,7 @@ import rx.schedulers.Schedulers;
  * 2017/1/6.
  */
 
-public class ConfigPresenterImpl implements ConfigPresenter{
+public class ConfigPresenterImpl implements ConfigPresenter {
 
     ConfigModel configModel;
 
@@ -30,9 +30,8 @@ public class ConfigPresenterImpl implements ConfigPresenter{
         configModel.getPoint()
                 .doOnNext(new Action1<Point>() {
                     @Override
-                    public void call(Point o) {
-                        PointInfoHelper.getInstance().deleteAll().subscribe();
-                        PointInfoHelper.getInstance().insertData(o.getData()).subscribe();
+                    public void call(Point point) {
+                        PointInfoHelper.getInstance().insertData(point.getData()).subscribe();
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -54,9 +53,8 @@ public class ConfigPresenterImpl implements ConfigPresenter{
         configModel.getOrderType()
                 .doOnNext(new Action1<OrderType>() {
                     @Override
-                    public void call(final OrderType o) {
-                        OrderTypeInfoHelper.getInstance().deleteAll().subscribe();
-                        OrderTypeInfoHelper.getInstance().insertData(o.getData()).subscribe();
+                    public void call(OrderType orderType) {
+                        OrderTypeInfoHelper.getInstance().insertData(orderType.getData()).subscribe();
                     }
                 })
                 .subscribeOn(Schedulers.io())

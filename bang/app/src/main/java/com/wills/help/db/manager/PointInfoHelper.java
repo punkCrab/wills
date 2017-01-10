@@ -31,12 +31,12 @@ public class PointInfoHelper implements IDBHelper<PointInfo>{
 
     @Override
     public Observable<PointInfo> insertData(PointInfo pointInfo) {
-        return pointInfoDao.rx().insert(pointInfo);
+        return pointInfoDao.rx().insertOrReplace(pointInfo);
     }
 
     @Override
     public Observable<Iterable<PointInfo>> insertData(List<PointInfo> list) {
-        return pointInfoDao.rx().insertInTx(list);
+        return pointInfoDao.rx().insertOrReplaceInTx(list);
     }
 
     @Override

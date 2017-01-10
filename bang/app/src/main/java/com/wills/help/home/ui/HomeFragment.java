@@ -32,6 +32,7 @@ import com.wills.help.listener.AppBarStateChangeListener;
 import com.wills.help.release.adapter.PagerAdapter;
 import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.ScreenUtils;
+import com.wills.help.widget.MySwipeRefreshLayout;
 import com.wills.help.widget.banner.AutoScrollPoster;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class HomeFragment extends BaseFragment implements HomeView ,SwipeRefresh
     LinearLayout linearLayout;
     LinearLayout ll_icon;
     RecyclerView recyclerView;
-    SwipeRefreshLayout swipeRefreshLayout;
+    MySwipeRefreshLayout swipeRefreshLayout;
     ViewPager viewPager;
     TabLayout tabLayout;
     LinearLayoutManager linearLayoutManager;
@@ -77,7 +78,7 @@ public class HomeFragment extends BaseFragment implements HomeView ,SwipeRefresh
     @Override
     public View initView(LayoutInflater inflater) {
         View view = inflater.inflate(R.layout.fragment_home, null);
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl);
+        swipeRefreshLayout = (MySwipeRefreshLayout) view.findViewById(R.id.srl);
         swipeRefreshLayout.setNestedScrollingEnabled(false);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark,R.color.colorPrimary, R.color.colorPrimaryLight,R.color.colorAccent);
