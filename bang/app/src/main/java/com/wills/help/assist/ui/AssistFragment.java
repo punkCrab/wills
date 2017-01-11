@@ -44,7 +44,8 @@ public class AssistFragment extends BaseFragment implements MapAdapter.MapItemCl
         View view = inflater.inflate(R.layout.fragment_assist, null);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         setHasOptionsMenu(true);
-        toolbar.setTitle(getString(R.string.tab_assist));
+//        toolbar.setTitle(getString(R.string.tab_assist));
+        toolbar.setLogo(R.drawable.title);
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
         return view;
     }

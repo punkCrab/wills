@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseListAdapter;
-import com.wills.help.person.model.Order;
+import com.wills.help.release.model.ReleaseInfo;
 import com.wills.help.utils.GlideUtils;
 
 import java.util.List;
@@ -20,9 +20,9 @@ import java.util.List;
  * 2016/12/5.
  */
 
-public class OrderAdapter extends BaseListAdapter<Order>{
+public class OrderAdapter extends BaseListAdapter<ReleaseInfo>{
     private Context context;
-    public OrderAdapter(Context context, List<Order> list) {
+    public OrderAdapter(Context context, List<ReleaseInfo> list) {
         super(context, list);
         this.context = context;
     }

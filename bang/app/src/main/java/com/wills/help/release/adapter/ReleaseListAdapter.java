@@ -15,6 +15,7 @@ import com.wills.help.message.EaseConstant;
 import com.wills.help.message.ui.ChatActivity;
 import com.wills.help.pay.ui.PayActivity;
 import com.wills.help.release.model.ReleaseInfo;
+import com.wills.help.release.ui.EvaluationActivity;
 import com.wills.help.release.ui.ReleaseActivity;
 import com.wills.help.utils.IntentUtils;
 
@@ -61,9 +62,9 @@ public class ReleaseListAdapter extends BaseListAdapter<ReleaseInfo>{
         if (holder instanceof ReleaseHolder){
             final ReleaseInfo releaseInfo = list.get(position);
             if (type == 0){
-                changeView(holder,Integer.parseInt(releaseInfo.getStateid()));
+                changeView(holder,Integer.parseInt(releaseInfo.getStateid()),releaseInfo);
             }else if(type == 1){
-                changeView(holder,4);
+                changeView(holder,4,releaseInfo);
             }
             if (releaseInfo.getOrdertype().equals("1")){
                 ((ReleaseHolder)holder).tv_release_state.setText(context.getString(R.string.help_express));
@@ -85,7 +86,7 @@ public class ReleaseListAdapter extends BaseListAdapter<ReleaseInfo>{
         }
     }
 
-    private void changeView(RecyclerView.ViewHolder holder , final int state){
+    private void changeView(RecyclerView.ViewHolder holder , final int state , final ReleaseInfo releaseInfo){
         switch (state){
             case 0:
                 ((ReleaseHolder)holder).tv_release_change.setVisibility(View.VISIBLE);
@@ -93,7 +94,9 @@ public class ReleaseListAdapter extends BaseListAdapter<ReleaseInfo>{
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        IntentUtils.startActivity(context,PayActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("orderId",releaseInfo.getOrderid());
+                        IntentUtils.startActivity(context,PayActivity.class,bundle);
                     }
                 });
                 break;
@@ -137,7 +140,7 @@ public class ReleaseListAdapter extends BaseListAdapter<ReleaseInfo>{
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        IntentUtils.startActivity(context,EvaluationActivity.class);
                     }
                 });
                 break;

@@ -39,7 +39,8 @@ public class MainReleaseFragment extends BaseFragment{
         View view = inflater.inflate(R.layout.fragment_mainrelease,null);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         setHasOptionsMenu(true);
-        toolbar.setTitle(getString(R.string.tab_release));
+//        toolbar.setTitle(getString(R.string.tab_release));
+        toolbar.setLogo(R.drawable.title);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
         viewPager.setOffscreenPageLimit(2);

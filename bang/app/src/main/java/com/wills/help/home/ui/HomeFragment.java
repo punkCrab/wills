@@ -124,13 +124,16 @@ public class HomeFragment extends BaseFragment implements HomeView ,SwipeRefresh
                 if (state == State.EXPANDED){
                     //展开状态
                     toolbar.setTitle("");
+                    toolbar.setLogo(null);
                     swipeRefreshLayout.setEnabled(true);
                 }else if (state == State.COLLAPSED){
                     //折叠
-                    toolbar.setTitle(getString(R.string.app_name));
+                    toolbar.setTitle("");
+                    toolbar.setLogo(R.drawable.title);
                     swipeRefreshLayout.setEnabled(false);
                 }else {
                     toolbar.setTitle("");
+                    toolbar.setLogo(null);
                     swipeRefreshLayout.setEnabled(false);
                 }
             }

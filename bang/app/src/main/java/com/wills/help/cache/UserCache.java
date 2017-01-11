@@ -2,6 +2,7 @@ package com.wills.help.cache;
 
 import android.content.Context;
 
+import com.wills.help.base.App;
 import com.wills.help.login.model.User;
 import com.wills.help.utils.AppConfig;
 
@@ -32,8 +33,8 @@ public class UserCache extends AbstractCache<String , User.UserInfo>{
     @Override
     public void writeCache(ObjectOutputStream outputStream, User.UserInfo value) throws IOException {
         outputStream.writeInt(AppConfig.CACHE_VERSION);
-        outputStream.writeLong(System.currentTimeMillis());
-        outputStream.writeLong(AppConfig.CACHE_TIME);
+//        outputStream.writeLong(System.currentTimeMillis());
+//        outputStream.writeLong(AppConfig.CACHE_TIME);
         outputStream.writeObject(value);
     }
 
@@ -46,15 +47,15 @@ public class UserCache extends AbstractCache<String , User.UserInfo>{
         ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
         int version = inputStream.readInt();
         if (AppConfig.CACHE_VERSION!=version){
-            file.delete();
+            App.getApp().exitApp();//取消登录状态
             return null;
         }
-        long writeTime = inputStream.readLong();
-        long expiredTime = inputStream.readLong();
-        if (System.currentTimeMillis() - writeTime > expiredTime){
-            file.delete();
-            return null;
-        }
+//        long writeTime = inputStream.readLong();
+//        long expiredTime = inputStream.readLong();
+//        if (System.currentTimeMillis() - writeTime > expiredTime){
+//            App.getApp().exitApp();//取消登录状态
+//            return null;
+//        }
         try {
             return (User.UserInfo) inputStream.readObject();
         } catch (ClassNotFoundException e) {

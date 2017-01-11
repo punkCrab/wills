@@ -224,7 +224,9 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void setRelease(Release.OrderId order) {
-        IntentUtils.startActivity(getAppCompatActivity(), PayActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("orderId",order.getOrderid());
+        IntentUtils.startActivity(getAppCompatActivity(), PayActivity.class,bundle);
     }
 
     public class EditTextChange implements TextWatcher {

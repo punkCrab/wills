@@ -282,7 +282,17 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:padding="@dimen/activity_horizontal_margin">
-
+                        <TextView
+                            android:id="@+id/tv_coupons"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableBottom="@drawable/person_coupons"
+                            android:drawablePadding="10dp"
+                            android:gravity="center"
+                            android:text="@string/person_coupons"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="14sp" />
                         <TextView
                             android:id="@+id/tv_identification"
                             android:layout_width="wrap_content"

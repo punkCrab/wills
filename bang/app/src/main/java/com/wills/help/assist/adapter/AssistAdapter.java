@@ -41,7 +41,7 @@ public class AssistAdapter extends BaseListAdapter<Assist>{
     public class AssistHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
         public ImageView imageView;
         public TextView tv_name,tv_school,tv_assist_state,tv_assist_address,tv_assist_time,
-                tv_assist_money,tv_assist_location,tv_assist_bargain,tv_assist_progress;
+                tv_assist_money,tv_assist_location,tv_assist_progress;
         public AssistHolder(View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.iv);
@@ -52,7 +52,6 @@ public class AssistAdapter extends BaseListAdapter<Assist>{
             tv_assist_time = (TextView) itemView.findViewById(R.id.tv_assist_time);
             tv_assist_money = (TextView) itemView.findViewById(R.id.tv_assist_money);
             tv_assist_location = (TextView) itemView.findViewById(R.id.tv_assist_location);
-            tv_assist_bargain = (TextView) itemView.findViewById(R.id.tv_assist_bargain);
             tv_assist_progress = (TextView) itemView.findViewById(R.id.tv_assist_progress);
             itemView.setOnClickListener(this);
         }

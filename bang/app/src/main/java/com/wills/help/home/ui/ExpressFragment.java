@@ -57,7 +57,9 @@ public class ExpressFragment extends BaseFragment implements ExpressView , HomeF
     public void initData(Bundle savedInstanceState) {
         ((HomeFragment)getParentFragment()).setExpressListener(this);
         expressPresenter = new ExpressPresenterImpl(this);
-        expressPresenter.getExpress(getMap());
+        if (App.getApp().getIsLogin()){
+            expressPresenter.getExpress(getMap());
+        }
         tv_count.setText(String.format(getAppCompatActivity().getString(R.string.home_express_count),String.valueOf(5)));
         linearLayoutManager = new LinearLayoutManager(getAppCompatActivity());
         recyclerView.setLayoutManager(linearLayoutManager);

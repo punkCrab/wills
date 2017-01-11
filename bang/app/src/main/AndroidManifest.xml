@@ -101,6 +101,7 @@
         <activity android:name=".assist.ui.AssistActivity" />
         <activity android:name=".home.ui.ExpressListActivity" />
         <activity android:name=".release.ui.ReleaseActivity" />
+        <activity android:name=".release.ui.EvaluationActivity" />
         <activity android:name=".home.ui.SendActivity" />
         <activity android:name=".base.WebViewActivity" />
 

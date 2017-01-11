@@ -100,9 +100,9 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
         Map<String , String> map = new HashMap<>();
         map.put("releaseuserid", App.getApp().getUser().getUserid());
         if (type == 0){
-            map.put("action", "0");
+            map.put("action", "-1");
         }else {
-            map.put("action", "1");
+            map.put("action", "-2");
         }
         map.put("page", page+"");
         return map;

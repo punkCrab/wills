@@ -6,6 +6,7 @@ import com.wills.help.home.model.News;
 import com.wills.help.login.model.OrderType;
 import com.wills.help.login.model.Point;
 import com.wills.help.login.model.User;
+import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.Release;
 import com.wills.help.release.model.ReleaseList;
 
@@ -117,8 +118,23 @@ public interface ApiInterface {
     @FormUrlEncoded
     Observable<Release> release(@FieldMap Map<String , String > map);
 
-
+    /**
+     * 获取订单列表
+     * @param map
+     * @return
+     */
     @POST("getorder")
     @FormUrlEncoded
     Observable<ReleaseList> getReleaseList(@FieldMap Map<String , String > map);
+
+    /**
+     * 获取订单详情
+     * @param map
+     * @return
+     */
+    @POST("getorderbyid")
+    @FormUrlEncoded
+    Observable<OrderInfo> getOrderInfo(@FieldMap Map<String , String > map);
+
+
 }

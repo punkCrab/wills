@@ -5,7 +5,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
@@ -53,10 +52,6 @@ public class IconFragment extends BaseFragment implements AuthAdapter.AuthItemCl
         auth1.setImgId(R.drawable.auth_snacks);
         auth1.setTitle("取零食");
         auths.add(auth);
-        auths.add(auth);
-        auths.add(auth);
-        auths.add(auth1);
-        auths.add(auth1);
         auths.add(auth1);
         gridLayoutManager = new GridLayoutManager(getAppCompatActivity(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);

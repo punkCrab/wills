@@ -38,7 +38,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     ImageView imageView;
     TextView tv_name, tv_school, tv_release_check, tv_release, tv_release_progress, tv_release_complete, tv_release_evaluation,
              tv_assist_check, tv_assist, tv_assist_progress, tv_assist_complete, tv_assist_evaluation,
-             tv_identification, tv_public, tv_wallet;
+             tv_identification, tv_public, tv_wallet,tv_coupons;
     Toolbar toolbar;
     String url = "http://img4.duitang.com/uploads/item/201601/09/20160109190245_JzaA3.thumb.224_0.jpeg";
 
@@ -74,6 +74,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
         tv_identification = (TextView) view.findViewById(R.id.tv_identification);
         tv_public = (TextView) view.findViewById(R.id.tv_public);
         tv_wallet = (TextView) view.findViewById(R.id.tv_wallet);
+        tv_coupons = (TextView) view.findViewById(R.id.tv_coupons);
         return view;
     }
 
@@ -103,11 +104,14 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
                 if (state == State.EXPANDED){
                     //展开状态
                     toolbar.setTitle("");
+                    toolbar.setLogo(null);
                 }else if (state == State.COLLAPSED){
                     //折叠
-                    toolbar.setTitle(getString(R.string.tab_person));
+                    toolbar.setTitle("");
+                    toolbar.setLogo(R.drawable.title);
                 }else {
                     toolbar.setTitle("");
+                    toolbar.setLogo(null);
                 }
             }
         });
@@ -145,34 +149,34 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_release_check:
-                startOrderView(tv_release_check.getText().toString());
+                startOrderView(tv_release_check.getText().toString(),0,0);
                 break;
             case R.id.tv_release:
-                startOrderView(tv_release.getText().toString());
+                startOrderView(tv_release.getText().toString(),1,0);
                 break;
             case R.id.tv_release_progress:
-                startOrderView(tv_release_progress.getText().toString());
+                startOrderView(tv_release_progress.getText().toString(),2,0);
                 break;
             case R.id.tv_release_complete:
-                startOrderView(tv_release_complete.getText().toString());
+                startOrderView(tv_release_complete.getText().toString(),4,0);
                 break;
             case R.id.tv_release_evaluation:
-                startOrderView(tv_release_evaluation.getText().toString());
+                startOrderView(tv_release_evaluation.getText().toString(),3,0);
                 break;
             case R.id.tv_assist_check:
-                startOrderView(tv_assist_check.getText().toString());
+                startOrderView(tv_assist_check.getText().toString(),0,1);
                 break;
             case R.id.tv_assist:
-                startOrderView(tv_assist.getText().toString());
+                startOrderView(tv_assist.getText().toString(),1,1);
                 break;
             case R.id.tv_assist_progress:
-                startOrderView(tv_assist_progress.getText().toString());
+                startOrderView(tv_assist_progress.getText().toString(),2,1);
                 break;
             case R.id.tv_assist_complete:
-                startOrderView(tv_assist_complete.getText().toString());
+                startOrderView(tv_assist_complete.getText().toString(),4,1);
                 break;
             case R.id.tv_assist_evaluation:
-                startOrderView(tv_assist_evaluation.getText().toString());
+                startOrderView(tv_assist_evaluation.getText().toString(),3,1);
                 break;
             case R.id.tv_identification:
                 IntentUtils.startActivity(getAppCompatActivity(),IdentificationActivity.class);
@@ -183,14 +187,18 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
             case R.id.tv_wallet:
                 IntentUtils.startActivity(getAppCompatActivity(),WalletActivity.class);
                 break;
+            case R.id.tv_coupons:
+                break;
             default:
                 break;
         }
     }
 
-    private void startOrderView(String title){
+    private void startOrderView(String title ,int action , int type){
         Bundle bundle = new Bundle();
         bundle.putString("title",title);
+        bundle.putInt("action",action);
+        bundle.putInt("type",type);
         IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class,bundle);
     }
 
