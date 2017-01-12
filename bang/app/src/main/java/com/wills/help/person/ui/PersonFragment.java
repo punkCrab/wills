@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wills.help.R;
+import com.wills.help.base.App;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.listener.AppBarStateChangeListener;
 import com.wills.help.login.ui.LoginActivity;
@@ -21,7 +22,6 @@ import com.wills.help.message.ui.MessageActivity;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
-import com.wills.help.utils.ToastUtils;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -40,7 +40,6 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
              tv_assist_check, tv_assist, tv_assist_progress, tv_assist_complete, tv_assist_evaluation,
              tv_identification, tv_public, tv_wallet,tv_coupons;
     Toolbar toolbar;
-    String url = "http://img4.duitang.com/uploads/item/201601/09/20160109190245_JzaA3.thumb.224_0.jpeg";
 
     public static PersonFragment newInstance() {
 
@@ -81,7 +80,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void initData(Bundle savedInstanceState) {
         context = getAppCompatActivity().getApplicationContext();
-        GlideUtils.getInstance().displayCircleImage(context, url, imageView);
+        GlideUtils.getInstance().displayCircleImage(context, App.getApp().getUser().getAvatar(), imageView);
         toolbar.inflateMenu(R.menu.menu_person);
         tv_release_check.setOnClickListener(this);
         tv_release.setOnClickListener(this);
@@ -96,8 +95,8 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
         tv_identification.setOnClickListener(this);
         tv_public.setOnClickListener(this);
         tv_wallet.setOnClickListener(this);
-        tv_name.setText("交大小助手");
-        tv_school.setText("北京交通大学");
+        tv_name.setText(App.getApp().getUser().getNickname());
+        tv_school.setText(App.getApp().getUser().getSchool());
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
@@ -118,7 +117,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IntentUtils.startActivityForResult(getAppCompatActivity(), InformationActivity.class,AppConfig.AVATAR);
+                IntentUtils.startActivityForResult(getAppCompatActivity(), UserInfoActivity.class,AppConfig.AVATAR);
             }
         });
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -141,7 +140,9 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.AVATAR && resultCode == RESULT_OK){
-            ToastUtils.toast("更换成功");
+            GlideUtils.getInstance().displayCircleImage(context, App.getApp().getUser().getAvatar(), imageView);
+            tv_name.setText(App.getApp().getUser().getNickname());
+            tv_school.setText(App.getApp().getUser().getSchool());
         }
     }
 

@@ -1,5 +1,7 @@
 package com.wills.help.cache;
 
+import com.wills.help.login.model.User;
+
 import java.util.Observable;
 
 /**
@@ -10,17 +12,14 @@ import java.util.Observable;
 
 public class UserObserver extends Observable{
 
-    public UserObserver() {
+    private User.UserInfo userInfo;
+    public UserObserver(User.UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
     @Override
-    public void notifyObservers() {
+    public void notifyObservers(Object data) {
         setChanged();
-        super.notifyObservers();
-    }
-
-    @Override
-    protected void setChanged() {
-        super.setChanged();
+        super.notifyObservers(data);
     }
 }

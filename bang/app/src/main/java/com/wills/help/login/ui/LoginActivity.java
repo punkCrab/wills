@@ -26,6 +26,7 @@ import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.KeyBoardUtils;
 import com.wills.help.utils.ScreenUtils;
 import com.wills.help.utils.SharedPreferencesUtils;
+import com.wills.help.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,7 +82,7 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
     @Override
     public void setLogin(User login) {
         setResult(RESULT_OK);
-        EMClient.getInstance().login(et_username.getText().toString(), et_password.getText().toString(), new EMCallBack() {
+        EMClient.getInstance().login(et_username.getText().toString(), StringUtils.getMD5(et_password.getText().toString()), new EMCallBack() {
             @Override
             public void onSuccess() {
                 finish();
@@ -106,8 +107,8 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
                 String user = et_username.getText().toString();
                 String pwd = et_password.getText().toString();
                 Map<String,String> map = new HashMap<>();
-                map.put("username","15311437664");
-                map.put("password", "123456");
+                map.put("username",user);
+                map.put("password", pwd);
                 loginInfoPresenter.login(map);
                 break;
             case R.id.tv_register:

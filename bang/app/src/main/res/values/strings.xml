@@ -115,6 +115,12 @@
     <string name="person_public">我的公益</string>
     <string name="person_wallet">我的钱包</string>
 
+    <string name="money_amount">帐户余额</string>
+    <string name="money_withdraw">提现</string>
+    <string name="money_block">冻结金额</string>
+
+
+
     <string name="identification">在校生认证</string>
     <string name="id_name">请输入姓名</string>
     <string name="id_sno">请输入学号</string>

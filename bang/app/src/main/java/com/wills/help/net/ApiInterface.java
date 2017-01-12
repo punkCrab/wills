@@ -12,11 +12,15 @@ import com.wills.help.release.model.ReleaseList;
 
 import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import rx.Observable;
 
 /**
@@ -136,5 +140,16 @@ public interface ApiInterface {
     @FormUrlEncoded
     Observable<OrderInfo> getOrderInfo(@FieldMap Map<String , String > map);
 
+    /**
+     * 获取订单详情
+     * @param map
+     * @return
+     */
+    @POST("setuserinfo")
+    @FormUrlEncoded
+    Observable<Empty> setUserInfo(@FieldMap Map<String , String > map);
 
+    @Multipart
+    @POST("setavatar")
+    Observable<Empty> setAvatar(@Part MultipartBody.Part avatar,@Part("userid") RequestBody username);
 }

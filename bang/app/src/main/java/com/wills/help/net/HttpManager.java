@@ -2,9 +2,13 @@ package com.wills.help.net;
 
 import com.wills.help.utils.AppConfig;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -74,5 +78,12 @@ public class HttpManager {
 //        })
                 .build();
         return client;
+    }
+
+
+    public static MultipartBody.Part getPart( String key ,File file){
+        RequestBody photoRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part photo = MultipartBody.Part.createFormData(key, file.getName(), photoRequestBody);
+        return photo;
     }
 }

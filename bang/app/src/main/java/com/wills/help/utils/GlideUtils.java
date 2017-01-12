@@ -18,6 +18,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.signature.StringSignature;
 import com.wills.help.R;
 
 import java.io.ByteArrayOutputStream;
@@ -129,7 +130,9 @@ public class GlideUtils {
      */
     public void displayCircleImage(final Context context, String url, ImageView view) {
 
-        Glide.with(context).load(url).asBitmap().centerCrop().into(new BitmapImageViewTarget(view){
+        Glide.with(context).load(url).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop()
+                .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+                .into(new BitmapImageViewTarget(view){
             @Override
             protected void setResource(Bitmap resource) {
                 RoundedBitmapDrawable circularBitmapDrawable =
@@ -152,7 +155,7 @@ public class GlideUtils {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] bytes=baos.toByteArray();
 
-        Glide.with(context).load(bytes).asBitmap().centerCrop().into(new BitmapImageViewTarget(view){
+        Glide.with(context).load(bytes).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().into(new BitmapImageViewTarget(view){
             @Override
             protected void setResource(Bitmap resource) {
                 RoundedBitmapDrawable circularBitmapDrawable =
@@ -165,7 +168,7 @@ public class GlideUtils {
 
     public void displayCircleImage(final Context context, @DrawableRes int resId, ImageView view) {
 
-        Glide.with(context).load(resId).asBitmap().centerCrop().into(new BitmapImageViewTarget(view){
+        Glide.with(context).load(resId).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().into(new BitmapImageViewTarget(view){
             @Override
             protected void setResource(Bitmap resource) {
                 RoundedBitmapDrawable circularBitmapDrawable =

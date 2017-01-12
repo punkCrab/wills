@@ -110,7 +110,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     public void setRegister(User user) {
         ToastUtils.toast(getString(R.string.register_success));
         setResult(RESULT_OK);
-        EMClient.getInstance().login(et_register_phone.getText().toString(), et_register_pwd.getText().toString(), new EMCallBack() {
+        EMClient.getInstance().login(et_register_phone.getText().toString(), StringUtils.getMD5(et_register_pwd.getText().toString()), new EMCallBack() {
             @Override
             public void onSuccess() {
                 finish();

@@ -11,11 +11,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wills.help.R;
+import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
+import com.wills.help.net.HttpManager;
+import com.wills.help.person.presenter.UserInfoPresenterImpl;
+import com.wills.help.person.view.UserInfoView;
+import com.wills.help.photo.model.CameraUtils;
 import com.wills.help.photo.ui.PhotoSelectorActivity;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * com.wills.help.person.ui
@@ -23,12 +32,16 @@ import com.wills.help.utils.IntentUtils;
  * 2017/1/9.
  */
 
-public class InformationActivity extends BaseActivity implements View.OnClickListener{
+public class UserInfoActivity extends BaseActivity implements View.OnClickListener , UserInfoView{
     RelativeLayout rl_avatar,rl_nickname,rl_phone,rl_sex,rl_school,rl_address;
     ImageView iv_avatar;
     TextView tv_nickname,tv_phone,tv_sex,tv_school,tv_address;
     String[] sex = new String[]{"男","女"};
-    boolean avatar = false;
+    boolean isChanged = false;
+    private UserInfoPresenterImpl userInfoPresenter;
+    private int sexIndex =0;
+    private Bitmap bitmap;
+    private File file;
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setBaseView(R.layout.activity_person);
@@ -51,6 +64,21 @@ public class InformationActivity extends BaseActivity implements View.OnClickLis
         rl_sex.setOnClickListener(this);
         rl_school.setOnClickListener(this);
         rl_address.setOnClickListener(this);
+        initData();
+    }
+
+    private void initData(){
+        userInfoPresenter = new UserInfoPresenterImpl(this);
+        GlideUtils.getInstance().displayCircleImage(context, App.getApp().getUser().getAvatar(),iv_avatar);
+        tv_nickname.setText(App.getApp().getUser().getNickname());
+        tv_phone.setText(App.getApp().getUser().getPhone_num());
+        int sexId = Integer.parseInt(App.getApp().getUser().getSex());
+        if (sexId==0){
+            tv_sex.setText("");
+        }else {
+            tv_sex.setText(sex[sexId-1]);
+        }
+        tv_school.setText(App.getApp().getUser().getSchool());
     }
 
     @Override
@@ -59,12 +87,12 @@ public class InformationActivity extends BaseActivity implements View.OnClickLis
             case R.id.rl_avatar:
                 Bundle bundle = new Bundle();
                 bundle.putInt("action", AppConfig.AVATAR);
-                IntentUtils.startActivityForResult(InformationActivity.this, PhotoSelectorActivity.class,bundle,AppConfig.AVATAR);
+                IntentUtils.startActivityForResult(UserInfoActivity.this, PhotoSelectorActivity.class,bundle,AppConfig.AVATAR);
                 break;
             case R.id.rl_nickname:
                 Bundle bundle1 = new Bundle();
-                bundle1.putString("nickname", "交大小助手");
-                IntentUtils.startActivityForResult(InformationActivity.this, ChangeNameActivity.class,bundle1,201);
+                bundle1.putString("nickname", App.getApp().getUser().getNickname());
+                IntentUtils.startActivityForResult(UserInfoActivity.this, ChangeNameActivity.class,bundle1,201);
                 break;
             case R.id.rl_phone:
                 break;
@@ -83,12 +111,14 @@ public class InformationActivity extends BaseActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.AVATAR && resultCode == RESULT_OK){
             if (data != null){
-                avatar = true;
-                Bitmap bitmap = data.getParcelableExtra("avatar");
-                GlideUtils.getInstance().displayCircleImage(context,bitmap,iv_avatar);
+                isChanged = true;
+                bitmap = data.getParcelableExtra("avatar");
+                file = CameraUtils.saveImage(bitmap);
+                userInfoPresenter.setAvatar(HttpManager.getPart("avatar" ,file),App.getApp().getUser().getUserid());
             }
         }else if (requestCode == 201 && resultCode == RESULT_OK){
             tv_nickname.setText(data.getStringExtra("nickname"));
+            isChanged = true;
         }
     }
 
@@ -97,16 +127,36 @@ public class InformationActivity extends BaseActivity implements View.OnClickLis
         builder.setItems(sex, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        tv_sex.setText(sex[i]);
+                        sexIndex = i;
+                        userInfoPresenter.setUserInfo(getMap("sex",i+1+""));
                     }
                 }).show();
     }
 
+    private Map<String ,String> getMap(String key,String value){
+        Map<String , String> map = new HashMap<>();
+        map.put("userid", App.getApp().getUser().getUserid());
+        map.put(key, value);
+        return map;
+    }
+
     @Override
     protected void backClick() {
-        if (avatar){
+        if (isChanged){
             setResult(RESULT_OK);
         }
         super.backClick();
+    }
+
+    @Override
+    public void setUserInfo() {
+        tv_sex.setText(sex[sexIndex]);
+        App.getApp().getUser().setSex(sexIndex+1+"");
+    }
+
+    @Override
+    public void setAvatar() {
+        GlideUtils.getInstance().displayCircleImage(context,bitmap,iv_avatar);
+        file.delete();
     }
 }
