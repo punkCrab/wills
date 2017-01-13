@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.wills.help.R;
 import com.wills.help.base.App;
@@ -23,16 +24,28 @@ import java.util.Map;
 
 public class ChangeNameActivity extends BaseActivity implements UserInfoView{
     EditText et_name;
-    String nickname;
+    String name;
+    private TextView tv_des;
     private UserInfoPresenterImpl userInfoPresenter;
+    private int action;
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setBaseView(R.layout.activity_name);
         setBaseTitle(getString(R.string.nickname_change));
-        nickname = getIntent().getExtras().getString("nickname");
+        Bundle b = getIntent().getExtras();
+        action = b.getInt("action");
+        name = b.getString("name");
         et_name = (EditText) findViewById(R.id.et_name);
-        et_name.setText(nickname);
-        et_name.setSelection(nickname.length());
+        tv_des = (TextView) findViewById(R.id.tv_des);
+        if (action == 1){
+            setBaseTitle(getString(R.string.nickname_change));
+            tv_des.setText(getString(R.string.nickname_change_des));
+        }else if (action == 2){
+            setBaseTitle(getString(R.string.school_change));
+            tv_des.setText(getString(R.string.school_change_des));
+        }
+        et_name.setText(name);
+        et_name.setSelection(name.length());
         userInfoPresenter = new UserInfoPresenterImpl(this);
     }
 
@@ -56,15 +69,23 @@ public class ChangeNameActivity extends BaseActivity implements UserInfoView{
     private Map<String ,String> getMap(){
         Map<String , String> map = new HashMap<>();
         map.put("userid", App.getApp().getUser().getUserid());
-        map.put("nickname", et_name.getText().toString());
+        if (action == 1){
+            map.put("nickname", et_name.getText().toString());
+        }else if (action == 2){
+            map.put("school", et_name.getText().toString());
+        }
         return map;
     }
 
     @Override
     public void setUserInfo() {
-        App.getApp().getUser().setNickname(et_name.getText().toString());
+        if (action == 1){
+            App.getApp().getUser().setNickname(et_name.getText().toString());
+        }else if (action == 2){
+            App.getApp().getUser().setSchool(et_name.getText().toString());
+        }
         Intent intent = new Intent();
-        intent.putExtra("nickname",et_name.getText().toString());
+        intent.putExtra("name",et_name.getText().toString());
         setResult(RESULT_OK,intent);
         finish();
     }

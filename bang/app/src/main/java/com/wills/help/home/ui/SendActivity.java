@@ -10,12 +10,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.wills.help.R;
+import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.db.bean.PointInfo;
 import com.wills.help.db.manager.PointInfoHelper;
+import com.wills.help.release.model.Release;
+import com.wills.help.release.presenter.ReleasePresenterImpl;
+import com.wills.help.release.view.ReleaseView;
 import com.wills.help.utils.ScreenUtils;
+import com.wills.help.utils.ToastUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -28,12 +35,14 @@ import rx.schedulers.Schedulers;
  * 2017/1/4.
  */
 
-public class SendActivity extends BaseActivity implements View.OnClickListener {
+public class SendActivity extends BaseActivity implements View.OnClickListener ,ReleaseView{
     private TextView tv_choose_address;
     private EditText et_address;
     private Button btn_submit;
     String[] address;
     String[] addressId;
+    private int desId;
+    private ReleasePresenterImpl releasePresenter;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -48,6 +57,7 @@ public class SendActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initData(){
+        releasePresenter = new ReleasePresenterImpl(this);
         PointInfoHelper.getInstance().queryAll()
                 .doOnNext(new Action1<List<PointInfo>>() {
                     @Override
@@ -87,8 +97,22 @@ public class SendActivity extends BaseActivity implements View.OnClickListener {
                 showAlert(address,tv_choose_address);
                 break;
             case R.id.btn_submit:
+                releasePresenter.release(getMap());
                 break;
         }
+    }
+
+    private Map<String, String> getMap() {
+        Map<String, String> map = new HashMap<>();
+        map.put("releaseuserid", App.getApp().getUser().getUserid());
+        map.put("ordertype", "1");
+        map.put("srcid", "64");
+        map.put("srcdetail", getString(R.string.send_site));
+        map.put("desid", addressId[desId]);
+        map.put("desdetail", et_address.getText().toString());
+        map.put("money", "0");
+        map.put("maintype", "1");
+        return map;
     }
 
     private void showAlert(final String[] strings , final TextView textView){
@@ -96,6 +120,7 @@ public class SendActivity extends BaseActivity implements View.OnClickListener {
         builder.setItems(strings, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                desId = i;
                 textView.setText(strings[i]);
             }
         });
@@ -106,5 +131,10 @@ public class SendActivity extends BaseActivity implements View.OnClickListener {
             params.height = 3* ScreenUtils.getScreenHeight(context)/4;
             dialog.getWindow().setAttributes(params);
         }
+    }
+
+    @Override
+    public void setRelease(Release.OrderId order) {
+        ToastUtils.toast("免费派送成功");
     }
 }

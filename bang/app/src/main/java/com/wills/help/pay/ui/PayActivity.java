@@ -66,7 +66,7 @@ public class PayActivity extends BaseActivity implements PayView{
     }
 
     @Override
-    public void setOrderInfo(OrderInfo.OrderDetail orderInfo) {
+    public void setOrderInfo(OrderInfo orderInfo) {
         tv_from.setText(orderInfo.getSrcdetail());
         tv_send.setText(orderInfo.getDesdetail());
         tv_amount.setText(orderInfo.getMoney()+getString(R.string.yuan));

@@ -1,6 +1,6 @@
 package com.wills.help.release.view;
 
-import com.wills.help.release.model.ReleaseList;
+import com.wills.help.release.model.OrderList;
 
 /**
  * com.wills.help.release.view
@@ -9,5 +9,5 @@ import com.wills.help.release.model.ReleaseList;
  */
 
 public interface ReleaseListView {
-    void setReleaseList(ReleaseList releaseList);
+    void setReleaseList(OrderList releaseList);
 }

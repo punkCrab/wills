@@ -1,7 +1,7 @@
 package com.wills.help.pay.model;
 
 import com.wills.help.net.HttpManager;
-import com.wills.help.release.model.OrderInfo;
+import com.wills.help.release.model.OrderDetail;
 
 import java.util.Map;
 
@@ -15,7 +15,7 @@ import rx.Observable;
 
 public class PayModel {
 
-    public Observable<OrderInfo> getOrderInfo(Map<String , String> map){
+    public Observable<OrderDetail> getOrderInfo(Map<String , String> map){
         return HttpManager.getApiInterface().getOrderInfo(map);
     }
 }

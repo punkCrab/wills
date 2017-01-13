@@ -1,7 +1,7 @@
 package com.wills.help.release.presenter;
 
 import com.wills.help.net.ApiSubscriber;
-import com.wills.help.release.model.ReleaseList;
+import com.wills.help.release.model.OrderList;
 import com.wills.help.release.model.ReleaseListModel;
 import com.wills.help.release.view.ReleaseListView;
 
@@ -30,14 +30,14 @@ public class ReleaseListPresenterImpl implements ReleaseListPresenter{
         releaseListModel.getReleaseList(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiSubscriber<ReleaseList>() {
+                .subscribe(new ApiSubscriber<OrderList>() {
                     @Override
                     public void onCompleted() {
 
                     }
 
                     @Override
-                    public void onNext(ReleaseList releaseList) {
+                    public void onNext(OrderList releaseList) {
                         releaseListView.setReleaseList(releaseList);
                     }
                 });

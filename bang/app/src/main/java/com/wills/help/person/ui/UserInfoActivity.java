@@ -36,7 +36,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     RelativeLayout rl_avatar,rl_nickname,rl_phone,rl_sex,rl_school,rl_address;
     ImageView iv_avatar;
     TextView tv_nickname,tv_phone,tv_sex,tv_school,tv_address;
-    String[] sex = new String[]{"男","女"};
+    String[] sex = new String[]{"女","男"};
     boolean isChanged = false;
     private UserInfoPresenterImpl userInfoPresenter;
     private int sexIndex =0;
@@ -91,7 +91,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.rl_nickname:
                 Bundle bundle1 = new Bundle();
-                bundle1.putString("nickname", App.getApp().getUser().getNickname());
+                bundle1.putString("name", App.getApp().getUser().getNickname());
+                bundle1.putInt("action",1);
                 IntentUtils.startActivityForResult(UserInfoActivity.this, ChangeNameActivity.class,bundle1,201);
                 break;
             case R.id.rl_phone:
@@ -100,6 +101,10 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 sexDialog();
                 break;
             case R.id.rl_school:
+                Bundle bundle2 = new Bundle();
+                bundle2.putString("name", App.getApp().getUser().getSchool());
+                bundle2.putInt("action",2);
+                IntentUtils.startActivityForResult(UserInfoActivity.this, ChangeNameActivity.class,bundle2,202);
                 break;
             case R.id.tv_address:
                 break;
@@ -117,7 +122,10 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 userInfoPresenter.setAvatar(HttpManager.getPart("avatar" ,file),App.getApp().getUser().getUserid());
             }
         }else if (requestCode == 201 && resultCode == RESULT_OK){
-            tv_nickname.setText(data.getStringExtra("nickname"));
+            tv_nickname.setText(data.getStringExtra("name"));
+            isChanged = true;
+        }else if (requestCode == 202 && resultCode == RESULT_OK){
+            tv_school.setText(data.getStringExtra("name"));
             isChanged = true;
         }
     }

@@ -9,5 +9,5 @@ import com.wills.help.release.model.OrderInfo;
  */
 
 public interface PayView {
-    void setOrderInfo(OrderInfo.OrderDetail orderInfo);
+    void setOrderInfo(OrderInfo orderInfo);
 }

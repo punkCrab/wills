@@ -13,7 +13,7 @@ import rx.Observable;
  */
 
 public class ReleaseListModel {
-    public Observable<ReleaseList> getReleaseList(Map<String , String > map){
+    public Observable<OrderList> getReleaseList(Map<String , String > map){
         return HttpManager.getApiInterface().getReleaseList(map);
     }
 }

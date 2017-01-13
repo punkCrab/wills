@@ -99,8 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/tv_release_address"
             android:layout_alignParentRight="true"
-            android:src="@drawable/release_msg"
-            android:textSize="16sp" />
+            android:src="@drawable/release_msg"/>
 
         <TextView
             android:id="@+id/tv_release_change"
@@ -139,4 +138,11 @@
             layout="@layout/item_release_state"></include>
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/iv_home_express"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/home_express"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"/>
 </RelativeLayout>

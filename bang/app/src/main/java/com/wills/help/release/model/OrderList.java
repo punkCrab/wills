@@ -8,11 +8,11 @@ import java.util.List;
  * 2017/1/10.
  */
 
-public class ReleaseList {
+public class OrderList {
     private int state;
     private String info;
     private int count;
-    private List<ReleaseInfo> data;
+    private List<OrderInfo> data;
 
     public int getState() {
         return state;
@@ -38,11 +38,11 @@ public class ReleaseList {
         this.info = info;
     }
 
-    public List<ReleaseInfo> getData() {
+    public List<OrderInfo> getData() {
         return data;
     }
 
-    public void setData(List<ReleaseInfo> data) {
+    public void setData(List<OrderInfo> data) {
         this.data = data;
     }
 }

@@ -13,8 +13,8 @@ import com.wills.help.base.App;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.listener.BaseListLoadMoreListener;
 import com.wills.help.release.adapter.ReleaseListAdapter;
-import com.wills.help.release.model.ReleaseInfo;
-import com.wills.help.release.model.ReleaseList;
+import com.wills.help.release.model.OrderInfo;
+import com.wills.help.release.model.OrderList;
 import com.wills.help.release.presenter.ReleaseListPresenterImpl;
 import com.wills.help.release.view.ReleaseListView;
 import com.wills.help.widget.MyItemDecoration;
@@ -37,7 +37,7 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
     ReleaseListAdapter releaseListAdapter;
-    List<ReleaseInfo> releaseInfoList = new ArrayList<>();
+    List<OrderInfo> releaseInfoList = new ArrayList<>();
     ReleaseListPresenterImpl releaseListPresenter;
     private int page = 1;
     private int count = 0;
@@ -109,7 +109,7 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
     }
 
     @Override
-    public void setReleaseList(ReleaseList releaseList) {
+    public void setReleaseList(OrderList releaseList) {
         if (swipeRefreshLayout.isRefreshing()){
             swipeRefreshLayout.setRefreshing(false);
         }

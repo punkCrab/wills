@@ -6,9 +6,10 @@ import com.wills.help.home.model.News;
 import com.wills.help.login.model.OrderType;
 import com.wills.help.login.model.Point;
 import com.wills.help.login.model.User;
-import com.wills.help.release.model.OrderInfo;
+import com.wills.help.person.model.Wallet;
+import com.wills.help.release.model.OrderDetail;
 import com.wills.help.release.model.Release;
-import com.wills.help.release.model.ReleaseList;
+import com.wills.help.release.model.OrderList;
 
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -129,7 +131,7 @@ public interface ApiInterface {
      */
     @POST("getorder")
     @FormUrlEncoded
-    Observable<ReleaseList> getReleaseList(@FieldMap Map<String , String > map);
+    Observable<OrderList> getReleaseList(@FieldMap Map<String , String > map);
 
     /**
      * 获取订单详情
@@ -138,7 +140,7 @@ public interface ApiInterface {
      */
     @POST("getorderbyid")
     @FormUrlEncoded
-    Observable<OrderInfo> getOrderInfo(@FieldMap Map<String , String > map);
+    Observable<OrderDetail> getOrderInfo(@FieldMap Map<String , String > map);
 
     /**
      * 获取订单详情
@@ -149,7 +151,39 @@ public interface ApiInterface {
     @FormUrlEncoded
     Observable<Empty> setUserInfo(@FieldMap Map<String , String > map);
 
+    /**
+     * 上传头像
+     * @param avatar
+     * @param username
+     * @return
+     */
     @Multipart
     @POST("setavatar")
     Observable<Empty> setAvatar(@Part MultipartBody.Part avatar,@Part("userid") RequestBody username);
+
+    /**
+     * 接单
+     * @param map
+     * @return
+     */
+    @POST("accept")
+    @FormUrlEncoded
+    Observable<Empty> accept(@FieldMap Map<String , String > map);
+
+    /**
+     * 接单列表
+     * @param map
+     * @return
+     */
+    @GET("getmaporder")
+    Observable<OrderList> getAssistList(@QueryMap Map<String , String > map);
+
+    /**
+     * 我的钱包
+     * @param map
+     * @return
+     */
+    @POST("getmymoney")
+    @FormUrlEncoded
+    Observable<Wallet> getMoney(@FieldMap Map<String , String > map);
 }

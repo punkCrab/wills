@@ -109,7 +109,6 @@ public class GlideUtils {
         }
         Glide.with(context)
                 .load(resId)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
                 .into(view)
                 .getSize(new SizeReadyCallback() {
@@ -130,8 +129,9 @@ public class GlideUtils {
      */
     public void displayCircleImage(final Context context, String url, ImageView view) {
 
-        Glide.with(context).load(url).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop()
+        Glide.with(context).load(url).asBitmap().centerCrop()
                 .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+                .placeholder(R.drawable.default_circle)
                 .into(new BitmapImageViewTarget(view){
             @Override
             protected void setResource(Bitmap resource) {
@@ -155,7 +155,7 @@ public class GlideUtils {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] bytes=baos.toByteArray();
 
-        Glide.with(context).load(bytes).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().into(new BitmapImageViewTarget(view){
+        Glide.with(context).load(bytes).asBitmap().centerCrop().placeholder(R.drawable.default_circle).into(new BitmapImageViewTarget(view){
             @Override
             protected void setResource(Bitmap resource) {
                 RoundedBitmapDrawable circularBitmapDrawable =
@@ -168,7 +168,7 @@ public class GlideUtils {
 
     public void displayCircleImage(final Context context, @DrawableRes int resId, ImageView view) {
 
-        Glide.with(context).load(resId).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().into(new BitmapImageViewTarget(view){
+        Glide.with(context).load(resId).asBitmap().centerCrop().placeholder(R.drawable.default_circle).into(new BitmapImageViewTarget(view){
             @Override
             protected void setResource(Bitmap resource) {
                 RoundedBitmapDrawable circularBitmapDrawable =

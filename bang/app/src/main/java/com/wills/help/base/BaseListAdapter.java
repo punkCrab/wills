@@ -32,6 +32,7 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
     private Context context;
     private View view;
     private BaseListLoadMoreListener.LoadMoreListener loadMoreListener;
+    protected BaseItemClickListener baseItemClickListener;
 
     public BaseListAdapter(Context context) {
         this.context = context;
@@ -147,4 +148,12 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
 
     protected abstract RecyclerView.ViewHolder CreateViewHolder(ViewGroup parent, int viewType);
     protected abstract void BindViewHolder(RecyclerView.ViewHolder holder, int position);
+
+    public void setBaseItemClickListener(BaseItemClickListener baseItemClickListener) {
+        this.baseItemClickListener = baseItemClickListener;
+    }
+
+    public interface BaseItemClickListener{
+        void onItemClick(int position);
+    }
 }

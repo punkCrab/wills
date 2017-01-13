@@ -16,7 +16,6 @@ import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.listener.AppBarStateChangeListener;
-import com.wills.help.login.ui.LoginActivity;
 import com.wills.help.login.ui.SettingActivity;
 import com.wills.help.message.ui.MessageActivity;
 import com.wills.help.utils.AppConfig;
@@ -183,7 +182,6 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
                 IntentUtils.startActivity(getAppCompatActivity(),IdentificationActivity.class);
                 break;
             case R.id.tv_public:
-                IntentUtils.startActivity(getAppCompatActivity(),LoginActivity.class);
                 break;
             case R.id.tv_wallet:
                 IntentUtils.startActivity(getAppCompatActivity(),WalletActivity.class);

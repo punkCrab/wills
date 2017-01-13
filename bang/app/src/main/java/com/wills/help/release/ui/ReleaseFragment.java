@@ -120,7 +120,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
                         addressId = new String[pointInfos.size()];
                         for (int i = 0; i < pointInfos.size(); i++) {
                             address[i] = pointInfos.get(i).getPosname();
-                            addressId[i] = pointInfos.get(i).getPosname();
+                            addressId[i] = pointInfos.get(i).getPosid();
                         }
                     }
                 })
@@ -186,6 +186,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
         map.put("desid", desId);
         map.put("desdetail", et_release_send_address.getText().toString());
         map.put("money", et_release_money.getText().toString());
+        map.put("maintype", "0");//默认订单
         return map;
     }
 

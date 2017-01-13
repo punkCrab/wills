@@ -69,7 +69,7 @@ public class App extends MultiDexApplication {
 
     public UserObserver getUserObserver() {
         if (userObserver == null){
-            userObserver = new UserObserver(getUser());
+            userObserver = new UserObserver(getApp());
         }
         return userObserver;
     }

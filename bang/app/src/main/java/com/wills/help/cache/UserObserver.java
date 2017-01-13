@@ -1,6 +1,6 @@
 package com.wills.help.cache;
 
-import com.wills.help.login.model.User;
+import com.wills.help.base.App;
 
 import java.util.Observable;
 
@@ -12,9 +12,9 @@ import java.util.Observable;
 
 public class UserObserver extends Observable{
 
-    private User.UserInfo userInfo;
-    public UserObserver(User.UserInfo userInfo) {
-        this.userInfo = userInfo;
+    private App app;
+    public UserObserver(App app) {
+        this.app = app;
     }
 
     @Override

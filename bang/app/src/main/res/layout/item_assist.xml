@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_assist_state"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:drawableLeft="@drawable/assist_location"
             android:drawablePadding="5dp"
             android:text="定位地点：北交大南门"
@@ -87,7 +87,7 @@
             android:layout_marginTop="5dp"
             android:drawableLeft="@drawable/release_time"
             android:drawablePadding="5dp"
-            android:text="截止时间至11-11日"
+            android:text="发布时间11-11日"
             android:textColor="@color/textPrimary"
             android:textSize="12sp" />
 
@@ -102,14 +102,23 @@
             android:textColor="@color/orange"
             android:textSize="16sp" />
 
+        <ImageView
+            android:id="@+id/iv_assist_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/release_msg" />
+
         <TextView
             android:id="@+id/tv_assist_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/tv_assist_time"
             android:layout_alignParentRight="true"
-            android:text="进行中"
+            android:text="@string/release_state_evaluation"
             android:textColor="@color/colorPrimary"
+            android:background="@drawable/release_shape"
             android:textSize="12sp" />
 
     </RelativeLayout>

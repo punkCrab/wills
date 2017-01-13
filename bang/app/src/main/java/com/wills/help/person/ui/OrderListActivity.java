@@ -11,8 +11,8 @@ import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.listener.BaseListLoadMoreListener;
 import com.wills.help.person.adapter.OrderAdapter;
-import com.wills.help.release.model.ReleaseInfo;
-import com.wills.help.release.model.ReleaseList;
+import com.wills.help.release.model.OrderInfo;
+import com.wills.help.release.model.OrderList;
 import com.wills.help.release.presenter.ReleaseListPresenterImpl;
 import com.wills.help.release.view.ReleaseListView;
 import com.wills.help.widget.MyItemDecoration;
@@ -34,7 +34,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     RecyclerView recyclerView;
     OrderAdapter orderAdapter;
     LinearLayoutManager linearLayoutManager;
-    List<ReleaseInfo> orderArrayList = new ArrayList<>();
+    List<OrderInfo> orderArrayList = new ArrayList<>();
     private ReleaseListPresenterImpl releaseListPresenter;
     private int page = 1;
     private int action = 0;
@@ -61,7 +61,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new MyItemDecoration(context,5));
-        orderAdapter = new OrderAdapter(context,orderArrayList);
+        orderAdapter = new OrderAdapter(context,orderArrayList,type,action);
         recyclerView.setAdapter(orderAdapter);
         BaseListLoadMoreListener listLoadMore = new BaseListLoadMoreListener(linearLayoutManager,orderAdapter);
         recyclerView.addOnScrollListener(listLoadMore);
@@ -102,7 +102,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     }
 
     @Override
-    public void setReleaseList(ReleaseList releaseList) {
+    public void setReleaseList(OrderList releaseList) {
         if (swipeRefreshLayout.isRefreshing()){
             swipeRefreshLayout.setRefreshing(false);
         }

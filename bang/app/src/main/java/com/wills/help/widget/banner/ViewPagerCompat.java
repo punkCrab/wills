@@ -1805,7 +1805,7 @@ public class ViewPagerCompat extends ViewGroup {
 
         // Always take care of the touch gesture being complete.
         if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
-            // ReleaseInfo the drag.
+            // OrderInfo the drag.
             if (DEBUG) Log.v(TAG, "Intercept done!");
             mIsBeingDragged = false;
             mIsUnableToDrag = false;

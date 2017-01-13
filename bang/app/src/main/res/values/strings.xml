@@ -22,7 +22,9 @@
     <string name="avatar">头像</string>
     <string name="nickname">昵称</string>
     <string name="nickname_change_des">好名字可以让你的朋友更容易记住你。</string>
+    <string name="school_change_des">请填写正确的学校名称，说不定还可以找到校友哦。</string>
     <string name="nickname_change">更改名字</string>
+    <string name="school_change">更改学校</string>
     <string name="phone">手机号</string>
     <string name="sex">性别</string>
     <string name="school">学校</string>
@@ -79,6 +81,7 @@
     <string name="release_state_arrive">已送达</string>
     <string name="release_state_complete">已完成</string>
     <string name="release_state_evaluation">评价</string>
+    <string name="release_state_evaluated">已评价</string>
     <string name="release_state_change">修改</string>
     <string name="release_state_ok">确认收货</string>
     <string name="release_free">免费为你解邮</string>
