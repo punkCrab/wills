@@ -20,9 +20,6 @@ public class AppConfig {
     public static final int CAMERA = 102;
     public static final int PREV = 103;
 
-    public static final int CACHE_VERSION = 1;
-//    public static final long CACHE_TIME = 30*24*60*60*1000;
-    public static final String CACHE_DIR = "/wills/user";
     public static final String SP_USER = "sp_user";
 
     public static final String KEYBOARD = "keyboard_height";

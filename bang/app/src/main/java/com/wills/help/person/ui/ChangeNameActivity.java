@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
+import com.wills.help.db.manager.UserInfoHelper;
 import com.wills.help.person.presenter.UserInfoPresenterImpl;
 import com.wills.help.person.view.UserInfoView;
 
@@ -84,6 +85,7 @@ public class ChangeNameActivity extends BaseActivity implements UserInfoView{
         }else if (action == 2){
             App.getApp().getUser().setSchool(et_name.getText().toString());
         }
+        UserInfoHelper.getInstance().updateData(App.getApp().getUser()).subscribe();
         Intent intent = new Intent();
         intent.putExtra("name",et_name.getText().toString());
         setResult(RESULT_OK,intent);

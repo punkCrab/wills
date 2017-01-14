@@ -102,7 +102,7 @@ public interface ApiInterface {
     Observable<Express> getExpress(@FieldMap Map<String , String > map);
 
     /**
-     * banner
+     * Banner.java
      * @return
      */
     @GET("bannerlist")

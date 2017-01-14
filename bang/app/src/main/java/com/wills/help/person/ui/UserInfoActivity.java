@@ -1,5 +1,6 @@
 package com.wills.help.person.ui;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
+import com.wills.help.db.manager.UserInfoHelper;
 import com.wills.help.net.HttpManager;
 import com.wills.help.person.presenter.UserInfoPresenterImpl;
 import com.wills.help.person.view.UserInfoView;
@@ -21,10 +23,15 @@ import com.wills.help.photo.ui.PhotoSelectorActivity;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.ToastUtils;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
+import kr.co.namee.permissiongen.PermissionFail;
+import kr.co.namee.permissiongen.PermissionGen;
+import kr.co.namee.permissiongen.PermissionSuccess;
 
 /**
  * com.wills.help.person.ui
@@ -85,9 +92,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.rl_avatar:
-                Bundle bundle = new Bundle();
-                bundle.putInt("action", AppConfig.AVATAR);
-                IntentUtils.startActivityForResult(UserInfoActivity.this, PhotoSelectorActivity.class,bundle,AppConfig.AVATAR);
+                selectPicFromLocal();
                 break;
             case R.id.rl_nickname:
                 Bundle bundle1 = new Bundle();
@@ -160,11 +165,32 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     public void setUserInfo() {
         tv_sex.setText(sex[sexIndex]);
         App.getApp().getUser().setSex(sexIndex+1+"");
+        UserInfoHelper.getInstance().updateData(App.getApp().getUser()).subscribe();
     }
 
     @Override
     public void setAvatar() {
         GlideUtils.getInstance().displayCircleImage(context,bitmap,iv_avatar);
         file.delete();
+    }
+
+    protected void selectPicFromLocal() {
+        PermissionGen.with(this)
+                .addRequestCode(120)
+                .permissions(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                .request();
+    }
+    @PermissionSuccess(requestCode = 120)
+    public void picSuccess(){
+        Bundle bundle = new Bundle();
+        bundle.putInt("action", AppConfig.AVATAR);
+        IntentUtils.startActivityForResult(UserInfoActivity.this, PhotoSelectorActivity.class,bundle,AppConfig.AVATAR);
+    }
+    @PermissionFail(requestCode = 120)
+    public void picFail(){
+        ToastUtils.toast("permission is not granted");
     }
 }

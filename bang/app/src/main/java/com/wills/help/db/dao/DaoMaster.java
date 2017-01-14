@@ -24,6 +24,7 @@ public class DaoMaster extends AbstractDaoMaster {
         ContactDao.createTable(db, ifNotExists);
         OrderTypeInfoDao.createTable(db, ifNotExists);
         PointInfoDao.createTable(db, ifNotExists);
+        UserInfoDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
@@ -31,6 +32,7 @@ public class DaoMaster extends AbstractDaoMaster {
         ContactDao.dropTable(db, ifExists);
         OrderTypeInfoDao.dropTable(db, ifExists);
         PointInfoDao.dropTable(db, ifExists);
+        UserInfoDao.dropTable(db, ifExists);
     }
 
     /**
@@ -52,6 +54,7 @@ public class DaoMaster extends AbstractDaoMaster {
         registerDaoClass(ContactDao.class);
         registerDaoClass(OrderTypeInfoDao.class);
         registerDaoClass(PointInfoDao.class);
+        registerDaoClass(UserInfoDao.class);
     }
 
     public DaoSession newSession() {

@@ -3,15 +3,16 @@ package com.wills.help.base;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
-import com.wills.help.cache.UserCache;
-import com.wills.help.cache.UserObserver;
-import com.wills.help.login.model.User;
+import com.wills.help.db.bean.UserInfo;
+import com.wills.help.db.manager.UserInfoHelper;
 import com.wills.help.message.controller.EaseUI;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.SharedPreferencesUtils;
 
 import java.util.Observable;
 import java.util.Observer;
+
+import rx.Subscriber;
 
 /**
  * com.wills.help
@@ -21,9 +22,7 @@ import java.util.Observer;
 
 public class App extends MultiDexApplication {
     private static App app;
-    private static User.UserInfo user;
-    private UserObserver userObserver;
-    private UserCache userCache;
+    private static UserInfo user;
     private static boolean isLogin = false;
 
     @Override
@@ -32,48 +31,45 @@ public class App extends MultiDexApplication {
         app = (App) getApplicationContext();
         EaseUI.getInstance().init(app,null);
         user = getUser();
-        getUserObserver().addObserver(new ObserverUser());
     }
 
     public static App getApp(){
         return app;
     }
 
-    public User.UserInfo getUser() {
+    public UserInfo getUser() {
         if (user == null){
-            String username = (String) SharedPreferencesUtils.getInstance().get(AppConfig.SP_USER,"");
-            if (!TextUtils.isEmpty(username)){
-                if (userCache == null){
-                    userCache = new UserCache(app);
-                }
-                user = userCache.get(username);
+            String userId = (String) SharedPreferencesUtils.getInstance().get(AppConfig.SP_USER,"");
+            if (!TextUtils.isEmpty(userId)){
+                UserInfoHelper.getInstance().queryByUserId(userId).subscribe(new Subscriber<UserInfo>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(UserInfo userInfo) {
+                        user = userInfo;
+                    }
+                });
             }
         }
         return user;
     }
 
-    public void setUser(User.UserInfo user) {
-        App.user = user;
-        if (userCache == null){
-            userCache = new UserCache(app);
-        }
-        userCache.put(user.getUserid(),user);
+    public void setUser(UserInfo user) {
+        this.user = user;
+        UserInfoHelper.getInstance().insertData(user).subscribe();
     }
 
     public void removeUser(){
-        if (userCache == null){
-            userCache = new UserCache(app);
-        }
-        userCache.remove(user.getUserid());
+        UserInfoHelper.getInstance().deleteData(user).subscribe();
     }
-
-    public UserObserver getUserObserver() {
-        if (userObserver == null){
-            userObserver = new UserObserver(getApp());
-        }
-        return userObserver;
-    }
-
     public void setIsLogin(boolean isLogin){
         App.isLogin = isLogin;
     }
@@ -88,11 +84,4 @@ public class App extends MultiDexApplication {
         setIsLogin(false);
     }
 
-    private class ObserverUser implements Observer{
-
-        @Override
-        public void update(Observable observable, Object o) {
-            setUser((User.UserInfo) o);
-        }
-    }
 }

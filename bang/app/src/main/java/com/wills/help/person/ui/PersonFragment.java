@@ -79,7 +79,6 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void initData(Bundle savedInstanceState) {
         context = getAppCompatActivity().getApplicationContext();
-        GlideUtils.getInstance().displayCircleImage(context, App.getApp().getUser().getAvatar(), imageView);
         toolbar.inflateMenu(R.menu.menu_person);
         tv_release_check.setOnClickListener(this);
         tv_release.setOnClickListener(this);
@@ -94,8 +93,11 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
         tv_identification.setOnClickListener(this);
         tv_public.setOnClickListener(this);
         tv_wallet.setOnClickListener(this);
-        tv_name.setText(App.getApp().getUser().getNickname());
-        tv_school.setText(App.getApp().getUser().getSchool());
+        if (App.getApp().getIsLogin()){
+            GlideUtils.getInstance().displayCircleImage(context, App.getApp().getUser().getAvatar(), imageView);
+            tv_name.setText(App.getApp().getUser().getNickname());
+            tv_school.setText(App.getApp().getUser().getSchool());
+        }
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
