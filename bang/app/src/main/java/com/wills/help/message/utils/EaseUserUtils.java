@@ -4,63 +4,84 @@ import android.content.Context;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.wills.help.R;
-import com.wills.help.message.controller.EaseUI;
+import com.wills.help.base.App;
+import com.wills.help.db.bean.Contact;
+import com.wills.help.db.manager.ContactHelper;
 import com.wills.help.message.domain.EaseUser;
+import com.wills.help.utils.GlideUtils;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class EaseUserUtils {
     
-    static EaseUI.EaseUserProfileProvider userProvider;
-    
-    static {
-        userProvider = EaseUI.getInstance().getUserProfileProvider();
-    }
-    
-    /**
-     * get EaseUser according username
-     * @param username
-     * @return
-     */
-    public static EaseUser getUserInfo(String username){
-        if(userProvider != null)
-            return userProvider.getUser(username);
-        
-        return null;
-    }
-    
-    /**
-     * set user avatar
-     * @param username
-     */
-    public static void setUserAvatar(Context context, String username, ImageView imageView){
-    	EaseUser user = getUserInfo(username);
-        if(user != null && user.getAvatar() != null){
-            try {
-                int avatarResId = Integer.parseInt(user.getAvatar());
-                Glide.with(context).load(avatarResId).into(imageView);
-            } catch (Exception e) {
-                //use default avatar
-                Glide.with(context).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ease_default_avatar).into(imageView);
-            }
-        }else{
-            Glide.with(context).load(R.drawable.ease_default_avatar).into(imageView);
+
+    public static void setUserAvatar(final Context context, String username, final ImageView imageView){
+        if (username.equals(App.getApp().getUser().getUsername())){
+            GlideUtils.getInstance().displayImage(context,App.getApp().getUser().getAvatar(),imageView);
+        }else {
+            ContactHelper.getInstance().queryByUsername(username).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<Contact>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(Contact contact) {
+                            if (contact!=null){
+                                GlideUtils.getInstance().displayImage(context,contact.getAvatar(),imageView);
+                            }
+                        }
+                    });
         }
     }
-    
-    /**
-     * set user's nickname
-     */
-    public static void setUserNick(String username,TextView textView){
-        if(textView != null){
-        	EaseUser user = getUserInfo(username);
-        	if(user != null && user.getNick() != null){
-        		textView.setText(user.getNick());
-        	}else{
-        		textView.setText(username);
-        	}
+
+    public static void setAvatar2NickName(final Context context, String username, final ImageView imageView, final TextView textView){
+        if (username.equals(App.getApp().getUser().getUsername())){
+            GlideUtils.getInstance().displayImage(context,App.getApp().getUser().getAvatar(),imageView);
+            textView.setText(App.getApp().getUser().getNickname());
+        }else {
+            ContactHelper.getInstance().queryByUsername(username).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<Contact>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(Contact contact) {
+                            if (contact!=null){
+                                GlideUtils.getInstance().displayImage(context,contact.getAvatar(),imageView);
+                                textView.setText(contact.getNickname());
+                            }
+                        }
+                    });
         }
     }
-    
+
+    public static EaseUser getEaseUser(String username){
+        EaseUser easeUser = new EaseUser(username);
+        Contact contact = ContactHelper.getInstance().queryByUser(username);
+        if (contact!=null){
+            easeUser.setAvatar(contact.getAvatar());
+            easeUser.setNickname(contact.getNickname());
+            easeUser.setNick(contact.getNickname());
+        }
+        return easeUser;
+    }
+
 }

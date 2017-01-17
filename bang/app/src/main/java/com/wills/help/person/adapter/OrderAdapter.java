@@ -1,6 +1,7 @@
 package com.wills.help.person.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -65,22 +66,33 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
             }else {
                 ((OrderHolder)holder).iv_assist_msg.setVisibility(View.INVISIBLE);
             }
-            ((OrderHolder)holder).tv_assist_location.setText(orderInfo.getSrcdetail());
-            ((OrderHolder)holder).tv_assist_address.setText(orderInfo.getDesdetail());
+            Drawable drawable =null;
+            if (orderInfo.getReleasesex().equals("1")){
+                drawable = context.getResources().getDrawable(R.drawable.sex_girl);
+            }else if (orderInfo.getReleasesex().equals("2")){
+                drawable = context.getResources().getDrawable(R.drawable.sex_boy);
+            }
+            drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
+            ((OrderHolder)holder).tv_name.setCompoundDrawables(drawable,null,null,null);
+            ((OrderHolder)holder).tv_assist_location.setText(orderInfo.getSrcname()+orderInfo.getSrcdetail());
+            ((OrderHolder)holder).tv_assist_address.setText(orderInfo.getDesname()+orderInfo.getDesdetail());
             ((OrderHolder)holder).tv_assist_time.setText(orderInfo.getCreatetime());
             ((OrderHolder)holder).tv_assist_money.setText(orderInfo.getMoney()+context.getString(R.string.yuan));
-            ((OrderHolder)holder).iv_assist_msg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Bundle bundle = new Bundle();
-                    if (mainType == 0){
-                        bundle.putString(EaseConstant.EXTRA_USER_ID,orderInfo.getAcceptusername());
-                    }else if (mainType == 1){
+            if (mainType == 0){
+                ((OrderHolder)holder).iv_assist_msg.setVisibility(View.INVISIBLE);
+            }else if (mainType == 1){
+                ((OrderHolder)holder).iv_assist_msg.setVisibility(View.VISIBLE);
+                ((OrderHolder)holder).iv_assist_msg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bundle bundle = new Bundle();
                         bundle.putString(EaseConstant.EXTRA_USER_ID,orderInfo.getReleaseusername());
+                        bundle.putString(EaseConstant.EXTRA_USER_AVATAR,orderInfo.getReleaseavatar());
+                        bundle.putString(EaseConstant.EXTRA_USER_NAME,orderInfo.getReleasenickname());
+                        IntentUtils.startActivity(context,ChatActivity.class,bundle);
                     }
-                    IntentUtils.startActivity(context,ChatActivity.class,bundle);
-                }
-            });
+                });
+            }
             if (orderInfo.getStateid().equals("3")){
                 ((OrderHolder)holder).tv_assist_progress.setVisibility(View.VISIBLE);
                 ((OrderHolder)holder).tv_assist_progress.setText(context.getString(R.string.release_state_evaluation));

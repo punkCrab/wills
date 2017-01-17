@@ -12,25 +12,19 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class Contact {
     @Id
-    private long id;
     private String username;
-    private String truename;
+    private String nickname;
+    private String sex;
     private String avatar;
-    @Generated(hash = 471636615)
-    public Contact(long id, String username, String truename, String avatar) {
-        this.id = id;
+    @Generated(hash = 829585389)
+    public Contact(String username, String nickname, String sex, String avatar) {
         this.username = username;
-        this.truename = truename;
+        this.nickname = nickname;
+        this.sex = sex;
         this.avatar = avatar;
     }
     @Generated(hash = 672515148)
     public Contact() {
-    }
-    public long getId() {
-        return this.id;
-    }
-    public void setId(long id) {
-        this.id = id;
     }
     public String getUsername() {
         return this.username;
@@ -38,11 +32,17 @@ public class Contact {
     public void setUsername(String username) {
         this.username = username;
     }
-    public String getTruename() {
-        return this.truename;
+    public String getNickname() {
+        return this.nickname;
     }
-    public void setTruename(String truename) {
-        this.truename = truename;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+    public String getSex() {
+        return this.sex;
+    }
+    public void setSex(String sex) {
+        this.sex = sex;
     }
     public String getAvatar() {
         return this.avatar;

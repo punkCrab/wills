@@ -14,8 +14,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/home_express_count"
+            android:drawableLeft="@drawable/express_icon"
+            android:drawablePadding="5dp"
             android:textColor="@color/textPrimary"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_more"

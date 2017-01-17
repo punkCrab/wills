@@ -16,6 +16,7 @@ import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.db.manager.UserInfoHelper;
 import com.wills.help.net.HttpManager;
+import com.wills.help.person.model.Avatar;
 import com.wills.help.person.presenter.UserInfoPresenterImpl;
 import com.wills.help.person.view.UserInfoView;
 import com.wills.help.photo.model.CameraUtils;
@@ -169,8 +170,10 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void setAvatar() {
+    public void setAvatar(Avatar.AvatarUrl avatar) {
         GlideUtils.getInstance().displayCircleImage(context,bitmap,iv_avatar);
+        App.getApp().getUser().setAvatar(avatar.getAvatar());
+        UserInfoHelper.getInstance().updateData(App.getApp().getUser()).subscribe();
         file.delete();
     }
 

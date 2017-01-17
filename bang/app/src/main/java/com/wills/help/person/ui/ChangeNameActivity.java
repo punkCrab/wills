@@ -11,6 +11,7 @@ import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.db.manager.UserInfoHelper;
+import com.wills.help.person.model.Avatar;
 import com.wills.help.person.presenter.UserInfoPresenterImpl;
 import com.wills.help.person.view.UserInfoView;
 
@@ -93,7 +94,7 @@ public class ChangeNameActivity extends BaseActivity implements UserInfoView{
     }
 
     @Override
-    public void setAvatar() {
+    public void setAvatar(Avatar.AvatarUrl avatar) {
 
     }
 }

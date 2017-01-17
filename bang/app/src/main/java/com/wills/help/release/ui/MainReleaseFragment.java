@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.hyphenate.chat.EMClient;
 import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.message.ui.MessageActivity;
@@ -20,23 +21,29 @@ import com.wills.help.utils.IntentUtils;
  * 2016/11/8.
  */
 
-public class MainReleaseFragment extends BaseFragment{
+public class MainReleaseFragment extends BaseFragment {
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private Toolbar toolbar;
+    private int tabIndex;
+    private int stateId;
 
-    public static MainReleaseFragment newInstance() {
-        
+    public static MainReleaseFragment newInstance(int tabIndex, int stateId) {
+
         Bundle args = new Bundle();
+        args.putInt("tabIndex", tabIndex);
+        args.putInt("stateId", stateId);
         MainReleaseFragment fragment = new MainReleaseFragment();
         fragment.setArguments(args);
         return fragment;
     }
-    
+
     @Override
     public View initView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.fragment_mainrelease,null);
+        View view = inflater.inflate(R.layout.fragment_mainrelease, null);
+        tabIndex = getArguments().getInt("tabIndex");
+        stateId = getArguments().getInt("stateId");
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         setHasOptionsMenu(true);
 //        toolbar.setTitle(getString(R.string.tab_release));
@@ -49,6 +56,7 @@ public class MainReleaseFragment extends BaseFragment{
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.release_progress)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.release_complete)));
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(tabIndex).select();
         return view;
     }
 
@@ -70,13 +78,43 @@ public class MainReleaseFragment extends BaseFragment{
         });
     }
 
-    private void setViewPager(ViewPager mViewPager){
+    private void setViewPager(ViewPager mViewPager) {
         //Fragment中嵌套使用Fragment一定要使用getChildFragmentManager(),否则会有问题
         PagerAdapter adapter = new PagerAdapter(getChildFragmentManager());
-        adapter.addFragment(ReleaseFragment.newInstance(),getString(R.string.release));
-        adapter.addFragment(ReleaseListFragment.newInstance(0),getString(R.string.release_progress));
-        adapter.addFragment(ReleaseListFragment.newInstance(1),getString(R.string.release_complete));
+        adapter.addFragment(ReleaseFragment.newInstance(stateId), getString(R.string.release));
+        adapter.addFragment(ReleaseListFragment.newInstance(0), getString(R.string.release_progress));
+        adapter.addFragment(ReleaseListFragment.newInstance(1), getString(R.string.release_complete));
         mViewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            changeMsgIcon();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        changeMsgIcon();
+    }
+
+
+    private void changeMsgIcon(){
+        int count = EMClient.getInstance().chatManager().getUnreadMsgsCount();
+        if (count > 0) {
+            if (!toolbar.getMenu().getItem(0).getIcon().equals(getResources().getDrawable(R.drawable.msg_new))){
+                toolbar.getMenu().getItem(0).setIcon(R.drawable.msg_new);
+                toolbar.invalidate();
+            }
+        } else {
+            if (!toolbar.getMenu().getItem(0).getIcon().equals(getResources().getDrawable(R.drawable.msg))){
+                toolbar.getMenu().getItem(0).setIcon(R.drawable.msg);
+                toolbar.invalidate();
+            }
+        }
     }
 
 }

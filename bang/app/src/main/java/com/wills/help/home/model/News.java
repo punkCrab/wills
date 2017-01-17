@@ -62,6 +62,17 @@ public class News {
         private String newsid;
         private String title;
         private String newsurl;
+        private String content;
+        private String createtime;
+        private String state;
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
 
         public String getNewsid() {
             return newsid;
@@ -85,6 +96,22 @@ public class News {
 
         public void setNewsurl(String newsurl) {
             this.newsurl = newsurl;
+        }
+
+        public String getCreatetime() {
+            return createtime;
+        }
+
+        public void setCreatetime(String createtime) {
+            this.createtime = createtime;
+        }
+
+        public String getState() {
+            return state;
+        }
+
+        public void setState(String state) {
+            this.state = state;
         }
     }
 }

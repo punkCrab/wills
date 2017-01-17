@@ -38,7 +38,7 @@ public class ExpressPresenterImpl implements ExpressPresenter{
 
                     @Override
                     public void onNext(Express express) {
-                        expressView.setExpress(express.getData());
+                        expressView.setExpress(express);
                     }
                 });
     }

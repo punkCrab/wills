@@ -13,8 +13,6 @@
  */
 package com.wills.help.message.utils;
 
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -31,7 +29,6 @@ import com.wills.help.message.EaseConstant;
 import com.wills.help.message.domain.EaseUser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class EaseCommonUtils {
 	private static final String TAG = "CommonUtils";
@@ -129,21 +126,6 @@ public class EaseCommonUtils {
     static String getString(Context context, int resId){
         return context.getResources().getString(resId);
     }
-	
-	/**
-	 * get top activity
-	 * @param context
-	 * @return
-	 */
-	public static String getTopActivity(Context context) {
-		ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-		List<RunningTaskInfo> runningTaskInfos = manager.getRunningTasks(1);
-
-		if (runningTaskInfos != null)
-			return runningTaskInfos.get(0).topActivity.getClassName();
-		else
-			return "";
-	}
 	
 	/**
      * set initial letter of according user's nickname( username if no nickname)

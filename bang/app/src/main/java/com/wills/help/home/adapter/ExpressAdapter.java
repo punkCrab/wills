@@ -1,6 +1,6 @@
 package com.wills.help.home.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +23,10 @@ import java.util.List;
  */
 
 public class ExpressAdapter extends BaseListAdapter<Express.ExpressInfo>{
-    private Context context;
+    private Activity context;
     private List<Express.ExpressInfo> list;
 
-    public ExpressAdapter(Context context, List<Express.ExpressInfo> list) {
+    public ExpressAdapter(Activity context, List<Express.ExpressInfo> list) {
         super(context, list);
         this.context = context;
         this.list = list;
@@ -46,7 +46,7 @@ public class ExpressAdapter extends BaseListAdapter<Express.ExpressInfo>{
             ((ExpressHolder)holder).btn_send.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    IntentUtils.startActivity(context,SendActivity.class);
+                    IntentUtils.startActivityForResult(context,SendActivity.class,301);
                 }
             });
         }

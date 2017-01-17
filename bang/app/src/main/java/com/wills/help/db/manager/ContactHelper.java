@@ -32,12 +32,12 @@ public class ContactHelper implements IDBHelper<Contact>{
 
     @Override
     public Observable<Contact> insertData(Contact contact) {
-        return contactDao.rx().insert(contact);
+        return contactDao.rx().insertOrReplace(contact);
     }
 
     @Override
     public Observable<Iterable<Contact>> insertData(List<Contact> list) {
-        return contactDao.rx().insertInTx(list);
+        return contactDao.rx().insertOrReplaceInTx(list);
     }
 
     @Override
@@ -63,5 +63,13 @@ public class ContactHelper implements IDBHelper<Contact>{
     @Override
     public Observable<Contact> updateData(Contact contact) {
         return contactDao.rx().update(contact);
+    }
+
+    public Observable<Contact> queryByUsername(String username){
+        return contactDao.queryBuilder().where(ContactDao.Properties.Username.eq(username)).rx().unique();
+    }
+
+    public Contact queryByUser(String username){
+        return contactDao.queryBuilder().where(ContactDao.Properties.Username.eq(username)).unique();
     }
 }

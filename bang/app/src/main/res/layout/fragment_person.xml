@@ -104,7 +104,7 @@
                         android:layout_centerVertical="true"
                         android:drawablePadding="5dp"
                         android:drawableRight="@drawable/arrow_right"
-                        android:text="@string/person_release_order"
+                        android:text="@string/person_check"
                         android:textColor="@color/textSecondary"
                         android:textSize="16sp" />
 
@@ -204,7 +204,7 @@
                             android:layout_centerVertical="true"
                             android:drawablePadding="5dp"
                             android:drawableRight="@drawable/arrow_right"
-                            android:text="@string/person_release_order"
+                            android:text="@string/person_check"
                             android:textColor="@color/textSecondary"
                             android:textSize="16sp" />
 

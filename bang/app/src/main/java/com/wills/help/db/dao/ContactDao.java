@@ -15,7 +15,7 @@ import com.wills.help.db.bean.Contact;
 /** 
  * DAO for table "CONTACT".
 */
-public class ContactDao extends AbstractDao<Contact, Long> {
+public class ContactDao extends AbstractDao<Contact, String> {
 
     public static final String TABLENAME = "CONTACT";
 
@@ -24,9 +24,9 @@ public class ContactDao extends AbstractDao<Contact, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, long.class, "id", true, "_id");
-        public final static Property Username = new Property(1, String.class, "username", false, "USERNAME");
-        public final static Property Truename = new Property(2, String.class, "truename", false, "TRUENAME");
+        public final static Property Username = new Property(0, String.class, "username", true, "USERNAME");
+        public final static Property Nickname = new Property(1, String.class, "nickname", false, "NICKNAME");
+        public final static Property Sex = new Property(2, String.class, "sex", false, "SEX");
         public final static Property Avatar = new Property(3, String.class, "avatar", false, "AVATAR");
     }
 
@@ -43,9 +43,9 @@ public class ContactDao extends AbstractDao<Contact, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CONTACT\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY NOT NULL ," + // 0: id
-                "\"USERNAME\" TEXT," + // 1: username
-                "\"TRUENAME\" TEXT," + // 2: truename
+                "\"USERNAME\" TEXT PRIMARY KEY NOT NULL ," + // 0: username
+                "\"NICKNAME\" TEXT," + // 1: nickname
+                "\"SEX\" TEXT," + // 2: sex
                 "\"AVATAR\" TEXT);"); // 3: avatar
     }
 
@@ -58,16 +58,20 @@ public class ContactDao extends AbstractDao<Contact, Long> {
     @Override
     protected final void bindValues(DatabaseStatement stmt, Contact entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getId());
  
         String username = entity.getUsername();
         if (username != null) {
-            stmt.bindString(2, username);
+            stmt.bindString(1, username);
         }
  
-        String truename = entity.getTruename();
-        if (truename != null) {
-            stmt.bindString(3, truename);
+        String nickname = entity.getNickname();
+        if (nickname != null) {
+            stmt.bindString(2, nickname);
+        }
+ 
+        String sex = entity.getSex();
+        if (sex != null) {
+            stmt.bindString(3, sex);
         }
  
         String avatar = entity.getAvatar();
@@ -79,16 +83,20 @@ public class ContactDao extends AbstractDao<Contact, Long> {
     @Override
     protected final void bindValues(SQLiteStatement stmt, Contact entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getId());
  
         String username = entity.getUsername();
         if (username != null) {
-            stmt.bindString(2, username);
+            stmt.bindString(1, username);
         }
  
-        String truename = entity.getTruename();
-        if (truename != null) {
-            stmt.bindString(3, truename);
+        String nickname = entity.getNickname();
+        if (nickname != null) {
+            stmt.bindString(2, nickname);
+        }
+ 
+        String sex = entity.getSex();
+        if (sex != null) {
+            stmt.bindString(3, sex);
         }
  
         String avatar = entity.getAvatar();
@@ -98,16 +106,16 @@ public class ContactDao extends AbstractDao<Contact, Long> {
     }
 
     @Override
-    public Long readKey(Cursor cursor, int offset) {
-        return cursor.getLong(offset + 0);
+    public String readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0);
     }    
 
     @Override
     public Contact readEntity(Cursor cursor, int offset) {
         Contact entity = new Contact( //
-            cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // username
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // truename
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // username
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // nickname
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // sex
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // avatar
         );
         return entity;
@@ -115,22 +123,21 @@ public class ContactDao extends AbstractDao<Contact, Long> {
      
     @Override
     public void readEntity(Cursor cursor, Contact entity, int offset) {
-        entity.setId(cursor.getLong(offset + 0));
-        entity.setUsername(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setTruename(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setUsername(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
+        entity.setNickname(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setSex(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setAvatar(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
      }
     
     @Override
-    protected final Long updateKeyAfterInsert(Contact entity, long rowId) {
-        entity.setId(rowId);
-        return rowId;
+    protected final String updateKeyAfterInsert(Contact entity, long rowId) {
+        return entity.getUsername();
     }
     
     @Override
-    public Long getKey(Contact entity) {
+    public String getKey(Contact entity) {
         if(entity != null) {
-            return entity.getId();
+            return entity.getUsername();
         } else {
             return null;
         }
@@ -138,7 +145,7 @@ public class ContactDao extends AbstractDao<Contact, Long> {
 
     @Override
     public boolean hasKey(Contact entity) {
-        throw new UnsupportedOperationException("Unsupported for entities with a non-null key");
+        return entity.getUsername() != null;
     }
 
     @Override

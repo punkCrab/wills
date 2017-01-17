@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.wills.help.R;
+import com.wills.help.base.App;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.base.WebViewActivity;
 import com.wills.help.home.adapter.NewsAdapter;
@@ -131,10 +132,16 @@ public class HomeFragment extends BaseFragment implements HomeView ,SwipeRefresh
                     toolbar.setTitle("");
                     toolbar.setLogo(R.drawable.title);
                     swipeRefreshLayout.setEnabled(false);
+                    if (swipeRefreshLayout.isRefreshing()){
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
                 }else {
                     toolbar.setTitle("");
                     toolbar.setLogo(null);
                     swipeRefreshLayout.setEnabled(false);
+                    if (!swipeRefreshLayout.isRefreshing()){
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
                 }
             }
         });
@@ -224,7 +231,7 @@ public class HomeFragment extends BaseFragment implements HomeView ,SwipeRefresh
         homePresenter.getBanner();
         newsList = new ArrayList<>();
         homePresenter.getNews();
-        if (expressListener!=null){
+        if (expressListener!=null&& App.getApp().getIsLogin()){
             expressListener.expressRefresh();
         }
     }

@@ -14,13 +14,18 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.util.EasyUtils;
 import com.wills.help.R;
 import com.wills.help.assist.ui.AssistFragment;
+import com.wills.help.db.bean.Contact;
+import com.wills.help.db.manager.ContactHelper;
 import com.wills.help.home.ui.HomeFragment;
 import com.wills.help.login.ui.LoginActivity;
+import com.wills.help.message.ContactsView;
 import com.wills.help.message.controller.EaseUI;
+import com.wills.help.message.presenter.ContactsPresenterImpl;
 import com.wills.help.person.ui.PersonFragment;
 import com.wills.help.release.ui.MainReleaseFragment;
 import com.wills.help.utils.AppManager;
@@ -29,9 +34,11 @@ import com.wills.help.utils.ScreenUtils;
 import com.wills.help.utils.ToastUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener{
+public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener , ContactsView{
     private FrameLayout frameLayout;
     private BottomNavigationBar bottomNavigationBar;
     private static ArrayList<Fragment> fragments;
@@ -46,7 +53,11 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private int currentPosition = 0;
     private int prevPosition = 0;
     private RelativeLayout rl_root;
+    private MainReleaseFragment releaseFragment;//用于不同页面跳转展示不同数据时使用。
+    private boolean isRelease = false;//是切换发布需求的
 //    private BottomNavigationItem msgItem;
+    private ContactsPresenterImpl contactsPresenter;
+    Map<String, EMConversation> conversations ;
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setNoActionBarView(R.layout.activity_main);
@@ -56,6 +67,13 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         initBottomNavigationBar();
         stateCheck(savedInstanceState);
         EMClient.getInstance().chatManager().addMessageListener(messageListener);
+        contactsPresenter = new ContactsPresenterImpl(this);
+        if (App.getApp().getIsLogin()){
+            conversations = EMClient.getInstance().chatManager().getAllConversations();
+            if (conversations.size()>0){
+                contactsPresenter.getContacts(getMap());
+            }
+        }
     }
 
     private void initBottomNavigationBar(){
@@ -128,7 +146,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         ArrayList<Fragment> fragments = new ArrayList<>();
         homeFragment = HomeFragment.newInstance();
         fragments.add(homeFragment);
-        mainReleaseFragment = MainReleaseFragment.newInstance();
+        mainReleaseFragment = MainReleaseFragment.newInstance(0,0);
         fragments.add(mainReleaseFragment);
         assistFragment = AssistFragment.newInstance();
         fragments.add(assistFragment);
@@ -139,6 +157,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
     private void switchView(Fragment to , int position){
+        if (isRelease){
+            return;
+        }
         if (currentView != to){
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction transaction = fm.beginTransaction();
@@ -149,6 +170,15 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             }
         }
         currentView = to;
+    }
+
+    private void changeReleaseFragment(int tabIndex,int stateId){
+        releaseFragment = MainReleaseFragment.newInstance(tabIndex,stateId);
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.hide(currentView).add(R.id.fl_content,releaseFragment).commitAllowingStateLoss();
+        currentView = releaseFragment;
+        isRelease = false;
     }
 
 //    private void AddBadge(int number){
@@ -166,7 +196,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         if (fragments !=null){
             currentPosition = position;
             if (position<fragments.size()){
-                if (position ==1 || position ==2){
+                if (position!=0){
                     if (!App.getApp().getIsLogin()){
                         IntentUtils.startActivityForResult(this, LoginActivity.class,LOGIN);
                         return;
@@ -220,9 +250,26 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 bottomNavigationBar.selectTab(currentPosition);
             else if (resultCode==RESULT_CANCELED)
                 bottomNavigationBar.selectTab(prevPosition);
+        } else if (requestCode == 301&&resultCode==RESULT_OK){
+            isRelease = true;
+            bottomNavigationBar.selectTab(1);
+            changeReleaseFragment(1,0);
         }else{
             personFragment.onActivityResult(requestCode,resultCode,data);
         }
+    }
+
+    public BottomNavigationBar getBottomNavigationBar(){
+        if (bottomNavigationBar==null){
+            bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
+        }
+        return bottomNavigationBar;
+    }
+
+    public void jumpReleaseFragment(int position,int stateId){
+        isRelease = true;
+        bottomNavigationBar.selectTab(position);
+        changeReleaseFragment(0,stateId);
     }
 
     EMMessageListener messageListener = new EMMessageListener() {
@@ -263,5 +310,22 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     protected void onDestroy() {
         super.onDestroy();
         EMClient.getInstance().chatManager().removeMessageListener(messageListener);
+    }
+
+    @Override
+    public void setContacts(List<Contact> contactList) {
+        ContactHelper.getInstance().insertData(contactList).subscribe();
+    }
+
+    private Map<String,String> getMap(){
+        String userNames = "";
+        Map<String,String> map = new HashMap<>();
+        for (Map.Entry<String,EMConversation> entry:conversations.entrySet()){
+            if (!entry.getKey().equals("Admin")){
+                userNames+=entry.getKey()+",";
+            }
+        }
+        map.put("usernames",userNames.substring(0,userNames.length()-1));
+        return map;
     }
 }

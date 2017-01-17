@@ -19,6 +19,16 @@ public class Express implements Serializable{
 
     private int state;
     private String info;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     /**
      * id : 1
      * deliveryid : 123456789987246

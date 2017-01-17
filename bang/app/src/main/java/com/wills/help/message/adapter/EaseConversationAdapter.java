@@ -21,7 +21,6 @@ import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.util.DateUtils;
 import com.wills.help.R;
-import com.wills.help.message.domain.EaseUser;
 import com.wills.help.message.model.EaseAtMessageHelper;
 import com.wills.help.message.utils.EaseCommonUtils;
 import com.wills.help.message.utils.EaseSmileUtils;
@@ -118,8 +117,7 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
             holder.name.setText(room != null && !TextUtils.isEmpty(room.getName()) ? room.getName() : username);
             holder.motioned.setVisibility(View.GONE);
         }else {
-            EaseUserUtils.setUserAvatar(getContext(), username, holder.avatar);
-            EaseUserUtils.setUserNick(username, holder.name);
+            EaseUserUtils.setAvatar2NickName(getContext(), username, holder.avatar,holder.name);
             holder.motioned.setVisibility(View.GONE);
         }
 
@@ -239,7 +237,7 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
                     if(group != null){
                         username = group.getGroupName();
                     }else{
-                        EaseUser user = EaseUserUtils.getUserInfo(username);
+//                        EaseUser user = EaseUserUtils.getUserInfo(username);
                         // TODO: not support Nick anymore
 //                        if(user != null && user.getNick() != null)
 //                            username = user.getNick();

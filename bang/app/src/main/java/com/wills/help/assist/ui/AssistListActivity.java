@@ -139,7 +139,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
         builder.setTitle(orderInfo.getState())
                 .setMessage("从：" + orderInfo.getSrcdetail() + "\n"
                         + "到：" + orderInfo.getDesdetail() + "\n"
-                        + "金额：" + orderInfo.getMaintype() + "元")
+                        + "金额：" + orderInfo.getMoney() + "元")
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

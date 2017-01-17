@@ -60,7 +60,7 @@ public class ExpressFragment extends BaseFragment implements ExpressView , HomeF
         if (App.getApp().getIsLogin()){
             expressPresenter.getExpress(getMap());
         }
-        tv_count.setText(String.format(getAppCompatActivity().getString(R.string.home_express_count),String.valueOf(5)));
+        tv_count.setText(String.format(getAppCompatActivity().getString(R.string.home_express_count),String.valueOf(0)));
         linearLayoutManager = new LinearLayoutManager(getAppCompatActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         tv_more.setOnClickListener(new View.OnClickListener() {
@@ -72,11 +72,12 @@ public class ExpressFragment extends BaseFragment implements ExpressView , HomeF
     }
 
     @Override
-    public void setExpress(List<Express.ExpressInfo> express) {
+    public void setExpress(Express express) {
         if (expressList == null){
             expressList = new ArrayList<>();
         }
-        expressList.addAll(express);
+        tv_count.setText(String.format(getAppCompatActivity().getString(R.string.home_express_count),String.valueOf(express.getCount())));
+        expressList.addAll(express.getData());
         adapter = new ExpressAdapter(getAppCompatActivity() ,expressList);
         recyclerView.setAdapter(adapter);
     }

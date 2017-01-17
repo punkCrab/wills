@@ -58,6 +58,15 @@ public class GlideUtils {
                 .into(imageView);
     }
 
+    public void displayImage(Context context, int url, ImageView imageView) {
+        Glide.with(context)
+                .load(url)
+                .placeholder(R.drawable.default_pic)
+                .crossFade()
+                .thumbnail(0.1f)
+                .into(imageView);
+    }
+
     public void displayImage(Context context, Uri uri, ImageView imageView) {
         Glide.with(context)
                 .load(uri)

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.wills.help.R;
-import com.wills.help.release.model.Evaluation;
+import com.wills.help.release.model.Appraise;
 
 import java.util.List;
 
@@ -18,12 +18,12 @@ import java.util.List;
  * 2017/1/11.
  */
 
-public class EvaluationLabelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class AppraiseLabelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private Context context;
-    private List<Evaluation> list;
-
-    public EvaluationLabelAdapter(Context context, List<Evaluation> list) {
+    private List<Appraise.Label> list;
+    private LabelItemOnClickListener labelItemOnClickListener;
+    public AppraiseLabelAdapter(Context context, List<Appraise.Label> list) {
         this.context = context;
         this.list = list;
     }
@@ -35,14 +35,22 @@ public class EvaluationLabelAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Evaluation evaluation = list.get(position);
-        ((EvaluationHolder)holder).textView.setText(evaluation.getName());
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        final Appraise.Label label = list.get(position);
+        ((EvaluationHolder)holder).textView.setText(label.getAppraiselabel());
         ((EvaluationHolder)holder).textView.setBackgroundResource(R.drawable.label_false);
         ((EvaluationHolder)holder).textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setBackgroundResource(R.drawable.label_true);
+                if (label.getSelect() == 0){
+                    view.setBackgroundResource(R.drawable.label_true);
+                    label.setSelect(1);
+                    labelItemOnClickListener.onLabelItemClick(position,true);
+                }else {
+                    view.setBackgroundResource(R.drawable.label_false);
+                    label.setSelect(0);
+                    labelItemOnClickListener.onLabelItemClick(position,false);
+                }
             }
         });
     }
@@ -58,5 +66,13 @@ public class EvaluationLabelAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.tv_label);
         }
+    }
+
+    public void setLabelItemOnClickListener(LabelItemOnClickListener labelItemOnClickListener) {
+        this.labelItemOnClickListener = labelItemOnClickListener;
+    }
+
+    public interface LabelItemOnClickListener{
+        void onLabelItemClick(int position , boolean isSelect);
     }
 }

@@ -1,6 +1,7 @@
 package com.wills.help.release.presenter;
 
 import com.wills.help.net.ApiSubscriber;
+import com.wills.help.net.Empty;
 import com.wills.help.release.model.Release;
 import com.wills.help.release.model.ReleaseModel;
 import com.wills.help.release.view.ReleaseView;
@@ -39,6 +40,24 @@ public class ReleasePresenterImpl implements ReleasePresenter{
                     @Override
                     public void onNext(Release release) {
                         releaseView.setRelease(release.getData());
+                    }
+                });
+    }
+
+    @Override
+    public void updateOrder(Map<String, String> map) {
+        releaseModel.updateOrder(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiSubscriber<Empty>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onNext(Empty empty) {
+                        releaseView.updateOrder();
                     }
                 });
     }

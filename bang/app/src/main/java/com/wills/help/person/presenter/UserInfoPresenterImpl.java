@@ -2,6 +2,7 @@ package com.wills.help.person.presenter;
 
 import com.wills.help.net.ApiSubscriber;
 import com.wills.help.net.Empty;
+import com.wills.help.person.model.Avatar;
 import com.wills.help.person.model.UserInfoModel;
 import com.wills.help.person.view.UserInfoView;
 
@@ -49,15 +50,15 @@ public class UserInfoPresenterImpl implements UserInfoPresenter{
         userInfoModel.setAvatar(avatar,userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiSubscriber<Empty>() {
+                .subscribe(new ApiSubscriber<Avatar>() {
                     @Override
                     public void onCompleted() {
 
                     }
 
                     @Override
-                    public void onNext(Empty empty) {
-                        userInfoView.setAvatar();
+                    public void onNext(Avatar avatar) {
+                        userInfoView.setAvatar(avatar.getData());
                     }
                 });
     }

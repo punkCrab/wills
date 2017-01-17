@@ -1,12 +1,14 @@
 package com.wills.help.release.model;
 
+import java.io.Serializable;
+
 /**
  * com.wills.help.release.model
  * Created by lizhaoyong
  * 2016/11/14.
  */
 
-public class OrderInfo {
+public class OrderInfo implements Serializable{
     private String orderid;
     private String ordertype;
     private String maintype;
@@ -16,8 +18,10 @@ public class OrderInfo {
     private String releasenickname;
     private String releaseschool;
     private String srcid;
+    private String srcname;
     private String srcdetail;
     private String desid;
+    private String desname;
     private String desdetail;
     private String money;
     private String createtime;
@@ -27,6 +31,22 @@ public class OrderInfo {
     private String acceptsex;
     private String acceptnickname;
     private String acceptavatar;
+
+    public String getSrcname() {
+        return srcname;
+    }
+
+    public void setSrcname(String srcname) {
+        this.srcname = srcname;
+    }
+
+    public String getDesname() {
+        return desname;
+    }
+
+    public void setDesname(String desname) {
+        this.desname = desname;
+    }
 
     public String getOrderid() {
         return orderid;

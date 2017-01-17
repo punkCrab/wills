@@ -62,8 +62,8 @@ public class EaseAtMessageHelper {
         synchronized (toAtUserList) {
             for(String username : toAtUserList){
                 String nick = username;
-                if(EaseUserUtils.getUserInfo(username) != null){
-                    EaseUser user = EaseUserUtils.getUserInfo(username);
+                if(EaseUserUtils.getEaseUser(username) != null){
+                    EaseUser user = EaseUserUtils.getEaseUser(username);
                     if (user != null) {
                         nick = user.getNick();
                     }
@@ -97,8 +97,8 @@ public class EaseAtMessageHelper {
             List<String> list = null;
             for(String username : toAtUserList){
                 String nick = username;
-                if(EaseUserUtils.getUserInfo(username) != null){
-                    EaseUser user = EaseUserUtils.getUserInfo(username);
+                if(EaseUserUtils.getEaseUser(username) != null){
+                    EaseUser user = EaseUserUtils.getEaseUser(username);
                     if (user != null) {
                         nick = user.getNick();
                     }
@@ -183,7 +183,7 @@ public class EaseAtMessageHelper {
     }
     
     public boolean isAtMeMsg(EMMessage message){
-        EaseUser user = EaseUserUtils.getUserInfo(message.getFrom());
+        EaseUser user = EaseUserUtils.getEaseUser(message.getFrom());
         if(user != null){
             try {
                 JSONArray jsonArray = message.getJSONArrayAttribute(EaseConstant.MESSAGE_ATTR_AT_MSG);

@@ -2,8 +2,6 @@ package com.wills.help.home.view;
 
 import com.wills.help.home.model.Express;
 
-import java.util.List;
-
 /**
  * com.wills.help.home.view
  * Created by lizhaoyong
@@ -11,5 +9,5 @@ import java.util.List;
  */
 
 public interface ExpressView {
-    void setExpress(List<Express.ExpressInfo> express);
+    void setExpress(Express express);
 }

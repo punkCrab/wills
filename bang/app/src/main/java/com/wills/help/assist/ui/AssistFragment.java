@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.hyphenate.chat.EMClient;
 import com.wills.help.R;
 import com.wills.help.assist.adapter.MapAdapter;
 import com.wills.help.base.BaseFragment;
@@ -78,5 +79,35 @@ public class AssistFragment extends BaseFragment implements MapAdapter.MapItemCl
         Bundle bundle = new Bundle();
         bundle.putInt("mapId",images[position]);
         IntentUtils.startActivity(getAppCompatActivity(),AssistActivity.class,bundle);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            changeMsgIcon();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        changeMsgIcon();
+    }
+
+
+    private void changeMsgIcon(){
+        int count = EMClient.getInstance().chatManager().getUnreadMsgsCount();
+        if (count > 0) {
+            if (!toolbar.getMenu().getItem(0).getIcon().equals(getResources().getDrawable(R.drawable.msg_new))){
+                toolbar.getMenu().getItem(0).setIcon(R.drawable.msg_new);
+                toolbar.invalidate();
+            }
+        } else {
+            if (!toolbar.getMenu().getItem(0).getIcon().equals(getResources().getDrawable(R.drawable.msg))){
+                toolbar.getMenu().getItem(0).setIcon(R.drawable.msg);
+                toolbar.invalidate();
+            }
+        }
     }
 }

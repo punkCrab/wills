@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:background="@null"
-                android:text="@string/id_sno"
+                android:hint="@string/id_sno"
                 android:textColor="@color/textSecondary"
                 android:textSize="16sp" />
         </LinearLayout>

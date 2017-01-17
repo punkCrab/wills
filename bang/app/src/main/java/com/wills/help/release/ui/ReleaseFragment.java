@@ -55,11 +55,12 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
     String[] stateId;
     String[] address;
     String[] addressId;
+    private int orderIndex;
 
-    public static ReleaseFragment newInstance() {
+    public static ReleaseFragment newInstance(int stateId) {
 
         Bundle args = new Bundle();
-
+        args.putInt("stateId",stateId);
         ReleaseFragment fragment = new ReleaseFragment();
         fragment.setArguments(args);
         return fragment;
@@ -80,6 +81,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        orderIndex = getArguments().getInt("stateId",0);
         releasePresenter = new ReleasePresenterImpl(this);
         initListener();
         OrderTypeInfoHelper.getInstance().queryAll()
@@ -99,7 +101,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
                 .subscribe(new Subscriber<List<OrderTypeInfo>>() {
                     @Override
                     public void onCompleted() {
-                        tv_release_state.setText(state[0]);
+                        tv_release_state.setText(state[orderIndex]);
                     }
 
                     @Override
@@ -132,7 +134,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
                         //初始化
                         tv_release_from.setText(address[0]);
                         tv_release_send.setText(address[0]);
-                        orderType = stateId[0];
+                        orderType = stateId[orderIndex];
                         srcId = addressId[0];
                         desId = addressId[0];
                     }
@@ -228,6 +230,11 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
         Bundle bundle = new Bundle();
         bundle.putString("orderId",order.getOrderid());
         IntentUtils.startActivity(getAppCompatActivity(), PayActivity.class,bundle);
+    }
+
+    @Override
+    public void updateOrder() {
+
     }
 
     public class EditTextChange implements TextWatcher {

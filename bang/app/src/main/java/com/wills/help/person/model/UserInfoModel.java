@@ -21,7 +21,7 @@ public class UserInfoModel {
         return HttpManager.getApiInterface().setUserInfo(map);
     }
 
-    public Observable<Empty> setAvatar(MultipartBody.Part avatar,String userId){
+    public Observable<Avatar> setAvatar(MultipartBody.Part avatar,String userId){
         return HttpManager.getApiInterface().setAvatar(avatar, RequestBody.create(null,userId));
     }
 }

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hyphenate.chat.EMClient;
 import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseFragment;
@@ -151,7 +152,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_release_check:
-                startOrderView(tv_release_check.getText().toString(),0,0);
+                startOrderView(tv_release_check.getText().toString(),-3,0);
                 break;
             case R.id.tv_release:
                 startOrderView(tv_release.getText().toString(),1,0);
@@ -166,7 +167,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
                 startOrderView(tv_release_evaluation.getText().toString(),3,0);
                 break;
             case R.id.tv_assist_check:
-                startOrderView(tv_assist_check.getText().toString(),0,1);
+                startOrderView(tv_assist_check.getText().toString(),-3,1);
                 break;
             case R.id.tv_assist:
                 startOrderView(tv_assist.getText().toString(),1,1);
@@ -202,5 +203,33 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
         bundle.putInt("type",type);
         IntentUtils.startActivity(getAppCompatActivity(),OrderListActivity.class,bundle);
     }
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            changeMsgIcon();
+        }
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        changeMsgIcon();
+    }
+
+
+    private void changeMsgIcon(){
+        int count = EMClient.getInstance().chatManager().getUnreadMsgsCount();
+        if (count > 0) {
+            if (!toolbar.getMenu().getItem(0).getIcon().equals(getResources().getDrawable(R.drawable.msg_new))){
+                toolbar.getMenu().getItem(0).setIcon(R.drawable.msg_new);
+                toolbar.invalidate();
+            }
+        } else {
+            if (!toolbar.getMenu().getItem(0).getIcon().equals(getResources().getDrawable(R.drawable.msg))){
+                toolbar.getMenu().getItem(0).setIcon(R.drawable.msg);
+                toolbar.invalidate();
+            }
+        }
+    }
 }

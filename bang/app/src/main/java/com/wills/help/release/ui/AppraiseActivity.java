@@ -3,6 +3,7 @@ package com.wills.help.release.ui;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,13 +11,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.wills.help.R;
+import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
-import com.wills.help.release.adapter.EvaluationLabelAdapter;
-import com.wills.help.release.model.Evaluation;
+import com.wills.help.release.adapter.AppraiseLabelAdapter;
+import com.wills.help.release.model.Appraise;
+import com.wills.help.release.presenter.AppraisePresenterImpl;
+import com.wills.help.release.view.AppraiseView;
+import com.wills.help.utils.ToastUtils;
 import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * com.wills.help.release.ui
@@ -24,20 +31,24 @@ import java.util.List;
  * 2017/1/11.
  */
 
-public class EvaluationActivity extends BaseActivity implements View.OnClickListener {
+public class AppraiseActivity extends BaseActivity implements View.OnClickListener ,AppraiseView , AppraiseLabelAdapter.LabelItemOnClickListener{
     private LinearLayout ll_star;
     private RecyclerView recyclerView;
     private Button button;
     private EditText editText;
     private int star = 0;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
-    private EvaluationLabelAdapter adapter;
-    private List<Evaluation> evaluationList;
+    private AppraiseLabelAdapter adapter;
+    private List<Appraise.Label> labels;
+    private List<String> labelIds;
+    private AppraisePresenterImpl appraisePresenter;
+    private String orderId;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setBaseView(R.layout.activity_evaluation);
         setBaseTitle(getString(R.string.release_state_evaluation));
+        orderId = getIntent().getExtras().getString("orderId");
         ll_star = (LinearLayout) findViewById(R.id.ll_star);
         recyclerView = (RecyclerView) findViewById(R.id.list);
         button = (Button) findViewById(R.id.btn_submit);
@@ -68,9 +79,15 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
         }
     }
 
+
+
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()){
+            case R.id.btn_submit:
+                appraisePresenter.appraise(getMap());
+                break;
+        }
     }
 
     private void initData(){
@@ -78,19 +95,57 @@ public class EvaluationActivity extends BaseActivity implements View.OnClickList
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.addItemDecoration(new MyItemDecoration(context,8));
-        evaluationList = getEvaluationList();
-        adapter = new EvaluationLabelAdapter(context,evaluationList);
+        appraisePresenter = new AppraisePresenterImpl(this);
+        appraisePresenter.getAppraiseLabel();
+    }
+
+    @Override
+    public void setAppraiseLabel(List<Appraise.Label> labelList) {
+        if (labels == null){
+            labels = new ArrayList<>();
+        }
+        labels.addAll(labelList);
+        adapter = new AppraiseLabelAdapter(context,labels);
+        adapter.setLabelItemOnClickListener(this);
         recyclerView.setAdapter(adapter);
     }
 
-    private List<Evaluation> getEvaluationList(){
-        List<Evaluation> list = new ArrayList<>();
-        for (int i=0;i<10;i++){
-            Evaluation evaluation = new Evaluation();
-            evaluation.setId(i);
-            evaluation.setName("可爱"+(i*i));
-            list.add(evaluation);
+    @Override
+    public void appraise() {
+        ToastUtils.toast("评价成功");
+        finish();
+    }
+
+    private Map<String, String> getMap() {
+        Map<String, String> map = new HashMap<>();
+        map.put("orderid", orderId);
+        map.put("releaseuserid", App.getApp().getUser().getUserid());
+        map.put("appraisecontent", TextUtils.isEmpty(editText.getText().toString())?"":editText.getText().toString());
+        map.put("appraiselevel", String.valueOf(star));
+        map.put("appraiselabelid", getLabelIds());
+        return map;
+    }
+
+    @Override
+    public void onLabelItemClick(int position, boolean isSelect) {
+        if (labelIds == null){
+            labelIds = new ArrayList<>();
         }
-        return list;
+        if (isSelect){
+            labelIds.add(labels.get(position).getAppraiselabelid());
+        }else {
+            labelIds.remove(labels.get(position).getAppraiselabelid());
+        }
+    }
+
+    private String getLabelIds(){
+        String ids = "";
+        if (labelIds!=null&&labelIds.size()>0){
+            for (String s:labelIds){
+                ids+=s+",";
+            }
+            return ids.substring(0,ids.length()-1);
+        }
+        return ids;
     }
 }

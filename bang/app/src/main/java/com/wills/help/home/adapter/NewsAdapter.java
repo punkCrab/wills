@@ -40,16 +40,18 @@ public class NewsAdapter extends BaseListAdapter<News.NewsInfo>{
     @Override
     protected void BindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof NewsHolder){
-            ((NewsHolder)holder).tv_title.setText(list.get(position).getTitle());
-            ((NewsHolder)holder).tv_content.setText(list.get(position).getNewsurl());
-            ((NewsHolder)holder).view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("url",list.get(position).getNewsurl());
-                    IntentUtils.startActivity(context, WebViewActivity.class,bundle);
-                }
-            });
+            if (!list.get(position).getState().equals("0")){
+                ((NewsHolder)holder).tv_title.setText(list.get(position).getTitle());
+                ((NewsHolder)holder).tv_content.setText(list.get(position).getContent());
+                ((NewsHolder)holder).view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url",list.get(position).getNewsurl());
+                        IntentUtils.startActivity(context, WebViewActivity.class,bundle);
+                    }
+                });
+            }
         }
     }
 

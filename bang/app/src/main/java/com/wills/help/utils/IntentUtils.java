@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * com.wills.help.utils
@@ -58,30 +57,17 @@ public class IntentUtils {
         context.startActivity(intent);
     }
 
+    /**
+     *
+     * @param activity
+     * @param cls
+     * @param bundle
+     * @param requestCode 统一三位，系统的1开头，用户信息2开头，快递3开头
+     */
     public static void startActivityForResult(Activity activity, Class<?> cls, Bundle bundle ,int requestCode) {
         Intent intent = new Intent(activity, cls);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent,requestCode);
-    }
-
-    /**
-     * 带参数的跳转
-     * @param context
-     * @param cls
-     * @param map
-     */
-    public static void startActivity(Context context, Class<?> cls, Map<String, Object> map) {
-        Intent i = new Intent(context, cls);
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (entry.getValue() instanceof String) {
-                i.putExtra(entry.getKey(), (String) entry.getValue());
-            }else if (entry.getValue() instanceof Integer){
-                i.putExtra(entry.getKey(), (Integer) entry.getValue());
-            }else if (entry.getValue() instanceof Boolean){
-                i.putExtra(entry.getKey(), (Boolean) entry.getValue());
-            }
-        }
-        context.startActivity(i);
     }
 
     /**

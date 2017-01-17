@@ -1,6 +1,7 @@
 package com.wills.help.release.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,12 +12,14 @@ import android.widget.TextView;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseListAdapter;
+import com.wills.help.home.ui.SendActivity;
 import com.wills.help.message.EaseConstant;
 import com.wills.help.message.ui.ChatActivity;
 import com.wills.help.pay.ui.PayActivity;
 import com.wills.help.release.model.OrderInfo;
-import com.wills.help.release.ui.EvaluationActivity;
+import com.wills.help.release.ui.AppraiseActivity;
 import com.wills.help.release.ui.ReleaseActivity;
+import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
 
 import java.util.List;
@@ -61,6 +64,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
     protected void BindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ReleaseHolder){
             final OrderInfo releaseInfo = list.get(position);
+            GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getReleaseavatar(),((ReleaseHolder)holder).imageView);
             if (type == 0){
                 changeView(holder,Integer.parseInt(releaseInfo.getStateid()),releaseInfo);
             }else if(type == 1){
@@ -78,7 +82,15 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 ((ReleaseHolder)holder).iv_home_express.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).tv_release_money.setVisibility(View.GONE);
             }
-            ((ReleaseHolder)holder).tv_release_address.setText(releaseInfo.getDesdetail());
+            Drawable drawable =null;
+            if (releaseInfo.getReleasesex().equals("1")){
+                drawable = context.getResources().getDrawable(R.drawable.sex_girl);
+            }else if (releaseInfo.getReleasesex().equals("2")){
+                drawable = context.getResources().getDrawable(R.drawable.sex_boy);
+            }
+            drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
+            ((ReleaseHolder)holder).tv_name.setCompoundDrawables(drawable,null,null,null);
+            ((ReleaseHolder)holder).tv_release_address.setText(releaseInfo.getDesname()+releaseInfo.getDesdetail());
             ((ReleaseHolder)holder).tv_release_money.setText(releaseInfo.getMoney()+context.getString(R.string.yuan));
             ((ReleaseHolder)holder).tv_release_time.setText(releaseInfo.getCreatetime()+"发布");
             ((ReleaseHolder)holder).tv_name.setText(releaseInfo.getReleaseusername());
@@ -87,6 +99,8 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 public void onClick(View view) {
                     Bundle bundle = new Bundle();
                     bundle.putString(EaseConstant.EXTRA_USER_ID,releaseInfo.getReleaseusername());
+                    bundle.putString(EaseConstant.EXTRA_USER_AVATAR,releaseInfo.getAcceptavatar());
+                    bundle.putString(EaseConstant.EXTRA_USER_NAME,releaseInfo.getAcceptnickname());
                     IntentUtils.startActivity(context,ChatActivity.class,bundle);
                 }
             });
@@ -117,8 +131,12 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                     @Override
                     public void onClick(View v) {
                         Bundle bundle = new Bundle();
-                        bundle.putInt("type",0);
-                        IntentUtils.startActivity(context,ReleaseActivity.class,bundle);
+                        bundle.putSerializable("orderInfo",releaseInfo);
+                        if (releaseInfo.getMaintype().equals("0")){
+                            IntentUtils.startActivity(context,ReleaseActivity.class,bundle);
+                        }else {
+                            IntentUtils.startActivity(context,SendActivity.class,bundle);
+                        }
                     }
                 });
                 break;
@@ -139,7 +157,9 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        IntentUtils.startActivity(context,EvaluationActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("orderId",releaseInfo.getOrderid());
+                        IntentUtils.startActivity(context,AppraiseActivity.class,bundle);
                     }
                 });
                 break;

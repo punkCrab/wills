@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -45,10 +46,8 @@ import com.wills.help.base.BaseFragment;
 import com.wills.help.message.EaseConstant;
 import com.wills.help.message.controller.EaseUI;
 import com.wills.help.message.domain.EaseEmojicon;
-import com.wills.help.message.domain.EaseUser;
 import com.wills.help.message.model.EaseAtMessageHelper;
 import com.wills.help.message.utils.EaseCommonUtils;
-import com.wills.help.message.utils.EaseUserUtils;
 import com.wills.help.message.widget.EaseAlertDialog;
 import com.wills.help.message.widget.EaseChatExtendMenu;
 import com.wills.help.message.widget.EaseChatInputMenu;
@@ -92,6 +91,8 @@ import rx.functions.Action1;
     protected Bundle fragmentArgs;
     protected int chatType;
     protected String toChatUsername;
+    protected String nickName;
+    protected String avatarUrl;
     protected EaseChatMessageList messageList;
     protected EaseChatInputMenu inputMenu;
 
@@ -188,9 +189,9 @@ import rx.functions.Action1;
     public void initData(Bundle savedInstanceState) {
         if (chatType == EaseConstant.CHATTYPE_SINGLE) {
             // set title
-            if(EaseUserUtils.getUserInfo(toChatUsername) != null){
-                EaseUser user = EaseUserUtils.getUserInfo(toChatUsername);
-            }
+//            if(EaseUserUtils.getEaseUser(toChatUsername) != null){
+//                EaseUser user = EaseUserUtils.getEaseUser(toChatUsername);
+//            }
         } else {
             if (chatType == EaseConstant.CHATTYPE_GROUP) {
                 //group chat
@@ -225,6 +226,8 @@ import rx.functions.Action1;
         chatType = fragmentArgs.getInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
         // userId you are chat with or group id
         toChatUsername = fragmentArgs.getString(EaseConstant.EXTRA_USER_ID);
+        nickName = fragmentArgs.getString(EaseConstant.EXTRA_USER_NAME);
+        avatarUrl = fragmentArgs.getString(EaseConstant.EXTRA_USER_AVATAR);
 
         super.onActivityCreated(savedInstanceState);
     }
@@ -666,15 +669,16 @@ import rx.functions.Action1;
                 chatType != EaseConstant.CHATTYPE_GROUP){
             return;
         }
-        EaseAtMessageHelper.get().addAtUser(username);
-        EaseUser user = EaseUserUtils.getUserInfo(username);
-        if (user != null){
-            username = user.getNick();
+        String name = username;
+        if (TextUtils.isEmpty(nickName)){
+            name = username;
+        }else {
+            name = nickName;
         }
         if(autoAddAtSymbol)
-            inputMenu.insertText("@" + username + " ");
+            inputMenu.insertText("@" + name + " ");
         else
-            inputMenu.insertText(username + " ");
+            inputMenu.insertText(name + " ");
     }
     
     

@@ -6,7 +6,10 @@ import com.wills.help.home.model.News;
 import com.wills.help.login.model.OrderType;
 import com.wills.help.login.model.Point;
 import com.wills.help.login.model.User;
+import com.wills.help.message.model.Contacts;
+import com.wills.help.person.model.Avatar;
 import com.wills.help.person.model.Wallet;
+import com.wills.help.release.model.Appraise;
 import com.wills.help.release.model.OrderDetail;
 import com.wills.help.release.model.Release;
 import com.wills.help.release.model.OrderList;
@@ -125,6 +128,15 @@ public interface ApiInterface {
     Observable<Release> release(@FieldMap Map<String , String > map);
 
     /**
+     * 发布
+     * @param map
+     * @return
+     */
+    @POST("updateorder")
+    @FormUrlEncoded
+    Observable<Empty> updateOrder(@FieldMap Map<String , String > map);
+
+    /**
      * 获取订单列表
      * @param map
      * @return
@@ -159,7 +171,7 @@ public interface ApiInterface {
      */
     @Multipart
     @POST("setavatar")
-    Observable<Empty> setAvatar(@Part MultipartBody.Part avatar,@Part("userid") RequestBody username);
+    Observable<Avatar> setAvatar(@Part MultipartBody.Part avatar, @Part("userid") RequestBody username);
 
     /**
      * 接单
@@ -186,4 +198,23 @@ public interface ApiInterface {
     @POST("getmymoney")
     @FormUrlEncoded
     Observable<Wallet> getMoney(@FieldMap Map<String , String > map);
+
+    /**
+     * 获取评价标签
+     * @return
+     */
+    @GET("appraiselabellist")
+    Observable<Appraise> getAppraiseLabel();
+
+    /**
+     * 评价
+     * @param map
+     * @return
+     */
+    @POST("appraise")
+    @FormUrlEncoded
+    Observable<Empty> Appraise(@FieldMap Map<String , String > map);
+
+    @GET("getinfobyusernames")
+    Observable<Contacts> getContacts(@QueryMap Map<String , String > map);
 }
