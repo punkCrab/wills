@@ -96,4 +96,15 @@ public class ExpressFragment extends BaseFragment implements ExpressView , HomeF
         expressList= new ArrayList<>();
         expressPresenter.getExpress(getMap());
     }
+
+    @Override
+    public void expressClear() {
+        tv_count.setText(String.format(getAppCompatActivity().getString(R.string.home_express_count),String.valueOf(0)));
+        if (expressList == null){
+            expressList = new ArrayList<>();
+        }
+        expressList.clear();
+        adapter = new ExpressAdapter(getAppCompatActivity() ,expressList);
+        recyclerView.setAdapter(adapter);
+    }
 }

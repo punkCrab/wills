@@ -215,6 +215,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     Observable<Empty> Appraise(@FieldMap Map<String , String > map);
 
+    /**
+     * 获取聊天列表人员头像和昵称
+     * @param map
+     * @return
+     */
     @GET("getinfobyusernames")
     Observable<Contacts> getContacts(@QueryMap Map<String , String > map);
 }

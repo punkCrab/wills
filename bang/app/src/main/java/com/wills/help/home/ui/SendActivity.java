@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,6 +21,7 @@ import com.wills.help.release.model.Release;
 import com.wills.help.release.presenter.ReleasePresenterImpl;
 import com.wills.help.release.view.ReleaseView;
 import com.wills.help.utils.ScreenUtils;
+import com.wills.help.utils.StringUtils;
 import com.wills.help.utils.ToastUtils;
 
 import java.util.HashMap;
@@ -186,7 +186,7 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (!TextUtils.isEmpty(et_address.getText().toString())) {
+            if (!StringUtils.isNullOrEmpty(et_address.getText().toString())) {
                 btn_submit.setEnabled(true);
                 btn_submit.setBackgroundResource(R.drawable.btn_selector);
             } else {

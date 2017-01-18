@@ -1,16 +1,13 @@
 package com.wills.help.base;
 
 import android.support.multidex.MultiDexApplication;
-import android.text.TextUtils;
 
 import com.wills.help.db.bean.UserInfo;
 import com.wills.help.db.manager.UserInfoHelper;
 import com.wills.help.message.controller.EaseUI;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.SharedPreferencesUtils;
-
-import java.util.Observable;
-import java.util.Observer;
+import com.wills.help.utils.StringUtils;
 
 import rx.Subscriber;
 
@@ -40,7 +37,7 @@ public class App extends MultiDexApplication {
     public UserInfo getUser() {
         if (user == null){
             String userId = (String) SharedPreferencesUtils.getInstance().get(AppConfig.SP_USER,"");
-            if (!TextUtils.isEmpty(userId)){
+            if (!StringUtils.isNullOrEmpty(userId)){
                 UserInfoHelper.getInstance().queryByUserId(userId).subscribe(new Subscriber<UserInfo>() {
                     @Override
                     public void onCompleted() {

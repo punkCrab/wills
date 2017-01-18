@@ -1,12 +1,16 @@
 package com.wills.help.login.presenter;
 
 
+import android.content.Context;
+import android.support.v7.app.AlertDialog;
+
 import com.wills.help.base.App;
 import com.wills.help.login.model.LoginModel;
 import com.wills.help.login.model.User;
 import com.wills.help.login.view.LoginView;
 import com.wills.help.net.ApiSubscriber;
 import com.wills.help.utils.AppConfig;
+import com.wills.help.utils.NetUtils;
 import com.wills.help.utils.SharedPreferencesUtils;
 
 import java.util.Map;
@@ -32,6 +36,7 @@ public class LoginPresenterImpl implements LoginPresenter {
 
     @Override
     public void login(Map<String, String> map) {
+        final AlertDialog dialog = NetUtils.netDialog((Context) loginInfoView);
         loginInfoModel.login(map)
                 .doOnNext(new Action1<User>() {
                     @Override
@@ -47,12 +52,18 @@ public class LoginPresenterImpl implements LoginPresenter {
                 .subscribe(new ApiSubscriber<User>() {
                     @Override
                     public void onCompleted() {
-
+                        dialog.dismiss();
                     }
 
                     @Override
                     public void onNext(User login) {
                         loginInfoView.setLogin(login);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        dialog.dismiss();
                     }
                 });
     }

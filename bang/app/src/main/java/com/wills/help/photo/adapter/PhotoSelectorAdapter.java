@@ -1,7 +1,6 @@
 package com.wills.help.photo.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 import com.wills.help.R;
 import com.wills.help.photo.model.PhotoModel;
 import com.wills.help.photo.widget.PhotoItem;
+import com.wills.help.utils.StringUtils;
 
 import java.util.ArrayList;
 
@@ -52,7 +52,7 @@ public class PhotoSelectorAdapter extends MBaseAdapter<PhotoModel> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		PhotoItem item = null;
 		TextView tvCamera = null;
-		if (position == 0 && TextUtils.isEmpty(models.get(position).getOriginalPath())) {
+		if (position == 0 && StringUtils.isNullOrEmpty(models.get(position).getOriginalPath())) {
 			if (convertView == null || !(convertView instanceof TextView)) {
 				tvCamera = (TextView) LayoutInflater.from(context).inflate(R.layout.photo_camera, null);
 				tvCamera.setHeight(itemWidth);

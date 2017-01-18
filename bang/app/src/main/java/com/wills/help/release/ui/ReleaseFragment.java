@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +25,7 @@ import com.wills.help.release.presenter.ReleasePresenterImpl;
 import com.wills.help.release.view.ReleaseView;
 import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.ScreenUtils;
+import com.wills.help.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -251,9 +251,9 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (!TextUtils.isEmpty(et_release_from_address.getText().toString())
-                    && !TextUtils.isEmpty(et_release_money.getText().toString())
-                    && !TextUtils.isEmpty(et_release_send_address.getText().toString())) {
+            if (!StringUtils.isNullOrEmpty(et_release_from_address.getText().toString())
+                    && !StringUtils.isNullOrEmpty(et_release_money.getText().toString())
+                    && !StringUtils.isNullOrEmpty(et_release_send_address.getText().toString())) {
                 btn_submit.setEnabled(true);
                 btn_submit.setBackgroundResource(R.drawable.btn_selector);
             } else {

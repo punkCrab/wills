@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -149,8 +148,8 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (!TextUtils.isEmpty(et_username.getText().toString())&&
-                    !TextUtils.isEmpty(et_password.getText().toString())){
+            if (!StringUtils.isNullOrEmpty(et_username.getText().toString())&&
+                    !StringUtils.isNullOrEmpty(et_password.getText().toString())){
                 btn_login.setEnabled(true);
                 btn_login.setBackgroundResource(R.drawable.btn_selector);
             }else {

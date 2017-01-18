@@ -130,7 +130,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
                         IntentUtils.startActivity(getAppCompatActivity(), MessageActivity.class);
                         break;
                     case R.id.action_setting:
-                        IntentUtils.startActivity(getAppCompatActivity(), SettingActivity.class);
+                        IntentUtils.startActivityForResult(getAppCompatActivity(), SettingActivity.class,12);
                         break;
                 }
                 return true;

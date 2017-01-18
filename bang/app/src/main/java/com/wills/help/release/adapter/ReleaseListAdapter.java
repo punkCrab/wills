@@ -98,9 +98,9 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 @Override
                 public void onClick(View view) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(EaseConstant.EXTRA_USER_ID,releaseInfo.getReleaseusername());
+                    bundle.putString(EaseConstant.EXTRA_USER_ID,releaseInfo.getAcceptusername());
                     bundle.putString(EaseConstant.EXTRA_USER_AVATAR,releaseInfo.getAcceptavatar());
-                    bundle.putString(EaseConstant.EXTRA_USER_NAME,releaseInfo.getAcceptnickname());
+                    bundle.putString(EaseConstant.EXTRA_USER_NAME,releaseInfo.getReleasenickname());
                     IntentUtils.startActivity(context,ChatActivity.class,bundle);
                 }
             });

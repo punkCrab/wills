@@ -2,7 +2,6 @@ package com.wills.help.message.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
@@ -19,6 +18,7 @@ import com.hyphenate.util.EMLog;
 import com.wills.help.R;
 import com.wills.help.message.domain.EaseUser;
 import com.wills.help.message.utils.EaseUserUtils;
+import com.wills.help.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
         String header = user.getInitialLetter();
         
         if (position == 0 || header != null && !header.equals(getItem(position - 1).getInitialLetter())) {
-            if (TextUtils.isEmpty(header)) {
+            if (StringUtils.isNullOrEmpty(header)) {
                 holder.headerView.setVisibility(View.GONE);
             } else {
                 holder.headerView.setVisibility(View.VISIBLE);

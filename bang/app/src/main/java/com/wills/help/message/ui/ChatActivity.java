@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.db.bean.Contact;
 import com.wills.help.db.manager.ContactHelper;
 import com.wills.help.message.EaseConstant;
+import com.wills.help.utils.StringUtils;
 
 import rx.Subscriber;
 
@@ -49,13 +49,15 @@ public class ChatActivity extends BaseActivity{
                 if (contact != null) {
                     setBaseTitle(contact.getNickname());
                 } else {
-                    if (!TextUtils.isEmpty(nickName)) {
+                    if (!StringUtils.isNullOrEmpty(nickName)) {
                         setBaseTitle(nickName);
                         Contact mContact = new Contact();
-                        contact.setNickname(nickName);
-                        contact.setAvatar(avatarUrl);
-                        contact.setUsername(chatUsername);
+                        mContact.setNickname(nickName);
+                        mContact.setAvatar(avatarUrl);
+                        mContact.setUsername(chatUsername);
                         ContactHelper.getInstance().insertData(mContact).subscribe();
+                    }else {
+                        setBaseTitle(chatUsername);
                     }
                 }
             }

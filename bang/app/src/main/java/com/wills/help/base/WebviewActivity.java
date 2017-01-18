@@ -1,7 +1,6 @@
 package com.wills.help.base;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -11,6 +10,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.wills.help.R;
+import com.wills.help.utils.StringUtils;
 
 /**
  * com.wills.help.base
@@ -62,7 +62,7 @@ public class WebViewActivity extends BaseActivity{
     }
 
     private void display(){
-        if (!TextUtils.isEmpty(url))
+        if (!StringUtils.isNullOrEmpty(url))
             wv.loadUrl(url);
     }
 

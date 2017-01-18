@@ -10,4 +10,5 @@ import com.wills.help.login.model.User;
 
 public interface RegisterView {
     void setRegister(User user);
+    void registerError();
 }

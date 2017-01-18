@@ -1,6 +1,5 @@
 package com.wills.help.message.presenter;
 
-import com.wills.help.db.manager.ContactHelper;
 import com.wills.help.message.ContactsView;
 import com.wills.help.message.model.Contacts;
 import com.wills.help.message.model.ContactsModel;
@@ -30,12 +29,6 @@ public class ContactsPresenterImpl implements ContactsPresenter{
     @Override
     public void getContacts(Map<String, String> map) {
         contactsModel.getContacts(map)
-                .doOnNext(new Action1<Contacts>() {
-                    @Override
-                    public void call(Contacts contacts) {
-                        ContactHelper.getInstance().insertData(contacts.getData()).subscribe();
-                    }
-                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Contacts>() {

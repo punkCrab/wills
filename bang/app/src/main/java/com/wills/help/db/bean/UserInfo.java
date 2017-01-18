@@ -1,10 +1,10 @@
 package com.wills.help.db.bean;
 
-import android.text.TextUtils;
+import com.wills.help.utils.StringUtils;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * Created by Wills on 2017/1/14.
@@ -83,7 +83,7 @@ public class UserInfo {
         this.sex = sex;
     }
     public String getNickname() {
-        return TextUtils.isEmpty(this.nickname)?this.username:this.nickname;
+        return StringUtils.isNullOrEmpty(this.nickname)?this.username:this.nickname;
     }
     public void setNickname(String nickname) {
         this.nickname = nickname;

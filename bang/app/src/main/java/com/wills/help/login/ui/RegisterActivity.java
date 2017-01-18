@@ -2,8 +2,10 @@ package com.wills.help.login.ui;
 
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -21,6 +23,7 @@ import com.wills.help.login.presenter.RegisterPresenterImpl;
 import com.wills.help.login.view.RegisterView;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.KeyBoardUtils;
+import com.wills.help.utils.NetUtils;
 import com.wills.help.utils.ScreenUtils;
 import com.wills.help.utils.SharedPreferencesUtils;
 import com.wills.help.utils.StringUtils;
@@ -42,6 +45,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private RegisterPresenterImpl registerPresenter;
     private LinearLayout linearLayout;
     private TextView tv_warn;
+    private AlertDialog dialog;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -93,6 +97,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 }
                 break;
             case R.id.btn_submit:
+                dialog = NetUtils.netDialog(context);
                 registerPresenter.register(getMap());
                 break;
         }
@@ -109,24 +114,46 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void setRegister(User user) {
         ToastUtils.toast(getString(R.string.register_success));
-        setResult(RESULT_OK);
-        EMClient.getInstance().login(et_register_phone.getText().toString(), StringUtils.getMD5(et_register_pwd.getText().toString()), new EMCallBack() {
-            @Override
-            public void onSuccess() {
-                finish();
-            }
-
-            @Override
-            public void onError(int i, String s) {
-
-            }
-
-            @Override
-            public void onProgress(int i, String s) {
-
-            }
-        });
+        handler.sendEmptyMessageDelayed(1,1500);
     }
+
+    @Override
+    public void registerError() {
+        if (dialog!=null){
+            dialog.dismiss();
+        }
+    }
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    EMClient.getInstance().login(et_register_phone.getText().toString(), StringUtils.getMD5(et_register_pwd.getText().toString()), new EMCallBack() {
+                        @Override
+                        public void onSuccess() {
+                            if (dialog!=null){
+                                dialog.dismiss();
+                            }
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+
+                        @Override
+                        public void onError(int i, String s) {
+
+                        }
+
+                        @Override
+                        public void onProgress(int i, String s) {
+
+                        }
+                    });
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void backClick() {
@@ -148,17 +175,17 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (!TextUtils.isEmpty(et_register_phone.getText().toString())&&
-                    !TextUtils.isEmpty(et_register_pwd.getText().toString())&&
-                    !TextUtils.isEmpty(et_register_pwd_ok.getText().toString())&&
-                    !TextUtils.isEmpty(et_register_code.getText().toString())&&
+            if (!StringUtils.isNullOrEmpty(et_register_phone.getText().toString())&&
+                    !StringUtils.isNullOrEmpty(et_register_pwd.getText().toString())&&
+                    !StringUtils.isNullOrEmpty(et_register_pwd_ok.getText().toString())&&
+                    !StringUtils.isNullOrEmpty(et_register_code.getText().toString())&&
                     et_register_pwd.getText().toString().equals(et_register_pwd_ok.getText().toString())){
                 tv_warn.setVisibility(View.INVISIBLE);
                 btn_submit.setEnabled(true);
                 btn_submit.setBackgroundResource(R.drawable.btn_selector);
             }else {
-                if (!TextUtils.isEmpty(et_register_pwd.getText().toString())&&
-                        !TextUtils.isEmpty(et_register_pwd_ok.getText().toString())&&
+                if (!StringUtils.isNullOrEmpty(et_register_pwd.getText().toString())&&
+                        !StringUtils.isNullOrEmpty(et_register_pwd_ok.getText().toString())&&
                         !et_register_pwd.getText().toString().equals(et_register_pwd_ok.getText().toString())){
                     tv_warn.setVisibility(View.VISIBLE);
                 }else {

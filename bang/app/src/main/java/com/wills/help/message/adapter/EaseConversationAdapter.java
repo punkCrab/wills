@@ -1,7 +1,6 @@
 package com.wills.help.message.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +25,7 @@ import com.wills.help.message.utils.EaseCommonUtils;
 import com.wills.help.message.utils.EaseSmileUtils;
 import com.wills.help.message.utils.EaseUserUtils;
 import com.wills.help.message.widget.EaseConversationList;
+import com.wills.help.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -114,7 +114,7 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
         } else if(conversation.getType() == EMConversationType.ChatRoom){
             holder.avatar.setImageResource(R.drawable.ease_group_icon);
             EMChatRoom room = EMClient.getInstance().chatroomManager().getChatRoom(username);
-            holder.name.setText(room != null && !TextUtils.isEmpty(room.getName()) ? room.getName() : username);
+            holder.name.setText(room != null && !StringUtils.isNullOrEmpty(room.getName()) ? room.getName() : username);
             holder.motioned.setVisibility(View.GONE);
         }else {
             EaseUserUtils.setAvatar2NickName(getContext(), username, holder.avatar,holder.name);

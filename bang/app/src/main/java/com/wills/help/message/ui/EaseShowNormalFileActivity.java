@@ -1,7 +1,6 @@
 package com.wills.help.message.ui;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -11,6 +10,7 @@ import com.hyphenate.chat.EMFileMessageBody;
 import com.hyphenate.util.FileUtils;
 import com.wills.help.R;
 import com.wills.help.base.BaseActivity;
+import com.wills.help.utils.StringUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class EaseShowNormalFileActivity extends BaseActivity {
         file = new File(messageBody.getLocalUrl());
         //set head map
         final Map<String, String> maps = new HashMap<String, String>();
-        if (!TextUtils.isEmpty(messageBody.getSecret())) {
+        if (!StringUtils.isNullOrEmpty(messageBody.getSecret())) {
             maps.put("share-secret", messageBody.getSecret());
         }
 

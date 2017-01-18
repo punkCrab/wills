@@ -3,7 +3,6 @@ package com.wills.help.message.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -17,6 +16,7 @@ import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 import com.wills.help.R;
 import com.wills.help.base.BaseActivity;
+import com.wills.help.utils.StringUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -54,10 +54,10 @@ public class EaseShowVideoActivity extends BaseActivity {
 					"video/mp4");
 			startActivity(intent);
 			finish();
-		} else if (!TextUtils.isEmpty(remotepath) && !remotepath.equals("null")) {
+		} else if (!StringUtils.isNullOrEmpty(remotepath) && !remotepath.equals("null")) {
 			EMLog.d(TAG, "download remote video file");
 			Map<String, String> maps = new HashMap<String, String>();
-			if (!TextUtils.isEmpty(secret)) {
+			if (!StringUtils.isNullOrEmpty(secret)) {
 				maps.put("share-secret", secret);
 			}
 			downloadVideo(remotepath, maps);
@@ -100,7 +100,7 @@ public class EaseShowVideoActivity extends BaseActivity {
 	private void downloadVideo(final String remoteUrl,
 			final Map<String, String> header) {
 
-		if (TextUtils.isEmpty(localFilePath)) {
+		if (StringUtils.isNullOrEmpty(localFilePath)) {
 			localFilePath = getLocalFilePath(remoteUrl);
 		}
 		if (new File(localFilePath).exists()) {

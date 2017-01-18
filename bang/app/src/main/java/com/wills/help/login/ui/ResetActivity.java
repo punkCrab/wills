@@ -2,7 +2,6 @@ package com.wills.help.login.ui;
 
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -99,17 +98,17 @@ public class ResetActivity extends BaseActivity implements View.OnClickListener,
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (!TextUtils.isEmpty(et_register_phone.getText().toString())&&
-                    !TextUtils.isEmpty(et_register_pwd.getText().toString())&&
-                    !TextUtils.isEmpty(et_register_pwd_ok.getText().toString())&&
-                    !TextUtils.isEmpty(et_register_code.getText().toString())&&
+            if (!StringUtils.isNullOrEmpty(et_register_phone.getText().toString())&&
+                    !StringUtils.isNullOrEmpty(et_register_pwd.getText().toString())&&
+                    !StringUtils.isNullOrEmpty(et_register_pwd_ok.getText().toString())&&
+                    !StringUtils.isNullOrEmpty(et_register_code.getText().toString())&&
                     et_register_pwd.getText().toString().equals(et_register_pwd_ok.getText().toString())){
                 tv_warn.setVisibility(View.INVISIBLE);
                 btn_submit.setEnabled(true);
                 btn_submit.setBackgroundResource(R.drawable.btn_selector);
             }else {
-                if (!TextUtils.isEmpty(et_register_pwd.getText().toString())&&
-                        !TextUtils.isEmpty(et_register_pwd_ok.getText().toString())&&
+                if (!StringUtils.isNullOrEmpty(et_register_pwd.getText().toString())&&
+                        !StringUtils.isNullOrEmpty(et_register_pwd_ok.getText().toString())&&
                         !et_register_pwd.getText().toString().equals(et_register_pwd_ok.getText().toString())){
                     tv_warn.setVisibility(View.VISIBLE);
                 }else {

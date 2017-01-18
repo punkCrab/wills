@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +20,7 @@ import com.wills.help.photo.model.PhotoHandler;
 import com.wills.help.photo.model.PhotoModel;
 import com.wills.help.photo.widget.HackyViewPager;
 import com.wills.help.utils.ScreenUtils;
+import com.wills.help.utils.StringUtils;
 
 import java.util.List;
 
@@ -106,7 +106,7 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoSelectorA
         }else if (extras.containsKey("album")){
             String albumName = extras.getString("album");
             current = extras.getInt("position");
-            if (!TextUtils.isEmpty(albumName)&& albumName.equals(PhotoSelectorActivity.RECCENT_PHOTO)){
+            if (!StringUtils.isNullOrEmpty(albumName)&& albumName.equals(PhotoSelectorActivity.RECCENT_PHOTO)){
                 photoHandler.getReccent( this);
             }else {
                 photoHandler.getAlbum(albumName,this);

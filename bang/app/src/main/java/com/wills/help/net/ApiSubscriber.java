@@ -1,12 +1,11 @@
 package com.wills.help.net;
 
-import android.text.TextUtils;
-
 import com.google.gson.JsonParseException;
-import com.wills.help.base.App;
 import com.wills.help.R;
+import com.wills.help.base.App;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.NetUtils;
+import com.wills.help.utils.StringUtils;
 import com.wills.help.utils.ToastUtils;
 
 import org.json.JSONException;
@@ -38,11 +37,11 @@ public abstract class ApiSubscriber<T> extends Subscriber<T> {
         }
         if(e instanceof HttpException){//对网络异常 弹出相应的toast
             HttpException httpException = (HttpException) e;
-            if(TextUtils.isEmpty(httpException.getMessage())){
+            if(StringUtils.isNullOrEmpty(httpException.getMessage())){
                 ToastUtils.toast(R.string.error_net_fail);
             }else {
                 String errorMsg = httpException.getMessage();
-                if(TextUtils.isEmpty(errorMsg)){
+                if(StringUtils.isNullOrEmpty(errorMsg)){
                     ToastUtils.toast(R.string.app_name);
                 }else {
                     ToastUtils.toast(errorMsg);
@@ -75,7 +74,7 @@ public abstract class ApiSubscriber<T> extends Subscriber<T> {
     protected  void onResultError(ApiException ex){
         //default 打印 服务器返回
         String msg = ex.getMessage();
-        if(TextUtils.isEmpty(msg)){
+        if(StringUtils.isNullOrEmpty(msg)){
             ToastUtils.toast("服务器未返回具体错误信息");
         }else {
             ToastUtils.toast(ex.getMessage());

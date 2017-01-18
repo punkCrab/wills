@@ -16,7 +16,6 @@ package com.wills.help.message.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.text.TextUtils;
 
 import com.hyphenate.chat.EMConversation.EMConversationType;
 import com.hyphenate.chat.EMMessage;
@@ -27,6 +26,7 @@ import com.hyphenate.util.HanziToPinyin.Token;
 import com.wills.help.R;
 import com.wills.help.message.EaseConstant;
 import com.wills.help.message.domain.EaseUser;
+import com.wills.help.utils.StringUtils;
 
 import java.util.ArrayList;
 
@@ -103,7 +103,7 @@ public class EaseCommonUtils {
             }else if(message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_VIDEO_CALL, false)){
                 digest = getString(context, R.string.video_call) + txtBody.getMessage();
             }else if(message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_BIG_EXPRESSION, false)){
-                if(!TextUtils.isEmpty(txtBody.getMessage())){
+                if(!StringUtils.isNullOrEmpty(txtBody.getMessage())){
                     digest = txtBody.getMessage();
                 }else{
                     digest = getString(context, R.string.dynamic_expression);
@@ -138,7 +138,7 @@ public class EaseCommonUtils {
         
         final class GetInitialLetter {
             String getLetter(String name) {
-                if (TextUtils.isEmpty(name)) {
+                if (StringUtils.isNullOrEmpty(name)) {
                     return DefaultLetter;
                 }
                 char char0 = name.toLowerCase().charAt(0);
@@ -160,12 +160,12 @@ public class EaseCommonUtils {
             }
         }
         
-        if ( !TextUtils.isEmpty(user.getNick()) ) {
+        if ( !StringUtils.isNullOrEmpty(user.getNick()) ) {
             letter = new GetInitialLetter().getLetter(user.getNick());
             user.setInitialLetter(letter);
             return;
         } 
-        if (letter.equals(DefaultLetter) && !TextUtils.isEmpty(user.getUsername())) {
+        if (letter.equals(DefaultLetter) && !StringUtils.isNullOrEmpty(user.getUsername())) {
             letter = new GetInitialLetter().getLetter(user.getUsername());
         }
         user.setInitialLetter(letter);

@@ -13,7 +13,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -33,6 +32,7 @@ import com.wills.help.listener.AppBarStateChangeListener;
 import com.wills.help.release.adapter.PagerAdapter;
 import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.ScreenUtils;
+import com.wills.help.utils.StringUtils;
 import com.wills.help.widget.MySwipeRefreshLayout;
 import com.wills.help.widget.banner.AutoScrollPoster;
 
@@ -170,7 +170,7 @@ public class HomeFragment extends BaseFragment implements HomeView ,SwipeRefresh
             @Override
             public void onItemViewClick(View view, Object object) {
                 String url = (String)object;
-                if (!TextUtils.isEmpty(url)&&url.startsWith("http")) {
+                if (!StringUtils.isNullOrEmpty(url)&&url.startsWith("http")) {
                     Bundle bundle = new Bundle();
                     bundle.putString("url",url);
                     IntentUtils.startActivity(getAppCompatActivity(), WebViewActivity.class,bundle);
@@ -189,6 +189,11 @@ public class HomeFragment extends BaseFragment implements HomeView ,SwipeRefresh
         }else {
             if (poster!=null){
                 poster.resumeScroll();
+            }
+            if (expressListener!=null&& App.getApp().getIsLogin()){
+                expressListener.expressRefresh();
+            }else {
+                expressListener.expressClear();
             }
         }
     }
@@ -242,6 +247,7 @@ public class HomeFragment extends BaseFragment implements HomeView ,SwipeRefresh
 
     public interface ExpressListener{
         void expressRefresh();
+        void expressClear();
     }
 
 }

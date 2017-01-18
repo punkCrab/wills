@@ -3,7 +3,6 @@ package com.wills.help.widget.banner;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,7 @@ import android.widget.LinearLayout;
 import com.wills.help.R;
 import com.wills.help.home.model.Banner;
 import com.wills.help.utils.GlideUtils;
+import com.wills.help.utils.StringUtils;
 
 import java.util.List;
 
@@ -109,7 +109,7 @@ public class AutoScrollPoster extends AutoScrollableView<com.wills.help.home.mod
         // Load image, decode it to Bitmap and display Bitmap in ImageView (or any other view
         //  which implements ImageAware interface)
         // mImageLoader.displayImage(imageUri, imageView);
-        if (!TextUtils.isEmpty(picbean.getRequesturl())){
+        if (!StringUtils.isNullOrEmpty(picbean.getRequesturl())){
             GlideUtils.getInstance().displayImage(context,picbean.getRequesturl(),imageView);
             view.addView(imageLayout, 0);
         }else {

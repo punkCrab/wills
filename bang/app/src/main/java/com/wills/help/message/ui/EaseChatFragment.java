@@ -15,7 +15,6 @@ import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -33,6 +32,7 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMImageMessageBody;
@@ -60,6 +60,7 @@ import com.wills.help.photo.model.PhotoModel;
 import com.wills.help.photo.ui.PhotoSelectorActivity;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.StringUtils;
 import com.wills.help.utils.ToastUtils;
 
 import java.io.File;
@@ -176,8 +177,7 @@ import rx.functions.Action1;
         });
 
         swipeRefreshLayout = messageList.getSwipeRefreshLayout();
-        swipeRefreshLayout.setColorSchemeResources(R.color.holo_blue_bright, R.color.holo_green_light,
-                R.color.holo_orange_light, R.color.holo_red_light);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark,R.color.colorPrimary, R.color.colorPrimaryLight,R.color.colorAccent);
 
         inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -249,6 +249,14 @@ import rx.functions.Action1;
         // you can change this number
         final List<EMMessage> msgs = conversation.getAllMessages();
         int msgCount = msgs != null ? msgs.size() : 0;
+        if (conversation.getAllMsgCount() == 0){
+            EMMessage cmdMsg = EMMessage.createSendMessage(EMMessage.Type.CMD);
+            String action="userInfo";
+            EMCmdMessageBody cmdBody = new EMCmdMessageBody(action);
+            cmdMsg.setReceipt(toChatUsername);
+            cmdMsg.addBody(cmdBody);
+            EMClient.getInstance().chatManager().sendMessage(cmdMsg);
+        }
         if (msgCount < conversation.getAllMsgCount() && msgCount < pagesize) {
             String msgId = null;
             if (msgs != null && msgs.size() > 0) {
@@ -670,7 +678,7 @@ import rx.functions.Action1;
             return;
         }
         String name = username;
-        if (TextUtils.isEmpty(nickName)){
+        if (StringUtils.isNullOrEmpty(nickName)){
             name = username;
         }else {
             name = nickName;

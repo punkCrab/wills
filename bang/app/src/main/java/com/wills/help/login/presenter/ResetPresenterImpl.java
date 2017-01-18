@@ -1,9 +1,13 @@
 package com.wills.help.login.presenter;
 
+import android.content.Context;
+import android.support.v7.app.AlertDialog;
+
 import com.wills.help.login.model.ResetModel;
 import com.wills.help.login.view.ResetView;
 import com.wills.help.net.ApiSubscriber;
 import com.wills.help.net.Empty;
+import com.wills.help.utils.NetUtils;
 import com.wills.help.utils.ToastUtils;
 
 import java.util.Map;
@@ -45,18 +49,25 @@ public class ResetPresenterImpl implements ResetPresenter {
 
     @Override
     public void reset(Map<String, String> map) {
+        final AlertDialog dialog = NetUtils.netDialog((Context) resetView);
         resetModel.reset(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ApiSubscriber<Empty>() {
                     @Override
                     public void onCompleted() {
-
+                        dialog.dismiss();
                     }
 
                     @Override
                     public void onNext(Empty empty) {
                         resetView.setReset();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        dialog.dismiss();
                     }
                 });
 

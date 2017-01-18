@@ -95,6 +95,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                                 EMClient.getInstance().logout(true, new EMCallBack() {
                                     @Override
                                     public void onSuccess() {
+                                        setResult(RESULT_OK);
                                         finish();
                                     }
 

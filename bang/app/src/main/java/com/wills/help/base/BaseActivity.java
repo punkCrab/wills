@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.umeng.analytics.MobclickAgent;
 import com.wills.help.message.controller.EaseUI;
 import com.wills.help.utils.AppManager;
+import com.wills.help.utils.StringUtils;
 
 /**
  * com.wills.help.base
@@ -47,7 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart(title);
+        MobclickAgent.onPageStart(getClassTitle());
         MobclickAgent.onResume(context);
         if (getClass().getSimpleName().equals("MessageActivity")
                 ||getClass().getSimpleName().equals("ChatActivity")){
@@ -58,7 +58,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd(title);
+        MobclickAgent.onPageEnd(getClassTitle());
         MobclickAgent.onPause(context);
     }
 
@@ -115,7 +115,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private String getClassTitle(){
-        return !TextUtils.isEmpty(title) ? title : getClass().getSimpleName();
+        return !StringUtils.isNullOrEmpty(title) ? title : getClass().getSimpleName();
     }
 
     protected void backClick(){

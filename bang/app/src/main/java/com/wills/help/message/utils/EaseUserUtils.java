@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.db.bean.Contact;
 import com.wills.help.db.manager.ContactHelper;
@@ -38,13 +39,15 @@ public class EaseUserUtils {
                         public void onNext(Contact contact) {
                             if (contact!=null){
                                 GlideUtils.getInstance().displayImage(context,contact.getAvatar(),imageView);
+                            }else {
+                                GlideUtils.getInstance().displayImage(context, R.drawable.ease_default_avatar,imageView);
                             }
                         }
                     });
         }
     }
 
-    public static void setAvatar2NickName(final Context context, String username, final ImageView imageView, final TextView textView){
+    public static void setAvatar2NickName(final Context context, final String username, final ImageView imageView, final TextView textView){
         if (username.equals(App.getApp().getUser().getUsername())){
             GlideUtils.getInstance().displayImage(context,App.getApp().getUser().getAvatar(),imageView);
             textView.setText(App.getApp().getUser().getNickname());
@@ -67,6 +70,9 @@ public class EaseUserUtils {
                             if (contact!=null){
                                 GlideUtils.getInstance().displayImage(context,contact.getAvatar(),imageView);
                                 textView.setText(contact.getNickname());
+                            }else {
+                                GlideUtils.getInstance().displayImage(context, R.drawable.ease_default_avatar,imageView);
+                                textView.setText(username);
                             }
                         }
                     });

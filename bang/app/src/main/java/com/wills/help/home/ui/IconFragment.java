@@ -113,7 +113,7 @@ public class IconFragment extends BaseFragment implements AuthAdapter.AuthItemCl
             auths.add(auth6);
             auths.add(auth7);
         }
-        gridLayoutManager = new GridLayoutManager(getAppCompatActivity(), 3);
+        gridLayoutManager = new GridLayoutManager(getAppCompatActivity(), 4);
         recyclerView.setLayoutManager(gridLayoutManager);
         authAdapter = new AuthAdapter(getAppCompatActivity(),auths);
         authAdapter.setAuthItemClickListener(this);

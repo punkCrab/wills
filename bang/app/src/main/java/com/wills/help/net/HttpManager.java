@@ -70,7 +70,7 @@ public class HttpManager {
 //                        .build();
 //                Response response = chain.proceed(request);
 //                String headerValue = request.cacheControl().toString();
-//                if (!TextUtils.isEmpty(headerValue)){
+//                if (!StringUtils.isNullOrEmpty(headerValue)){
 //                    response = response.newBuilder().removeHeader("Pragma").header("Cache-Control" , "max-age=" + 30).build();
 //                }
 //                return response;

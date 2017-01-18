@@ -98,7 +98,6 @@
         <activity android:name=".message.ui.EaseShowBigImageActivity" />
         <activity android:name=".message.ui.EaseBaiduMapActivity" />
         <activity android:name=".message.ui.UserDetailsActivity" />
-        <activity android:name=".assist.ui.AssistActivity" />
         <activity android:name=".home.ui.ExpressListActivity" />
         <activity android:name=".release.ui.ReleaseActivity" />
         <activity android:name=".release.ui.AppraiseActivity" />

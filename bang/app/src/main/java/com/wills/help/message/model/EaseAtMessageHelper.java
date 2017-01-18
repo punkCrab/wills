@@ -1,7 +1,5 @@
 package com.wills.help.message.model;
 
-import android.text.TextUtils;
-
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessage.ChatType;
@@ -10,6 +8,7 @@ import com.wills.help.message.EaseConstant;
 import com.wills.help.message.controller.EaseUI;
 import com.wills.help.message.domain.EaseUser;
 import com.wills.help.message.utils.EaseUserUtils;
+import com.wills.help.utils.StringUtils;
 
 import org.json.JSONArray;
 
@@ -56,7 +55,7 @@ public class EaseAtMessageHelper {
      * @return
      */
     public boolean containsAtUsername(String content){
-        if(TextUtils.isEmpty(content)){
+        if(StringUtils.isNullOrEmpty(content)){
             return false;
         }
         synchronized (toAtUserList) {
@@ -90,7 +89,7 @@ public class EaseAtMessageHelper {
      * @return
      */
     public List<String> getAtMessageUsernames(String content){
-        if(TextUtils.isEmpty(content)){
+        if(StringUtils.isNullOrEmpty(content)){
             return null;
         }
         synchronized (toAtUserList) {

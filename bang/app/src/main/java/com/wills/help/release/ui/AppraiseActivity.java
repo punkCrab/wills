@@ -3,7 +3,6 @@ package com.wills.help.release.ui;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +16,7 @@ import com.wills.help.release.adapter.AppraiseLabelAdapter;
 import com.wills.help.release.model.Appraise;
 import com.wills.help.release.presenter.AppraisePresenterImpl;
 import com.wills.help.release.view.AppraiseView;
+import com.wills.help.utils.StringUtils;
 import com.wills.help.utils.ToastUtils;
 import com.wills.help.widget.MyItemDecoration;
 
@@ -120,7 +120,7 @@ public class AppraiseActivity extends BaseActivity implements View.OnClickListen
         Map<String, String> map = new HashMap<>();
         map.put("orderid", orderId);
         map.put("releaseuserid", App.getApp().getUser().getUserid());
-        map.put("appraisecontent", TextUtils.isEmpty(editText.getText().toString())?"":editText.getText().toString());
+        map.put("appraisecontent", StringUtils.isNullOrEmpty(editText.getText().toString())?"":editText.getText().toString());
         map.put("appraiselevel", String.valueOf(star));
         map.put("appraiselabelid", getLabelIds());
         return map;

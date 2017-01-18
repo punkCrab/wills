@@ -41,11 +41,13 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     private int page = 1;
     private int count = 0;
     private AssistPresenterImpl assistPresenter;
+    private int srcId;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setBaseView(R.layout.page_list);
         setBaseTitle(getString(R.string.tab_assist));
+        srcId = getIntent().getExtras().getInt("srcid");
         recyclerView = (RecyclerView) findViewById(R.id.list);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.srl);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorPrimary, R.color.colorPrimaryLight, R.color.colorAccent);
@@ -87,7 +89,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     private Map<String, String> getMap(int type, int position) {
         Map<String, String> map = new HashMap<>();
         if (type == 0) {
-            map.put("srcid", "1");
+            map.put("srcid", srcId+"");
             map.put("page", page + "");
         } else if (type == 1) {
             map.put("acceptuserid", App.getApp().getUser().getUserid());
