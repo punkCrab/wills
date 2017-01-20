@@ -20,24 +20,26 @@ import java.util.ArrayList;
  * 2016/11/15.
  */
 
-public class IconFragment extends BaseFragment implements AuthAdapter.AuthItemClickListener{
+public class IconFragment extends BaseFragment implements AuthAdapter.AuthItemClickListener {
 
-    private int type= 0; //0求助1帮人
+    private int type = 0; //0求助1帮人
     RecyclerView recyclerView;
     private ArrayList<Auth> auths;
     private AuthAdapter authAdapter;
     private GridLayoutManager gridLayoutManager;
+
     public static IconFragment newInstance(int type) {
-        
+
         Bundle args = new Bundle();
-        args.putInt("type",type);
+        args.putInt("type", type);
         IconFragment fragment = new IconFragment();
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public View initView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.fragment_home_icon,null);
+        View view = inflater.inflate(R.layout.fragment_home_icon, null);
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
         return view;
     }
@@ -46,7 +48,7 @@ public class IconFragment extends BaseFragment implements AuthAdapter.AuthItemCl
     public void initData(Bundle savedInstanceState) {
         type = getArguments().getInt("type");
         auths = new ArrayList<>();
-        if (type == 0){
+        if (type == 0) {
             Auth auth = new Auth();
             auth.setImgId(R.drawable.auth_express);
             auth.setTitle("取快递");
@@ -79,7 +81,7 @@ public class IconFragment extends BaseFragment implements AuthAdapter.AuthItemCl
             auths.add(auth5);
             auths.add(auth6);
             auths.add(auth7);
-        }else {
+        } else {
             Auth auth = new Auth();
             auth.setImgId(R.drawable.auth_express);
             auth.setTitle("取快递");
@@ -115,27 +117,17 @@ public class IconFragment extends BaseFragment implements AuthAdapter.AuthItemCl
         }
         gridLayoutManager = new GridLayoutManager(getAppCompatActivity(), 4);
         recyclerView.setLayoutManager(gridLayoutManager);
-        authAdapter = new AuthAdapter(getAppCompatActivity(),auths);
+        authAdapter = new AuthAdapter(getAppCompatActivity(), auths);
         authAdapter.setAuthItemClickListener(this);
         recyclerView.setAdapter(authAdapter);
-        if (type ==0){
-
-        }else {
-
-        }
     }
 
     @Override
     public void onItemClick(int position) {
-        switch (position){
-            case 0:
-            case 1:
-                if (type == 0){
-                    ((MainActivity)getAppCompatActivity()).jumpReleaseFragment(1,position);
-                }else if (type == 1){
-                    ((MainActivity)getAppCompatActivity()).getBottomNavigationBar().selectTab(2);
-                }
-                break;
+        if (type == 0) {
+            ((MainActivity) getAppCompatActivity()).jumpReleaseFragment(1, position);
+        } else if (type == 1) {
+            ((MainActivity) getAppCompatActivity()).getBottomNavigationBar().selectTab(2);
         }
     }
 }
