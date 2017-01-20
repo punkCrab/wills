@@ -21,6 +21,7 @@ import java.util.List;
 public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
+    private static final int TYPE_EMPTY = 2;
     public static final int LOAD = 3;//加载中
     public static final int SUCCESS = 4;//加载成功
     public static final int FAIL = 5;//加载失败
@@ -30,7 +31,7 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
 
     private List<T> list;
     private Context context;
-    private View view;
+    private View footerView ,emptyView;
     private BaseListLoadMoreListener.LoadMoreListener loadMoreListener;
     protected BaseItemClickListener baseItemClickListener;
 
@@ -48,9 +49,13 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
         if(viewType == TYPE_ITEM) {
             return CreateViewHolder(parent,viewType);
         } else if (viewType == TYPE_FOOTER){
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.footer, null);
-            view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
-            return new FooterViewHolder(view);
+            footerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.footer, null);
+            footerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+            return new FooterViewHolder(footerView);
+        }else if (viewType == TYPE_EMPTY){
+            emptyView = LayoutInflater.from(parent.getContext()).inflate(R.layout.page_list_empty, null);
+            emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+            return new EmptyViewHolder(emptyView);
         }
         return null;
     }
@@ -82,35 +87,44 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
     }
 
     private void changeFooter(){
-        if (view!=null){
+        if (emptyView!=null){
+            emptyView.setVisibility(View.GONE);
+        }
+        if (footerView!=null){
             if (STATE != SUCCESS){
-                if (view.getVisibility() == View.GONE){
-                    view.setVisibility(View.VISIBLE);
+                if (footerView.getVisibility() == View.GONE){
+                    footerView.setVisibility(View.VISIBLE);
                 }
                 if (STATE == LOAD){
-                    view.findViewById(R.id.pb_more).setVisibility(View.VISIBLE);
-                    ((TextView)view.findViewById(R.id.tv_more)).setText(context.getString(R.string.list_loading));
+                    footerView.findViewById(R.id.pb_more).setVisibility(View.VISIBLE);
+                    ((TextView)footerView.findViewById(R.id.tv_more)).setText(context.getString(R.string.list_loading));
                 }else if (STATE == FAIL){
-                    view.findViewById(R.id.pb_more).setVisibility(View.GONE);
-                    ((TextView)view.findViewById(R.id.tv_more)).setText(context.getString(R.string.list_fail));
+                    footerView.findViewById(R.id.pb_more).setVisibility(View.GONE);
+                    ((TextView)footerView.findViewById(R.id.tv_more)).setText(context.getString(R.string.list_fail));
                 }else if (STATE == EMPTY){
-                    view.findViewById(R.id.pb_more).setVisibility(View.GONE);
-                    ((TextView)view.findViewById(R.id.tv_more)).setText(context.getString(R.string.list_empty));
+                    footerView.findViewById(R.id.pb_more).setVisibility(View.GONE);
+                    ((TextView)footerView.findViewById(R.id.tv_more)).setText(context.getString(R.string.list_empty));
                 }
             }else {
-                if (view.getVisibility() == View.VISIBLE){
-                    view.setVisibility(View.GONE);
+                if (footerView.getVisibility() == View.VISIBLE){
+                    footerView.setVisibility(View.GONE);
                 }
             }
         }
     }
 
+    public void setEmpty(){
+        if (emptyView!=null){
+            emptyView.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public int getItemCount() {
-        if(list == null||list.size()==0) {
-            return 0;
-        }
         int begin = mShowFooter?1:0;//因为有角标
+        if(list == null||list.size()==0) {
+            return begin;
+        }
         return list.size() + begin;
     }
 
@@ -120,7 +134,11 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
             return TYPE_ITEM;
         }
         if ((position + 1 == getItemCount())) {
-            return TYPE_FOOTER;
+            if (list.size()>0){
+                return TYPE_FOOTER;
+            }else {
+                return TYPE_EMPTY;
+            }
         } else {
             return TYPE_ITEM;
         }
@@ -145,7 +163,11 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
             }
         }
     }
-
+    public class EmptyViewHolder extends RecyclerView.ViewHolder{
+        public EmptyViewHolder(View view) {
+            super(view);
+        }
+    }
     protected abstract RecyclerView.ViewHolder CreateViewHolder(ViewGroup parent, int viewType);
     protected abstract void BindViewHolder(RecyclerView.ViewHolder holder, int position);
 

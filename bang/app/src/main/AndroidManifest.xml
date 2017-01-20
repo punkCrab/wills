@@ -79,8 +79,8 @@
         <activity android:name=".login.ui.LoginActivity"></activity>
         <activity android:name=".login.ui.RegisterActivity"></activity>
         <activity android:name=".login.ui.ResetActivity"></activity>
-        <activity android:name=".login.ui.SettingActivity"></activity>
-        <activity android:name=".login.ui.MessageSettingActivity"></activity>
+        <activity android:name=".setting.ui.SettingActivity"></activity>
+        <activity android:name=".setting.ui.MessageSettingActivity"></activity>
         <activity android:name=".person.ui.IdentificationActivity"></activity>
         <activity android:name=".person.ui.WalletActivity"></activity>
         <activity android:name=".person.ui.UserInfoActivity"></activity>
@@ -103,6 +103,7 @@
         <activity android:name=".release.ui.AppraiseActivity" />
         <activity android:name=".home.ui.SendActivity" />
         <activity android:name=".base.WebViewActivity" />
+        <activity android:name=".setting.ui.AccountActivity" />
 
         <!-- alipay sdk begin -->
 

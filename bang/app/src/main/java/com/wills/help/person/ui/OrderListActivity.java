@@ -115,7 +115,8 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
             orderArrayList.addAll(releaseList.getData());
             orderAdapter.setList(orderArrayList);
             page++;
+        }else {
+            orderAdapter.setEmpty();
         }
-
     }
 }

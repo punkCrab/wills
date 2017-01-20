@@ -1,4 +1,4 @@
-package com.wills.help.login.ui;
+package com.wills.help.setting.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -57,7 +57,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 IntentUtils.startActivity(context,MessageSettingActivity.class);
                 break;
             case R.id.tv_account:
-                IntentUtils.startActivity(context,MessageSettingActivity.class);
+                IntentUtils.startActivity(context,AccountActivity.class);
                 break;
             case R.id.rl_cache:
                 AlertDialog.Builder builder = new AlertDialog.Builder(context)

@@ -1,4 +1,4 @@
-package com.wills.help.login.ui;
+package com.wills.help.setting.ui;
 
 import android.os.Bundle;
 import android.view.View;

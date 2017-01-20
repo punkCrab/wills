@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseListAdapter;
+import com.wills.help.db.bean.OrderTypeInfo;
+import com.wills.help.db.manager.OrderTypeInfoHelper;
 import com.wills.help.message.EaseConstant;
 import com.wills.help.message.ui.ChatActivity;
 import com.wills.help.release.model.OrderInfo;
@@ -20,6 +22,10 @@ import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
 
 import java.util.List;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * com.wills.help.assist.adapter
@@ -43,15 +49,29 @@ public class AssistAdapter extends BaseListAdapter<OrderInfo>{
     }
 
     @Override
-    protected void BindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    protected void BindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof AssistHolder){
             final OrderInfo orderInfo = list.get(position);
             GlideUtils.getInstance().displayCircleImage(context,orderInfo.getReleaseavatar(),((AssistHolder)holder).imageView);
-            if (orderInfo.getOrdertype().equals("1")){
-                ((AssistHolder)holder).tv_assist_state.setText(context.getString(R.string.help_express));
-            }else if (orderInfo.getOrdertype().equals("2")){
-                ((AssistHolder)holder).tv_assist_state.setText(context.getString(R.string.help_buy));
-            }
+            OrderTypeInfoHelper.getInstance().queryById(orderInfo.getOrdertype())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<OrderTypeInfo>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable throwable) {
+
+                        }
+
+                        @Override
+                        public void onNext(OrderTypeInfo orderTypeInfo) {
+                            ((AssistHolder)holder).tv_assist_state.setText(context.getString(R.string.help)+orderTypeInfo.getOrdertype());
+                        }
+                    });
             Drawable drawable =null;
             if (orderInfo.getReleasesex().equals("1")){
                 drawable = context.getResources().getDrawable(R.drawable.sex_girl);

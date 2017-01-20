@@ -53,7 +53,8 @@ public class PayActivity extends BaseActivity implements PayView{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                setResult(RESULT_OK);
+                finish();
             }
         });
     }

@@ -62,7 +62,7 @@ public class IntentUtils {
      * @param activity
      * @param cls
      * @param bundle
-     * @param requestCode 统一三位，系统的1开头，用户信息2开头，快递3开头
+     * @param requestCode 统一三位，系统的1开头，用户信息2开头，快递3开头,支付的4开头
      */
     public static void startActivityForResult(Activity activity, Class<?> cls, Bundle bundle ,int requestCode) {
         Intent intent = new Intent(activity, cls);

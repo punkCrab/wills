@@ -10,6 +10,8 @@
     <string name="setting_exit">退出登录</string>
     <string name="setting_about">关于我们</string>
     <string name="setting_account">帐户与安全</string>
+    <string name="setting_account_phone">更换手机号码</string>
+    <string name="setting_account_pwd">修改密码</string>
     <string name="setting_msg">新消息提醒</string>
     <string name="setting_cache">清理缓存文件</string>
     <string name="setting">设置</string>
@@ -72,8 +74,7 @@
     <string name="release_send">送达地址</string>
     <string name="release_send_address">详细地址</string>
 
-    <string name="help_express">帮我取快递</string>
-    <string name="help_buy">帮我买零食</string>
+    <string name="help">帮我</string>
 
     <string name="release_submit">发单</string>
     <string name="release_state_release">已发布</string>

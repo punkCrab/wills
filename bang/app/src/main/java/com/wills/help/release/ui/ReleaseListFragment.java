@@ -122,6 +122,8 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
             releaseInfoList.addAll(releaseList.getData());
             releaseListAdapter.setList(releaseInfoList);
             page++;
+        }else {
+            releaseListAdapter.setEmpty();
         }
     }
 }

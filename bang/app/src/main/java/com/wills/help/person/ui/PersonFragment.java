@@ -17,7 +17,7 @@ import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.listener.AppBarStateChangeListener;
-import com.wills.help.login.ui.SettingActivity;
+import com.wills.help.setting.ui.SettingActivity;
 import com.wills.help.message.ui.MessageActivity;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.GlideUtils;
@@ -95,7 +95,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
         tv_public.setOnClickListener(this);
         tv_wallet.setOnClickListener(this);
         if (App.getApp().getIsLogin()){
-            GlideUtils.getInstance().displayCircleImage(context, App.getApp().getUser().getAvatar(), imageView);
+            GlideUtils.getInstance().displayCircleImageWithSignature(context, App.getApp().getUser().getAvatar(), imageView);
             tv_name.setText(App.getApp().getUser().getNickname());
             tv_school.setText(App.getApp().getUser().getSchool());
         }
@@ -142,7 +142,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConfig.AVATAR && resultCode == RESULT_OK){
-            GlideUtils.getInstance().displayCircleImage(context, App.getApp().getUser().getAvatar(), imageView);
+            GlideUtils.getInstance().displayCircleImageWithSignature(context, App.getApp().getUser().getAvatar(), imageView);
             tv_name.setText(App.getApp().getUser().getNickname());
             tv_school.setText(App.getApp().getUser().getSchool());
         }

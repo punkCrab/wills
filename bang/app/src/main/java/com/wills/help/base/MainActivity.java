@@ -29,6 +29,7 @@ import com.wills.help.message.controller.EaseUI;
 import com.wills.help.message.presenter.ContactsPresenterImpl;
 import com.wills.help.person.ui.PersonFragment;
 import com.wills.help.release.ui.MainReleaseFragment;
+import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.AppManager;
 import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.ScreenUtils;
@@ -259,7 +260,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             changeReleaseFragment(1,0);
         }else if (requestCode == 12&&resultCode==RESULT_OK){
             bottomNavigationBar.selectTab(0);
-        }else{
+        }else if(requestCode == 401 && resultCode == RESULT_OK){
+            mainReleaseFragment.onActivityResult(requestCode,resultCode,data);
+        }else if (requestCode == AppConfig.AVATAR && resultCode == RESULT_OK){
             personFragment.onActivityResult(requestCode,resultCode,data);
         }
     }

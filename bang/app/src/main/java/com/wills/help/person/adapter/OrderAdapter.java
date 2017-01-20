@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseListAdapter;
+import com.wills.help.db.bean.OrderTypeInfo;
+import com.wills.help.db.manager.OrderTypeInfoHelper;
 import com.wills.help.message.EaseConstant;
 import com.wills.help.message.ui.ChatActivity;
 import com.wills.help.release.model.OrderInfo;
@@ -19,6 +21,10 @@ import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
 
 import java.util.List;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * com.wills.help.person.adapter
@@ -51,16 +57,30 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
     }
 
     @Override
-    protected void BindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    protected void BindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof OrderHolder){
             final OrderInfo orderInfo = list.get(position);
             GlideUtils.getInstance().displayCircleImage(context ,orderInfo.getReleaseavatar() ,((OrderHolder)holder).imageView);
             ((OrderHolder)holder).tv_name.setText(orderInfo.getReleasenickname());
-            if (orderInfo.getOrdertype().equals("1")){
-                ((OrderHolder)holder).tv_assist_state.setText(context.getString(R.string.help_express));
-            }else if (orderInfo.getOrdertype().equals("2")){
-                ((OrderHolder)holder).tv_assist_state.setText(context.getString(R.string.help_buy));
-            }
+            OrderTypeInfoHelper.getInstance().queryById(orderInfo.getOrdertype())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<OrderTypeInfo>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable throwable) {
+
+                        }
+
+                        @Override
+                        public void onNext(OrderTypeInfo orderTypeInfo) {
+                            ((OrderHolder)holder).tv_assist_state.setText(context.getString(R.string.help)+orderTypeInfo.getOrdertype());
+                        }
+                    });
             if (!orderInfo.getStateid().equals("0")&&!orderInfo.getStateid().equals("1")){
                 ((OrderHolder)holder).iv_assist_msg.setVisibility(View.VISIBLE);
             }else {

@@ -139,7 +139,6 @@ public class GlideUtils {
     public void displayCircleImage(final Context context, String url, ImageView view) {
 
         Glide.with(context).load(url).asBitmap().centerCrop()
-                .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
                 .placeholder(R.drawable.default_circle)
                 .into(new BitmapImageViewTarget(view){
             @Override
@@ -150,6 +149,29 @@ public class GlideUtils {
                 view.setImageDrawable(circularBitmapDrawable);
             }
         });
+    }
+
+
+    /**
+     * 圆形图片
+     * @param context
+     * @param url
+     * @param view
+     */
+    public void displayCircleImageWithSignature(final Context context, String url, ImageView view) {
+
+        Glide.with(context).load(url).asBitmap().centerCrop()
+                .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+                .placeholder(R.drawable.default_circle)
+                .into(new BitmapImageViewTarget(view){
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable circularBitmapDrawable =
+                                RoundedBitmapDrawableFactory.create(context.getResources(), resource);
+                        circularBitmapDrawable.setCircular(true);
+                        view.setImageDrawable(circularBitmapDrawable);
+                    }
+                });
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.wills.help.release.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -15,6 +16,8 @@ import com.wills.help.message.ui.MessageActivity;
 import com.wills.help.release.adapter.PagerAdapter;
 import com.wills.help.utils.IntentUtils;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * com.wills.help.release.ui
  * Created by lizhaoyong
@@ -28,6 +31,7 @@ public class MainReleaseFragment extends BaseFragment {
     private Toolbar toolbar;
     private int tabIndex;
     private int stateId;
+    private ReleaseListFragment progressFragment,completeFragment;
 
     public static MainReleaseFragment newInstance(int tabIndex, int stateId) {
 
@@ -80,10 +84,12 @@ public class MainReleaseFragment extends BaseFragment {
 
     private void setViewPager(ViewPager mViewPager) {
         //Fragment中嵌套使用Fragment一定要使用getChildFragmentManager(),否则会有问题
+        progressFragment = ReleaseListFragment.newInstance(0);
+        completeFragment = ReleaseListFragment.newInstance(1);
         PagerAdapter adapter = new PagerAdapter(getChildFragmentManager());
         adapter.addFragment(ReleaseFragment.newInstance(stateId), getString(R.string.release));
-        adapter.addFragment(ReleaseListFragment.newInstance(0), getString(R.string.release_progress));
-        adapter.addFragment(ReleaseListFragment.newInstance(1), getString(R.string.release_complete));
+        adapter.addFragment(progressFragment, getString(R.string.release_progress));
+        adapter.addFragment(completeFragment, getString(R.string.release_complete));
         mViewPager.setAdapter(adapter);
     }
 
@@ -117,4 +123,14 @@ public class MainReleaseFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 401 && resultCode == RESULT_OK){
+            tabLayout.getTabAt(1).select();
+            if (progressFragment!=null){
+                progressFragment.onRefresh();
+            }
+        }
+    }
 }

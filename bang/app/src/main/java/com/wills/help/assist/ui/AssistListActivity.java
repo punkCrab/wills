@@ -127,6 +127,8 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
             assistList.addAll(orderList.getData());
             assistAdapter.setList(assistList);
             page++;
+        }else {
+            assistAdapter.setEmpty();
         }
     }
 

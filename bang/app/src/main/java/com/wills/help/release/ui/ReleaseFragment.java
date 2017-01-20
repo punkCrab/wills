@@ -151,6 +151,18 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
                 });
     }
 
+    private void clearData(){
+        tv_release_state.setText(state[orderIndex]);
+        tv_release_from.setText(address[0]);
+        tv_release_send.setText(address[0]);
+        orderType = stateId[orderIndex];
+        srcId = addressId[0];
+        desId = addressId[0];
+        et_release_from_address.getText().clear();
+        et_release_money.getText().clear();
+        et_release_send_address.getText().clear();
+    }
+
     private void initListener() {
         tv_release_state.setOnClickListener(this);
         tv_release_from.setOnClickListener(this);
@@ -227,9 +239,10 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void setRelease(Release.OrderId order) {
+        clearData();
         Bundle bundle = new Bundle();
         bundle.putString("orderId",order.getOrderid());
-        IntentUtils.startActivity(getAppCompatActivity(), PayActivity.class,bundle);
+        IntentUtils.startActivityForResult(getAppCompatActivity(), PayActivity.class,bundle,401);
     }
 
     @Override

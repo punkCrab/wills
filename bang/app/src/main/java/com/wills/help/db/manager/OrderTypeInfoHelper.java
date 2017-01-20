@@ -64,4 +64,8 @@ public class OrderTypeInfoHelper implements IDBHelper<OrderTypeInfo>{
         return orderTypeInfoDao.rx().update(orderTypeInfo);
     }
 
+    public Observable<OrderTypeInfo> queryById(String id){
+        return orderTypeInfoDao.queryBuilder().where(OrderTypeInfoDao.Properties.Typeid.eq(id)).rx().unique();
+    }
+
 }
