@@ -77,7 +77,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
     private void initData(){
         userInfoPresenter = new UserInfoPresenterImpl(this);
-        GlideUtils.getInstance().displayCircleImage(context, App.getApp().getUser().getAvatar(),iv_avatar);
+        GlideUtils.getInstance().displayCircleImageWithSignature(context, App.getApp().getUser().getAvatar(),iv_avatar);
         tv_nickname.setText(App.getApp().getUser().getNickname());
         tv_phone.setText(App.getApp().getUser().getPhone_num());
         int sexId = Integer.parseInt(App.getApp().getUser().getSex());

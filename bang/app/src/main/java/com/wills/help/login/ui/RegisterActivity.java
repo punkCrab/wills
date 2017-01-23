@@ -136,6 +136,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             if (dialog!=null){
                                 dialog.dismiss();
                             }
+                            EMClient.getInstance().chatManager().loadAllConversations();
                             setResult(RESULT_OK);
                             finish();
                         }

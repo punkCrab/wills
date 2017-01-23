@@ -84,6 +84,7 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
         EMClient.getInstance().login(et_username.getText().toString(), StringUtils.getMD5(et_password.getText().toString()), new EMCallBack() {
             @Override
             public void onSuccess() {
+                EMClient.getInstance().chatManager().loadAllConversations();
                 finish();
             }
 
