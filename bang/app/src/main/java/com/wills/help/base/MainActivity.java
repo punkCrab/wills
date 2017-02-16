@@ -253,7 +253,11 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             if (resultCode==RESULT_OK)
                 bottomNavigationBar.selectTab(currentPosition);
             else if (resultCode==RESULT_CANCELED)
-                bottomNavigationBar.selectTab(prevPosition);
+                if (App.getApp().getIsLogin()){
+                    bottomNavigationBar.selectTab(prevPosition);
+                }else {
+                    bottomNavigationBar.selectTab(0);
+                }
         } else if (requestCode == 301&&resultCode==RESULT_OK){
             isRelease = true;
             bottomNavigationBar.selectTab(1);

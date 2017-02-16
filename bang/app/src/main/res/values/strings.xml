@@ -454,4 +454,6 @@
     <string name="toast_updatenick_fail">更新昵称失败!</string>
     <string name="toast_updatephoto_success">更新头像成功!</string>
     <string name="toast_updatephoto_fail">更新头像失败!</string>
+
+    <string name="msg_break">您的帐号已经在其他地方登录，如非本人操作，请及时修改密码</string>
 </resources>

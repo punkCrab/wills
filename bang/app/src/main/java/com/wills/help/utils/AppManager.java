@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import com.wills.help.base.MainActivity;
+
 import java.util.List;
 import java.util.Stack;
 
@@ -88,6 +90,15 @@ public class AppManager {
         }
         activityStack.clear();
     }
+
+    public void MsgBreak(){
+        for (int i = 0, size = activityStack.size(); i < size; i++){
+            if (null != activityStack.get(i)&&!activityStack.get(i).getClass().equals(MainActivity.class)){
+                activityStack.get(i).finish();
+            }
+        }
+    }
+
     /**
      * 退出应用程序
      */
