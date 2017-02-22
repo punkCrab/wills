@@ -7,6 +7,7 @@ import com.wills.help.login.model.OrderType;
 import com.wills.help.login.model.Point;
 import com.wills.help.login.model.User;
 import com.wills.help.message.model.Contacts;
+import com.wills.help.pay.model.PaySign;
 import com.wills.help.person.model.Avatar;
 import com.wills.help.person.model.Wallet;
 import com.wills.help.release.model.Appraise;
@@ -213,7 +214,7 @@ public interface ApiInterface {
      */
     @POST("appraise")
     @FormUrlEncoded
-    Observable<Empty> Appraise(@FieldMap Map<String , String > map);
+    Observable<Empty> appraise(@FieldMap Map<String , String > map);
 
     /**
      * 获取聊天列表人员头像和昵称
@@ -222,4 +223,9 @@ public interface ApiInterface {
      */
     @GET("getinfobyusernames")
     Observable<Contacts> getContacts(@QueryMap Map<String , String > map);
+
+
+    @POST("sign")
+    @FormUrlEncoded
+    Observable<PaySign> paySign(@FieldMap Map<String , String > map);
 }

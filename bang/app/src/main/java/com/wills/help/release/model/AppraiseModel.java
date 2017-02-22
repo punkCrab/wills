@@ -20,6 +20,6 @@ public class AppraiseModel {
     }
 
     public Observable<Empty> appraise(Map<String ,String> map){
-        return HttpManager.getApiInterface().Appraise(map);
+        return HttpManager.getApiInterface().appraise(map);
     }
 }

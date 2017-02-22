@@ -18,4 +18,8 @@ public class PayModel {
     public Observable<OrderDetail> getOrderInfo(Map<String , String> map){
         return HttpManager.getApiInterface().getOrderInfo(map);
     }
+
+    public Observable<PaySign> paySign(Map<String , String> map){
+        return HttpManager.getApiInterface().paySign(map);
+    }
 }

@@ -11,4 +11,6 @@ import java.util.Map;
 public interface PayPresenter {
 
     void getOrderInfo(Map<String,String> map);
+
+    void paySign(Map<String , String> map);
 }

@@ -1,9 +1,14 @@
 package com.wills.help.pay.presenter;
 
+import android.content.Context;
+import android.support.v7.app.AlertDialog;
+
 import com.wills.help.net.ApiSubscriber;
 import com.wills.help.pay.model.PayModel;
+import com.wills.help.pay.model.PaySign;
 import com.wills.help.pay.view.PayView;
 import com.wills.help.release.model.OrderDetail;
+import com.wills.help.utils.NetUtils;
 
 import java.util.Map;
 
@@ -39,6 +44,31 @@ public class PayPresenterImpl implements PayPresenter{
                     @Override
                     public void onNext(OrderDetail orderInfo) {
                         payView.setOrderInfo(orderInfo.getData());
+                    }
+                });
+    }
+
+    @Override
+    public void paySign(Map<String, String> map) {
+        final AlertDialog dialog = NetUtils.netDialog((Context) payView);
+        payModel.paySign(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiSubscriber<PaySign>() {
+                    @Override
+                    public void onCompleted() {
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onNext(PaySign paySign) {
+                        payView.setPaySign("");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        dialog.dismiss();
                     }
                 });
     }
