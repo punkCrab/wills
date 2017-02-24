@@ -4,7 +4,7 @@ apply plugin: 'org.greenrobot.greendao'
 android {
     signingConfigs {
         debug {
-            keyAlias 'china'
+            keyAlias 'wills'
             keyPassword 'lizhaoyong'
             storeFile file('D:/个人材料/keystore.jks')
             storePassword 'lizhaoyong'
@@ -12,7 +12,7 @@ android {
         }
 
         release {
-            keyAlias 'china'
+            keyAlias 'wills'
             keyPassword 'lizhaoyong'
             storeFile file('D:/个人材料/keystore.jks')
             storePassword 'lizhaoyong'

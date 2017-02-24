@@ -10,4 +10,5 @@ import com.wills.help.release.model.OrderList;
 
 public interface ReleaseListView {
     void setReleaseList(OrderList releaseList);
+    void confirm();
 }

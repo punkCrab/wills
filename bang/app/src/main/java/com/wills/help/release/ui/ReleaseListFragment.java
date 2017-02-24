@@ -1,7 +1,9 @@
 package com.wills.help.release.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,7 +32,7 @@ import java.util.Map;
  * 2016/11/14.
  */
 
-public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener , BaseListLoadMoreListener.LoadMoreListener , ReleaseListView{
+public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener , BaseListLoadMoreListener.LoadMoreListener , ReleaseListView , ReleaseListAdapter.ButtonClickListener{
 
     private int type = 0;//0进行中1已完成
     SwipeRefreshLayout swipeRefreshLayout;
@@ -69,6 +71,7 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new MyItemDecoration(getAppCompatActivity(),5));
         releaseListAdapter = new ReleaseListAdapter(getAppCompatActivity(), releaseInfoList,type);
+        releaseListAdapter.setButtonClickListener(this);
         recyclerView.setAdapter(releaseListAdapter);
         BaseListLoadMoreListener loadMore = new BaseListLoadMoreListener(linearLayoutManager,releaseListAdapter);
         recyclerView.addOnScrollListener(loadMore);
@@ -108,6 +111,13 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
         return map;
     }
 
+    private Map<String , String> getMap(OrderInfo releaseInfo){
+        Map<String , String> map = new HashMap<>();
+        map.put("releaseuserid", App.getApp().getUser().getUserid());
+        map.put("orderid", releaseInfo.getOrderid());
+        return map;
+    }
+
     @Override
     public void setReleaseList(OrderList releaseList) {
         if (swipeRefreshLayout.isRefreshing()){
@@ -124,6 +134,38 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
             page++;
         }else {
             releaseListAdapter.setEmpty();
+        }
+    }
+
+    @Override
+    public void confirm() {
+        onRefresh();
+    }
+
+    private void showOk(final OrderInfo releaseInfo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getAppCompatActivity());
+        builder.setTitle(getString(R.string.release_state_ok))
+                .setMessage(getString(R.string.release_state_ok_confirm))
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        releaseListPresenter.confirm(getMap(releaseInfo));
+                    }
+                }).show();
+    }
+
+    @Override
+    public void buttonClick(int state, OrderInfo releaseInfo) {
+        switch (state){
+            case 2:
+                showOk(releaseInfo);
+                break;
         }
     }
 }

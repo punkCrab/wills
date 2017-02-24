@@ -74,7 +74,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
             if (type == 0){
                 changeView(holder,Integer.parseInt(releaseInfo.getStateid()),releaseInfo);
             }else if(type == 1){
-                changeView(holder,4,releaseInfo);
+                changeView(holder,Integer.parseInt(releaseInfo.getStateid()),releaseInfo);
             }
             OrderTypeInfoHelper.getInstance().queryById(releaseInfo.getOrdertype())
                     .subscribeOn(Schedulers.io())
@@ -166,6 +166,14 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 ((ReleaseHolder)holder).tv_release_change.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_ok));
+                ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (buttonClickListener!=null){
+                            buttonClickListener.buttonClick(2,releaseInfo);
+                        }
+                    }
+                });
                 break;
             case 3://送达
                 ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
@@ -190,6 +198,11 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_evaluated));
+                ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
                 break;
         }
     }
@@ -229,5 +242,15 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
         public void onClick(View view) {
 
         }
+    }
+
+    private ButtonClickListener buttonClickListener;
+
+    public void setButtonClickListener(ButtonClickListener buttonClickListener) {
+        this.buttonClickListener = buttonClickListener;
+    }
+
+    public interface ButtonClickListener{
+        void buttonClick(int state , OrderInfo releaseInfo);
     }
 }

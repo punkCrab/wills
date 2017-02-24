@@ -119,4 +119,9 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
             orderAdapter.setEmpty();
         }
     }
+
+    @Override
+    public void confirm() {
+
+    }
 }

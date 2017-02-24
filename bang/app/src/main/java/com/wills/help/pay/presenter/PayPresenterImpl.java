@@ -62,7 +62,7 @@ public class PayPresenterImpl implements PayPresenter{
 
                     @Override
                     public void onNext(PaySign paySign) {
-                        payView.setPaySign("");
+                        payView.setPaySign(paySign.getData());
                     }
 
                     @Override

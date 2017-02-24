@@ -10,4 +10,5 @@ import java.util.Map;
 
 public interface ReleaseListPresenter {
     void getReleaseList(Map<String , String > map);
+    void confirm(Map<String , String > map);
 }

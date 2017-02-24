@@ -3,11 +3,11 @@ package com.wills.help.message.presenter;
 import com.wills.help.message.ContactsView;
 import com.wills.help.message.model.Contacts;
 import com.wills.help.message.model.ContactsModel;
+import com.wills.help.net.ApiSubscriber;
 
 import java.util.Map;
 
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -31,9 +31,14 @@ public class ContactsPresenterImpl implements ContactsPresenter{
         contactsModel.getContacts(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Contacts>() {
+                .subscribe(new ApiSubscriber<Contacts>() {
                     @Override
-                    public void call(Contacts contacts) {
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onNext(Contacts contacts) {
                         contactsView.setContacts(contacts.getData());
                     }
                 });

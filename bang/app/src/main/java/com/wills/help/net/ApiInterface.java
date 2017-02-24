@@ -224,8 +224,21 @@ public interface ApiInterface {
     @GET("getinfobyusernames")
     Observable<Contacts> getContacts(@QueryMap Map<String , String > map);
 
-
+    /**
+     * 支付宝支付
+     * @param map
+     * @return
+     */
     @POST("sign")
     @FormUrlEncoded
     Observable<PaySign> paySign(@FieldMap Map<String , String > map);
+
+    /**
+     * 确认收货
+     * @param map
+     * @return
+     */
+    @POST("confirm")
+    @FormUrlEncoded
+    Observable<Empty> confirm(@FieldMap Map<String , String > map);
 }
