@@ -7,6 +7,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
@@ -38,11 +39,13 @@ import java.util.Map;
 public class PayActivity extends BaseActivity implements PayView,WalletView{
     private TextView tv_amount , tv_send , tv_from , tv_balance_amount;
     private MyRadioGroup rg_pay;
+    private RadioButton rb_ali,rb_wx,rb_balance;
     private Button button;
     private PayPresenterImpl payPresenter;
     private String orderId;
     private OrderInfo orderInfo;
     private WalletPresenterImpl walletPresenter;
+    private int payType = 0;//1支付宝2微信
 
     private static final int BALANCE_PAY = 0;
     private static final int ALI_PAY = 1;
@@ -56,7 +59,7 @@ public class PayActivity extends BaseActivity implements PayView,WalletView{
             super.handleMessage(msg);
             switch (msg.what){
                 case BALANCE_PAY:
-
+                    handler.sendEmptyMessageDelayed(PAY_SUCCESS,1000);
                     break;
                 case ALI_PAY:
                     PayResult payResult = new PayResult((Map<String,String>)msg.obj);
@@ -73,9 +76,7 @@ public class PayActivity extends BaseActivity implements PayView,WalletView{
 
                     break;
                 case PAY_SUCCESS:
-                    Looper.prepare();
                     ToastUtils.toast("支付成功");
-                    Looper.loop();
                     setResult(RESULT_OK);
                     finish();
                     break;
@@ -95,23 +96,30 @@ public class PayActivity extends BaseActivity implements PayView,WalletView{
         tv_from = (TextView) findViewById(R.id.tv_from);
         tv_balance_amount = (TextView) findViewById(R.id.tv_balance_amount);
         rg_pay = (MyRadioGroup) findViewById(R.id.rg_pay);
+        rb_ali = (RadioButton) findViewById(R.id.rb_ali);
+        rb_wx = (RadioButton) findViewById(R.id.rb_wx);
+        rb_balance = (RadioButton) findViewById(R.id.rb_balance);
         button = (Button) findViewById(R.id.btn_submit);
         rg_pay.setOnCheckedChangeListener(new MyRadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(MyRadioGroup group, int checkedId) {
                 if (checkedId == R.id.rb_ali){
-
+                    payType = 1;
                 }else if (checkedId == R.id.rb_wx){
-
+                    payType = 2;
                 }else if (checkedId == R.id.rb_balance){
-
+                    payType = 0;
                 }
             }
         });
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                payPresenter.paySign(getPayMap());
+                if (payType == 0){
+                    payPresenter.balancePay(getBalanceMap());
+                }else {
+                    payPresenter.paySign(getPayMap());
+                }
             }
         });
     }
@@ -120,6 +128,7 @@ public class PayActivity extends BaseActivity implements PayView,WalletView{
         Map<String,String> map = new HashMap<>();
         map.put("releaseuserid", App.getApp().getUser().getUserid());
         map.put("orderid", orderId);
+        map.put("action",String.valueOf(payType));
         return map;
     }
 
@@ -136,6 +145,13 @@ public class PayActivity extends BaseActivity implements PayView,WalletView{
                 "\"total_amount\":\""+orderInfo.getMoney()+"\"," +
                 "\"body\":\""+orderInfo.getOrdertype()+"\"," +
                 "\"out_trade_no\":\"" + orderId +  "\"}");
+        return map;
+    }
+
+    private Map<String,String> getBalanceMap(){
+        Map<String,String> map = new HashMap<>();
+        map.put("releaseuserid", App.getApp().getUser().getUserid());
+        map.put("orderid", orderId);
         return map;
     }
 
@@ -174,7 +190,23 @@ public class PayActivity extends BaseActivity implements PayView,WalletView{
     }
 
     @Override
+    public void setBalancePay() {
+        Message message = new Message();
+        message.what = BALANCE_PAY;
+        handler.handleMessage(message);
+    }
+
+    @Override
     public void setMoney(Wallet.Money money) {
-        tv_balance_amount.setText(money.getMoney()+getString(R.string.yuan));
+        if (money.getMoney().equals("0")){
+            rg_pay.findViewById(R.id.rb_balance).setVisibility(View.GONE);
+            rb_ali.setChecked(true);
+            payType = 1;
+        }else {
+            rg_pay.findViewById(R.id.rb_balance).setVisibility(View.VISIBLE);
+            tv_balance_amount.setText(money.getMoney()+getString(R.string.yuan));
+            rb_balance.setChecked(true);
+            payType = 0;
+        }
     }
 }

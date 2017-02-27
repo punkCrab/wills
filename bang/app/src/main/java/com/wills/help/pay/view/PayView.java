@@ -11,4 +11,5 @@ import com.wills.help.release.model.OrderInfo;
 public interface PayView {
     void setOrderInfo(OrderInfo orderInfo);
     void setPaySign(String orderInfo);
+    void setBalancePay();
 }

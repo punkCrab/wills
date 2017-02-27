@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.app.AlertDialog;
 
 import com.wills.help.net.ApiSubscriber;
+import com.wills.help.net.Empty;
 import com.wills.help.pay.model.PayModel;
 import com.wills.help.pay.model.PaySign;
 import com.wills.help.pay.view.PayView;
@@ -63,6 +64,31 @@ public class PayPresenterImpl implements PayPresenter{
                     @Override
                     public void onNext(PaySign paySign) {
                         payView.setPaySign(paySign.getData());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        dialog.dismiss();
+                    }
+                });
+    }
+
+    @Override
+    public void balancePay(Map<String, String> map) {
+        final AlertDialog dialog = NetUtils.netDialog((Context) payView);
+        payModel.balancePay(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiSubscriber<Empty>() {
+                    @Override
+                    public void onCompleted() {
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onNext(Empty empty) {
+                        payView.setBalancePay();
                     }
 
                     @Override

@@ -241,4 +241,13 @@ public interface ApiInterface {
     @POST("confirm")
     @FormUrlEncoded
     Observable<Empty> confirm(@FieldMap Map<String , String > map);
+
+    /**
+     * 余额支付
+     * @param map
+     * @return
+     */
+    @POST("payment")
+    @FormUrlEncoded
+    Observable<Empty> balancePay(@FieldMap Map<String , String > map);
 }

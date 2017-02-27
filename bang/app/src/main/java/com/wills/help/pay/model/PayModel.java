@@ -1,5 +1,6 @@
 package com.wills.help.pay.model;
 
+import com.wills.help.net.Empty;
 import com.wills.help.net.HttpManager;
 import com.wills.help.release.model.OrderDetail;
 
@@ -21,5 +22,9 @@ public class PayModel {
 
     public Observable<PaySign> paySign(Map<String , String> map){
         return HttpManager.getApiInterface().paySign(map);
+    }
+
+    public Observable<Empty> balancePay(Map<String , String> map){
+        return HttpManager.getApiInterface().balancePay(map);
     }
 }

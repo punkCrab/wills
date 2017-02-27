@@ -31,6 +31,15 @@ public class OrderInfo implements Serializable{
     private String acceptsex;
     private String acceptnickname;
     private String acceptavatar;
+    private String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public String getSrcname() {
         return srcname;
