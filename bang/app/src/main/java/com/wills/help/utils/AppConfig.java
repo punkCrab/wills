@@ -11,6 +11,7 @@ public class AppConfig {
     public static String VERSION = "1.0.0";
     public static final String HOST = "http://59.110.62.75/think/";
     public static boolean TEST = true;
+    public static String WX_APP_ID;
 
     public static final int NET_SUCCESS = 1;
     public static final int TOKEN_EXPRIED = 1;

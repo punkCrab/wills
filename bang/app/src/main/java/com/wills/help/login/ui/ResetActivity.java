@@ -12,11 +12,11 @@ import com.wills.help.R;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.login.presenter.ResetPresenterImpl;
 import com.wills.help.login.view.ResetView;
+import com.wills.help.net.HttpMap;
 import com.wills.help.utils.StringUtils;
 import com.wills.help.utils.TimeCountUtils;
 import com.wills.help.utils.ToastUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -72,11 +72,11 @@ public class ResetActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private Map<String, String> getMap() {
-        Map<String, String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("username", et_register_phone.getText().toString());
         map.put("password", et_register_pwd.getText().toString());
         map.put("value", et_register_code.getText().toString());
-        return map;
+        return map.getMap();
     }
 
     @Override

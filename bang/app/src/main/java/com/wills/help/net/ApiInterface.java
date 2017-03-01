@@ -7,7 +7,8 @@ import com.wills.help.login.model.OrderType;
 import com.wills.help.login.model.Point;
 import com.wills.help.login.model.User;
 import com.wills.help.message.model.Contacts;
-import com.wills.help.pay.model.PaySign;
+import com.wills.help.pay.model.AliPaySign;
+import com.wills.help.pay.model.WXPaySign;
 import com.wills.help.person.model.Avatar;
 import com.wills.help.person.model.Wallet;
 import com.wills.help.release.model.Appraise;
@@ -221,8 +222,9 @@ public interface ApiInterface {
      * @param map
      * @return
      */
-    @GET("getinfobyusernames")
-    Observable<Contacts> getContacts(@QueryMap Map<String , String > map);
+    @POST("getinfobyusernames")
+    @FormUrlEncoded
+    Observable<Contacts> getContacts(@FieldMap Map<String , String > map);
 
     /**
      * 支付宝支付
@@ -231,7 +233,16 @@ public interface ApiInterface {
      */
     @POST("sign")
     @FormUrlEncoded
-    Observable<PaySign> paySign(@FieldMap Map<String , String > map);
+    Observable<AliPaySign> AliPaySign(@FieldMap Map<String , String > map);
+
+    /**
+     * 微信支付
+     * @param map
+     * @return
+     */
+    @POST("sign")
+    @FormUrlEncoded
+    Observable<WXPaySign> WXPaySign(@FieldMap Map<String , String > map);
 
     /**
      * 确认收货

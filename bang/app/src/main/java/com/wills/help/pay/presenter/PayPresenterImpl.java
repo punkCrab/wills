@@ -6,7 +6,8 @@ import android.support.v7.app.AlertDialog;
 import com.wills.help.net.ApiSubscriber;
 import com.wills.help.net.Empty;
 import com.wills.help.pay.model.PayModel;
-import com.wills.help.pay.model.PaySign;
+import com.wills.help.pay.model.AliPaySign;
+import com.wills.help.pay.model.WXPaySign;
 import com.wills.help.pay.view.PayView;
 import com.wills.help.release.model.OrderDetail;
 import com.wills.help.utils.NetUtils;
@@ -50,20 +51,20 @@ public class PayPresenterImpl implements PayPresenter{
     }
 
     @Override
-    public void paySign(Map<String, String> map) {
+    public void AliPaySign(Map<String, String> map) {
         final AlertDialog dialog = NetUtils.netDialog((Context) payView);
-        payModel.paySign(map)
+        payModel.AliPaySign(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiSubscriber<PaySign>() {
+                .subscribe(new ApiSubscriber<AliPaySign>() {
                     @Override
                     public void onCompleted() {
                         dialog.dismiss();
                     }
 
                     @Override
-                    public void onNext(PaySign paySign) {
-                        payView.setPaySign(paySign.getData());
+                    public void onNext(AliPaySign paySign) {
+                        payView.setAliPaySign(paySign.getData());
                     }
 
                     @Override
@@ -89,6 +90,31 @@ public class PayPresenterImpl implements PayPresenter{
                     @Override
                     public void onNext(Empty empty) {
                         payView.setBalancePay();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        dialog.dismiss();
+                    }
+                });
+    }
+
+    @Override
+    public void WXPaySign(Map<String, String> map) {
+        final AlertDialog dialog = NetUtils.netDialog((Context) payView);
+        payModel.WXPaySign(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiSubscriber<WXPaySign>() {
+                    @Override
+                    public void onCompleted() {
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onNext(WXPaySign wxPaySign) {
+                        payView.setWXPaySign(wxPaySign.getData());
                     }
 
                     @Override

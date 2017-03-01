@@ -1,5 +1,6 @@
 package com.wills.help.pay.view;
 
+import com.wills.help.pay.model.WXPaySign;
 import com.wills.help.release.model.OrderInfo;
 
 /**
@@ -10,6 +11,7 @@ import com.wills.help.release.model.OrderInfo;
 
 public interface PayView {
     void setOrderInfo(OrderInfo orderInfo);
-    void setPaySign(String orderInfo);
+    void setAliPaySign(String orderInfo);
     void setBalancePay();
+    void setWXPaySign(WXPaySign.WXPayInfo wxPaySign);
 }

@@ -21,6 +21,7 @@ import com.wills.help.base.BaseActivity;
 import com.wills.help.login.model.User;
 import com.wills.help.login.presenter.RegisterPresenterImpl;
 import com.wills.help.login.view.RegisterView;
+import com.wills.help.net.HttpMap;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.KeyBoardUtils;
 import com.wills.help.utils.NetUtils;
@@ -30,7 +31,6 @@ import com.wills.help.utils.StringUtils;
 import com.wills.help.utils.TimeCountUtils;
 import com.wills.help.utils.ToastUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -104,11 +104,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private Map<String,String> getMap(){
-        Map<String,String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("username",et_register_phone.getText().toString());
         map.put("password",et_register_pwd.getText().toString());
         map.put("value",et_register_code.getText().toString());
-        return map;
+        return map.getMap();
     }
 
     @Override

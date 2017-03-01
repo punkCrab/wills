@@ -16,12 +16,12 @@ import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.base.BaseListAdapter;
 import com.wills.help.listener.BaseListLoadMoreListener;
+import com.wills.help.net.HttpMap;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
 import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,7 +87,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
      * @return
      */
     private Map<String, String> getMap(int type, int position) {
-        Map<String, String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         if (type == 0) {
             map.put("srcid", srcId+"");
             map.put("page", page + "");
@@ -95,7 +95,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
             map.put("acceptuserid", App.getApp().getUser().getUserid());
             map.put("orderid", assistList.get(position).getOrderid());
         }
-        return map;
+        return map.getMap();
     }
 
     @Override

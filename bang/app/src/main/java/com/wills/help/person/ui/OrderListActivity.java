@@ -10,6 +10,7 @@ import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.listener.BaseListLoadMoreListener;
+import com.wills.help.net.HttpMap;
 import com.wills.help.person.adapter.OrderAdapter;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
@@ -18,7 +19,6 @@ import com.wills.help.release.view.ReleaseListView;
 import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,7 +90,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     }
 
     private Map<String ,String> getMap(){
-        Map<String , String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         if (type == 0){
             map.put("releaseuserid", App.getApp().getUser().getUserid());
         }else if (type==1){
@@ -98,7 +98,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         }
         map.put("action", action+"");
         map.put("page", page+"");
-        return map;
+        return map.getMap();
     }
 
     @Override

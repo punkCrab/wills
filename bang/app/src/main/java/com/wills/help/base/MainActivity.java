@@ -27,6 +27,7 @@ import com.wills.help.login.ui.LoginActivity;
 import com.wills.help.message.ContactsView;
 import com.wills.help.message.controller.EaseUI;
 import com.wills.help.message.presenter.ContactsPresenterImpl;
+import com.wills.help.net.HttpMap;
 import com.wills.help.person.ui.PersonFragment;
 import com.wills.help.release.ui.MainReleaseFragment;
 import com.wills.help.utils.AppConfig;
@@ -37,7 +38,6 @@ import com.wills.help.utils.StringUtils;
 import com.wills.help.utils.ToastUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -303,9 +303,9 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 EMCmdMessageBody cmdMsgBody = (EMCmdMessageBody) message.getBody();
                 String action = cmdMsgBody.action();
                 if (action.equals("userInfo")){
-                    Map<String ,String> map = new HashMap<>();
+                    HttpMap map = new HttpMap();
                     map.put("usernames",message.getUserName());
-                    contactsPresenter.getContacts(map);
+                    contactsPresenter.getContacts(map.getMap());
                 }
             }
         }
@@ -339,7 +339,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     private Map<String,String> getMap(Map<String, EMConversation> conversations){
         String userNames = "";
-        Map<String,String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         for (Map.Entry<String,EMConversation> entry:conversations.entrySet()){
             if (!entry.getKey().equals("admin")){
                 userNames+=entry.getKey()+",";
@@ -348,6 +348,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         if (!StringUtils.isNullOrEmpty(userNames)){
             map.put("usernames",userNames.substring(0,userNames.length()-1));
         }
-        return map;
+        return map.getMap();
     }
 }

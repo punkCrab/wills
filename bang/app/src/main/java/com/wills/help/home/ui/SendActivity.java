@@ -16,6 +16,7 @@ import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.db.bean.PointInfo;
 import com.wills.help.db.manager.PointInfoHelper;
+import com.wills.help.net.HttpMap;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.Release;
 import com.wills.help.release.presenter.ReleasePresenterImpl;
@@ -24,7 +25,6 @@ import com.wills.help.utils.ScreenUtils;
 import com.wills.help.utils.StringUtils;
 import com.wills.help.utils.ToastUtils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -126,7 +126,7 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
     }
 
     private Map<String, String> getMap() {
-        Map<String, String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("releaseuserid", App.getApp().getUser().getUserid());
         if (isUpdate){
             map.put("orderid", orderInfo.getOrderid());
@@ -138,7 +138,7 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
         map.put("desdetail", et_address.getText().toString());
         map.put("money", "0");
         map.put("maintype", "1");
-        return map;
+        return map.getMap();
     }
 
     private void showAlert(final String[] strings , final TextView textView){

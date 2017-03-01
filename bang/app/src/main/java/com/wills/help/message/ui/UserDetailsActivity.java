@@ -13,10 +13,10 @@ import com.wills.help.db.bean.Contact;
 import com.wills.help.message.ContactsView;
 import com.wills.help.message.EaseConstant;
 import com.wills.help.message.presenter.ContactsPresenterImpl;
+import com.wills.help.net.HttpMap;
 import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,9 +49,9 @@ public class UserDetailsActivity extends BaseActivity implements View.OnClickLis
     }
 
     private Map<String,String> getMap(){
-        Map<String,String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("usernames",username);
-        return map;
+        return map.getMap();
     }
 
     @Override

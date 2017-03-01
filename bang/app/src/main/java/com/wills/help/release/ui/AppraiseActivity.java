@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
+import com.wills.help.net.HttpMap;
 import com.wills.help.release.adapter.AppraiseLabelAdapter;
 import com.wills.help.release.model.Appraise;
 import com.wills.help.release.presenter.AppraisePresenterImpl;
@@ -21,7 +22,6 @@ import com.wills.help.utils.ToastUtils;
 import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -117,13 +117,13 @@ public class AppraiseActivity extends BaseActivity implements View.OnClickListen
     }
 
     private Map<String, String> getMap() {
-        Map<String, String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("orderid", orderId);
         map.put("releaseuserid", App.getApp().getUser().getUserid());
         map.put("appraisecontent", StringUtils.isNullOrEmpty(editText.getText().toString())?"":editText.getText().toString());
         map.put("appraiselevel", String.valueOf(star));
         map.put("appraiselabelid", getLabelIds());
-        return map;
+        return map.getMap();
     }
 
     @Override

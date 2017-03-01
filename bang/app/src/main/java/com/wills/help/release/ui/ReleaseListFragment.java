@@ -14,6 +14,7 @@ import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.listener.BaseListLoadMoreListener;
+import com.wills.help.net.HttpMap;
 import com.wills.help.release.adapter.ReleaseListAdapter;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
@@ -22,7 +23,6 @@ import com.wills.help.release.view.ReleaseListView;
 import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -100,7 +100,7 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
     }
 
     private Map<String , String> getMap(){
-        Map<String , String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("releaseuserid", App.getApp().getUser().getUserid());
         if (type == 0){
             map.put("action", "-1");
@@ -108,14 +108,14 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
             map.put("action", "-2");
         }
         map.put("page", page+"");
-        return map;
+        return map.getMap();
     }
 
     private Map<String , String> getMap(OrderInfo releaseInfo){
-        Map<String , String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("releaseuserid", App.getApp().getUser().getUserid());
         map.put("orderid", releaseInfo.getOrderid());
-        return map;
+        return map.getMap();
     }
 
     @Override

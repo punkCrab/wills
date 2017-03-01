@@ -20,11 +20,15 @@ public class PayModel {
         return HttpManager.getApiInterface().getOrderInfo(map);
     }
 
-    public Observable<PaySign> paySign(Map<String , String> map){
-        return HttpManager.getApiInterface().paySign(map);
+    public Observable<AliPaySign> AliPaySign(Map<String , String> map){
+        return HttpManager.getApiInterface().AliPaySign(map);
     }
 
     public Observable<Empty> balancePay(Map<String , String> map){
         return HttpManager.getApiInterface().balancePay(map);
+    }
+
+    public  Observable<WXPaySign> WXPaySign(Map<String , String> map){
+        return HttpManager.getApiInterface().WXPaySign(map);
     }
 }

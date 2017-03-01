@@ -19,6 +19,7 @@ import com.wills.help.db.bean.OrderTypeInfo;
 import com.wills.help.db.bean.PointInfo;
 import com.wills.help.db.manager.OrderTypeInfoHelper;
 import com.wills.help.db.manager.PointInfoHelper;
+import com.wills.help.net.HttpMap;
 import com.wills.help.pay.ui.PayActivity;
 import com.wills.help.release.model.Release;
 import com.wills.help.release.presenter.ReleasePresenterImpl;
@@ -27,7 +28,6 @@ import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.ScreenUtils;
 import com.wills.help.utils.StringUtils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -192,7 +192,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
     }
 
     private Map<String, String> getMap() {
-        Map<String, String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("releaseuserid", App.getApp().getUser().getUserid());
         map.put("ordertype", orderType);
         map.put("srcid", srcId);
@@ -201,7 +201,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
         map.put("desdetail", et_release_send_address.getText().toString());
         map.put("money", et_release_money.getText().toString());
         map.put("maintype", "0");//默认订单
-        return map;
+        return map.getMap();
     }
 
     /**

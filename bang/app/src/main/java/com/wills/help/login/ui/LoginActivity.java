@@ -20,15 +20,13 @@ import com.wills.help.base.BaseActivity;
 import com.wills.help.login.model.User;
 import com.wills.help.login.presenter.LoginPresenterImpl;
 import com.wills.help.login.view.LoginView;
+import com.wills.help.net.HttpMap;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.KeyBoardUtils;
 import com.wills.help.utils.ScreenUtils;
 import com.wills.help.utils.SharedPreferencesUtils;
 import com.wills.help.utils.StringUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * com.wills.help.login.ui
@@ -106,10 +104,10 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
             case R.id.btn_login:
                 String user = et_username.getText().toString();
                 String pwd = et_password.getText().toString();
-                Map<String,String> map = new HashMap<>();
-                map.put("username",user);
+                HttpMap map = new HttpMap();
+                map.put("username", user);
                 map.put("password", pwd);
-                loginInfoPresenter.login(map);
+                loginInfoPresenter.login(map.getMap());
                 break;
             case R.id.tv_register:
                 IntentUtils.startActivityForResult(LoginActivity.this,RegisterActivity.class,REGISTER);

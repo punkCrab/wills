@@ -12,12 +12,12 @@ import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.listener.AppBarStateChangeListener;
+import com.wills.help.net.HttpMap;
 import com.wills.help.person.model.Wallet;
 import com.wills.help.person.presenter.WalletPresenterImpl;
 import com.wills.help.person.view.WalletView;
 import com.wills.help.widget.RiseNumberTextView;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -73,9 +73,9 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     }
 
     private Map<String ,String> getMap(){
-        Map<String , String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("userid", App.getApp().getUser().getUserid());
-        return map;
+        return map.getMap();
     }
 
     @Override

@@ -14,10 +14,10 @@ import com.wills.help.home.adapter.ExpressAdapter;
 import com.wills.help.home.model.Express;
 import com.wills.help.home.presenter.ExpressPresenterImpl;
 import com.wills.help.home.view.ExpressView;
+import com.wills.help.net.HttpMap;
 import com.wills.help.utils.IntentUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -83,9 +83,9 @@ public class ExpressFragment extends BaseFragment implements ExpressView , HomeF
     }
 
     private Map<String ,String> getMap(){
-        Map<String,String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("userid", App.getApp().getUser().getUserid());
-        return map;
+        return map.getMap();
     }
 
     @Override

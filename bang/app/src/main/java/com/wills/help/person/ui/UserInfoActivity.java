@@ -16,6 +16,7 @@ import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.db.manager.UserInfoHelper;
 import com.wills.help.net.HttpManager;
+import com.wills.help.net.HttpMap;
 import com.wills.help.person.model.Avatar;
 import com.wills.help.person.presenter.UserInfoPresenterImpl;
 import com.wills.help.person.view.UserInfoView;
@@ -27,7 +28,6 @@ import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.ToastUtils;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 
 import kr.co.namee.permissiongen.PermissionFail;
@@ -148,10 +148,10 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     }
 
     private Map<String ,String> getMap(String key,String value){
-        Map<String , String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("userid", App.getApp().getUser().getUserid());
         map.put(key, value);
-        return map;
+        return map.getMap();
     }
 
     @Override

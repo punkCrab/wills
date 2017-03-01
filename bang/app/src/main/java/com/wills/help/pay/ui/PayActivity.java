@@ -11,22 +11,31 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
+import com.tencent.mm.opensdk.constants.ConstantsAPI;
+import com.tencent.mm.opensdk.modelbase.BaseReq;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
+import com.wills.help.net.HttpMap;
 import com.wills.help.pay.alipay.PayResult;
+import com.wills.help.pay.model.WXPaySign;
 import com.wills.help.pay.presenter.PayPresenterImpl;
 import com.wills.help.pay.view.PayView;
 import com.wills.help.person.model.Wallet;
 import com.wills.help.person.presenter.WalletPresenterImpl;
 import com.wills.help.person.view.WalletView;
 import com.wills.help.release.model.OrderInfo;
+import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.ToastUtils;
 import com.wills.help.widget.MyRadioGroup;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -36,7 +45,7 @@ import java.util.Map;
  * 2016/12/16.
  */
 
-public class PayActivity extends BaseActivity implements PayView,WalletView{
+public class PayActivity extends BaseActivity implements PayView,WalletView , IWXAPIEventHandler{
     private TextView tv_amount , tv_send , tv_from , tv_balance_amount;
     private MyRadioGroup rg_pay;
     private RadioButton rb_ali,rb_wx,rb_balance;
@@ -73,7 +82,9 @@ public class PayActivity extends BaseActivity implements PayView,WalletView{
                     }
                     break;
                 case WX_PAY:
-
+                    if ((Integer)msg.obj == 0){
+                        handler.sendEmptyMessageDelayed(PAY_SUCCESS,1000);
+                    }
                     break;
                 case PAY_SUCCESS:
                     ToastUtils.toast("支付成功");
@@ -117,42 +128,50 @@ public class PayActivity extends BaseActivity implements PayView,WalletView{
             public void onClick(View view) {
                 if (payType == 0){
                     payPresenter.balancePay(getBalanceMap());
-                }else {
-                    payPresenter.paySign(getPayMap());
+                }else if (payType == 1){
+                    payPresenter.AliPaySign(getPayMap());
+                }else if (payType == 2){
+                    payPresenter.WXPaySign(getPayMap());
                 }
             }
         });
     }
 
     private Map<String,String> getMap(){
-        Map<String,String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("releaseuserid", App.getApp().getUser().getUserid());
         map.put("orderid", orderId);
-        map.put("action",String.valueOf(payType));
-        return map;
+        return map.getMap();
     }
 
     private Map<String,String> getPayMap(){
-        Map<String,String> map = new HashMap<>();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Date date = new Date();
-        String time = format.format(date);
-        map.put("timestamp", time);
-        map.put("biz_content",
-                "{\"timeout_express\":\"30m\"," +
-                "\"subject\":\""+orderInfo.getOrdertype()+"\"," +
-                "\"product_code\":\"QUICK_MSECURITY_PAY\"," +
-                "\"total_amount\":\""+orderInfo.getMoney()+"\"," +
-                "\"body\":\""+orderInfo.getOrdertype()+"\"," +
-                "\"out_trade_no\":\"" + orderId +  "\"}");
-        return map;
+        HttpMap map = new HttpMap();
+        map.put("action",String.valueOf(payType));
+        if (payType == 1){
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            Date date = new Date();
+            String time = format.format(date);
+            map.put("timestamp", time);
+            map.put("biz_content",
+                    "{\"timeout_express\":\"30m\"," +
+                            "\"subject\":\""+orderInfo.getOrdertype()+"\"," +
+                            "\"product_code\":\"QUICK_MSECURITY_PAY\"," +
+                            "\"total_amount\":\""+orderInfo.getMoney()+"\"," +
+                            "\"body\":\""+orderInfo.getOrdertype()+"\"," +
+                            "\"out_trade_no\":\"" + orderId +  "\"}");
+        }else if (payType == 2) {
+            map.put("body", orderInfo.getOrdertype());
+            map.put("out_trade_no", orderId);
+            map.put("total_fee", String.valueOf((int)(Double.parseDouble(orderInfo.getMoney())*100)));
+        }
+        return map.getMap();
     }
 
     private Map<String,String> getBalanceMap(){
-        Map<String,String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("releaseuserid", App.getApp().getUser().getUserid());
         map.put("orderid", orderId);
-        return map;
+        return map.getMap();
     }
 
     @Override
@@ -166,18 +185,18 @@ public class PayActivity extends BaseActivity implements PayView,WalletView{
     }
 
     private Map<String ,String> getWalletMap(){
-        Map<String , String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("userid", App.getApp().getUser().getUserid());
-        return map;
+        return map.getMap();
     }
 
     @Override
-    public void setPaySign(final String orderInfo) {
+    public void setAliPaySign(final String orderInfo) {
         Runnable payRunnable = new Runnable() {
             @Override
             public void run() {
                 PayTask payTask = new PayTask(PayActivity.this);
-                Map<String, String> result = payTask.payV2(orderInfo,true);
+                Map<String, String> result = payTask.payV2(orderInfo, true);
 
                 Message message = new Message();
                 message.what = ALI_PAY;
@@ -197,6 +216,23 @@ public class PayActivity extends BaseActivity implements PayView,WalletView{
     }
 
     @Override
+    public void setWXPaySign(WXPaySign.WXPayInfo wxPaySign) {
+        AppConfig.WX_APP_ID = wxPaySign.getAppid();
+        IWXAPI iWXApi = WXAPIFactory.createWXAPI(context,wxPaySign.getAppid());
+        PayReq request = new PayReq();
+        request.appId = wxPaySign.getAppid();
+        request.partnerId = wxPaySign.getPartnerid();
+        request.nonceStr = wxPaySign.getNoncestr();
+        request.sign = wxPaySign.getSign();
+        request.packageValue = wxPaySign.getPackageValue();
+        request.timeStamp = wxPaySign.getTimestamp();
+        request.prepayId = wxPaySign.getPrepayid();
+        iWXApi.sendReq(request);
+    }
+
+
+
+    @Override
     public void setMoney(Wallet.Money money) {
         if (money.getMoney().equals("0")){
             rg_pay.findViewById(R.id.rb_balance).setVisibility(View.GONE);
@@ -207,6 +243,21 @@ public class PayActivity extends BaseActivity implements PayView,WalletView{
             tv_balance_amount.setText(money.getMoney()+getString(R.string.yuan));
             rb_balance.setChecked(true);
             payType = 0;
+        }
+    }
+
+    @Override
+    public void onReq(BaseReq baseReq) {
+
+    }
+
+    @Override
+    public void onResp(BaseResp baseResp) {
+        if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX){
+            Message message = new Message();
+            message.what = WX_PAY;
+            message.obj = baseResp.errCode;
+            handler.handleMessage(message);
         }
     }
 }

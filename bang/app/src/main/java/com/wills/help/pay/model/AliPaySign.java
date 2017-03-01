@@ -6,7 +6,7 @@ package com.wills.help.pay.model;
  * 2017/2/22.
  */
 
-public class PaySign {
+public class AliPaySign {
 
     /**
      * state : 1

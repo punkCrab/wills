@@ -11,11 +11,11 @@ import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.db.manager.UserInfoHelper;
+import com.wills.help.net.HttpMap;
 import com.wills.help.person.model.Avatar;
 import com.wills.help.person.presenter.UserInfoPresenterImpl;
 import com.wills.help.person.view.UserInfoView;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -69,14 +69,14 @@ public class ChangeNameActivity extends BaseActivity implements UserInfoView{
     }
 
     private Map<String ,String> getMap(){
-        Map<String , String> map = new HashMap<>();
+        HttpMap map = new HttpMap();
         map.put("userid", App.getApp().getUser().getUserid());
         if (action == 1){
             map.put("nickname", et_name.getText().toString());
         }else if (action == 2){
             map.put("school", et_name.getText().toString());
         }
-        return map;
+        return map.getMap();
     }
 
     @Override
