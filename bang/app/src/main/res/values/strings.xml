@@ -151,6 +151,9 @@
     <string name="pay">支付</string>
     <string name="pay_wx">微信支付</string>
     <string name="pay_wx_content">推荐微信用户使用</string>
+    <string name="pay_result">支付结果</string>
+    <string name="pay_success">支付成功</string>
+    <string name="pay_fail">支付失败，请重新支付</string>
 
     <string name="user_details">详细资料</string>
     <string name="send_msg">发消息</string>

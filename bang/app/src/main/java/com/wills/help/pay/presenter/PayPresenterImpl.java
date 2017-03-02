@@ -40,12 +40,17 @@ public class PayPresenterImpl implements PayPresenter{
                 .subscribe(new ApiSubscriber<OrderDetail>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onNext(OrderDetail orderInfo) {
-                        payView.setOrderInfo(orderInfo.getData());
+                        payView.setOrderInfo(orderInfo.getData(),true);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        payView.setOrderInfo(null,false);
                     }
                 });
     }

@@ -77,12 +77,12 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
         recyclerView.addOnScrollListener(loadMore);
         loadMore.setLoadMoreListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setRefreshing(true);
         onRefresh();
     }
 
     @Override
     public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
         if(releaseInfoList != null) {
             releaseInfoList.clear();
             page = 1;

@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class OrderInfo implements Serializable{
     private String orderid;
     private String ordertype;
+    private String ordertypename;
     private String maintype;
     private String releaseusername;
     private String releaseavatar;
@@ -32,6 +33,14 @@ public class OrderInfo implements Serializable{
     private String acceptnickname;
     private String acceptavatar;
     private String remark;
+
+    public String getOrdertypename() {
+        return ordertypename;
+    }
+
+    public void setOrdertypename(String ordertypename) {
+        this.ordertypename = ordertypename;
+    }
 
     public String getRemark() {
         return remark;

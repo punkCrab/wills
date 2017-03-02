@@ -49,6 +49,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
     private Button btn_submit;
     private ReleasePresenterImpl releasePresenter;
     private String orderType;
+    private String orderTypeName;
     private String srcId;//求助
     private String desId;//送达
     String[] state;
@@ -135,6 +136,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
                         tv_release_from.setText(address[0]);
                         tv_release_send.setText(address[0]);
                         orderType = stateId[orderIndex];
+                        orderTypeName = state[orderIndex];
                         srcId = addressId[0];
                         desId = addressId[0];
                     }
@@ -156,6 +158,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
         tv_release_from.setText(address[0]);
         tv_release_send.setText(address[0]);
         orderType = stateId[orderIndex];
+        orderTypeName = state[orderIndex];
         srcId = addressId[0];
         desId = addressId[0];
         et_release_from_address.getText().clear();
@@ -195,6 +198,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
         HttpMap map = new HttpMap();
         map.put("releaseuserid", App.getApp().getUser().getUserid());
         map.put("ordertype", orderType);
+        map.put("ordertypename", orderTypeName);
         map.put("srcid", srcId);
         map.put("srcdetail", et_release_from_address.getText().toString());
         map.put("desid", desId);
@@ -217,6 +221,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
                 switch (type) {
                     case 0:
                         orderType = stateId[i];
+                        orderTypeName = state[i];
                         break;
                     case 1:
                         srcId = addressId[i];

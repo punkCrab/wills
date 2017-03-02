@@ -1,9 +1,11 @@
 package com.wills.help.pay.ui;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -11,12 +13,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
-import com.tencent.mm.opensdk.constants.ConstantsAPI;
-import com.tencent.mm.opensdk.modelbase.BaseReq;
-import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.wills.help.R;
 import com.wills.help.base.App;
@@ -31,6 +29,7 @@ import com.wills.help.person.presenter.WalletPresenterImpl;
 import com.wills.help.person.view.WalletView;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.utils.AppConfig;
+import com.wills.help.utils.NetUtils;
 import com.wills.help.utils.ToastUtils;
 import com.wills.help.widget.MyRadioGroup;
 
@@ -45,8 +44,8 @@ import java.util.Map;
  * 2016/12/16.
  */
 
-public class PayActivity extends BaseActivity implements PayView,WalletView , IWXAPIEventHandler{
-    private TextView tv_amount , tv_send , tv_from , tv_balance_amount;
+public class PayActivity extends BaseActivity implements PayView , WalletView{
+    private TextView tv_amount , tv_send , tv_from , tv_balance_amount ,tv_pay_state;
     private MyRadioGroup rg_pay;
     private RadioButton rb_ali,rb_wx,rb_balance;
     private Button button;
@@ -56,40 +55,35 @@ public class PayActivity extends BaseActivity implements PayView,WalletView , IW
     private WalletPresenterImpl walletPresenter;
     private int payType = 0;//1支付宝2微信
 
-    private static final int BALANCE_PAY = 0;
-    private static final int ALI_PAY = 1;
-    private static final int WX_PAY = 2;
-    private static final int PAY_SUCCESS = 3;
+    private boolean isClickPay = false;//是否点过支付
+    private boolean isPaySuccess =false;//是否支付成功
 
+    private static final int ALI_PAY = 1;
+    private static final int PAY_SUCCESS = 2;
+
+    private AlertDialog dialog;
 
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what){
-                case BALANCE_PAY:
-                    handler.sendEmptyMessageDelayed(PAY_SUCCESS,1000);
-                    break;
                 case ALI_PAY:
                     PayResult payResult = new PayResult((Map<String,String>)msg.obj);
                     String resultStatus = payResult.getResultStatus();
                     if (TextUtils.equals(resultStatus,"9000")){
+                        Looper.prepare();
+                        dialog = NetUtils.netDialog(context);
+                        Looper.loop();
                         handler.sendEmptyMessageDelayed(PAY_SUCCESS,1000);
                     }else {
                         Looper.prepare();
-                        ToastUtils.toast("支付失败");
+                        ToastUtils.toast(getString(R.string.pay_fail));
                         Looper.loop();
                     }
                     break;
-                case WX_PAY:
-                    if ((Integer)msg.obj == 0){
-                        handler.sendEmptyMessageDelayed(PAY_SUCCESS,1000);
-                    }
-                    break;
                 case PAY_SUCCESS:
-                    ToastUtils.toast("支付成功");
-                    setResult(RESULT_OK);
-                    finish();
+                    payPresenter.getOrderInfo(getMap());
                     break;
             }
         }
@@ -106,6 +100,7 @@ public class PayActivity extends BaseActivity implements PayView,WalletView , IW
         tv_send = (TextView) findViewById(R.id.tv_send);
         tv_from = (TextView) findViewById(R.id.tv_from);
         tv_balance_amount = (TextView) findViewById(R.id.tv_balance_amount);
+        tv_pay_state = (TextView) findViewById(R.id.tv_pay_state);
         rg_pay = (MyRadioGroup) findViewById(R.id.rg_pay);
         rb_ali = (RadioButton) findViewById(R.id.rb_ali);
         rb_wx = (RadioButton) findViewById(R.id.rb_wx);
@@ -126,15 +121,33 @@ public class PayActivity extends BaseActivity implements PayView,WalletView , IW
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (payType == 0){
-                    payPresenter.balancePay(getBalanceMap());
-                }else if (payType == 1){
-                    payPresenter.AliPaySign(getPayMap());
-                }else if (payType == 2){
-                    payPresenter.WXPaySign(getPayMap());
+                if (isPaySuccess){
+                    setResult(RESULT_OK);
+                    finish();
+                }else {
+                    isClickPay = true;
+                    if (payType == 0){
+                        payPresenter.balancePay(getBalanceMap());
+                    }else if (payType == 1){
+                        payPresenter.AliPaySign(getPayMap());
+                    }else if (payType == 2){
+                        payPresenter.WXPaySign(getPayMap());
+                    }
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isClickPay && payType == 2){
+            dialog = NetUtils.netDialog(context);
+            if (payPresenter == null){
+                payPresenter = new PayPresenterImpl(this);
+            }
+            handler.sendEmptyMessageDelayed(PAY_SUCCESS,1000);
+        }
     }
 
     private Map<String,String> getMap(){
@@ -157,10 +170,10 @@ public class PayActivity extends BaseActivity implements PayView,WalletView , IW
                             "\"subject\":\""+orderInfo.getOrdertype()+"\"," +
                             "\"product_code\":\"QUICK_MSECURITY_PAY\"," +
                             "\"total_amount\":\""+orderInfo.getMoney()+"\"," +
-                            "\"body\":\""+orderInfo.getOrdertype()+"\"," +
+                            "\"body\":\""+orderInfo.getOrdertypename()+"\"," +
                             "\"out_trade_no\":\"" + orderId +  "\"}");
         }else if (payType == 2) {
-            map.put("body", orderInfo.getOrdertype());
+            map.put("body", orderInfo.getOrdertypename());
             map.put("out_trade_no", orderId);
             map.put("total_fee", String.valueOf((int)(Double.parseDouble(orderInfo.getMoney())*100)));
         }
@@ -175,13 +188,45 @@ public class PayActivity extends BaseActivity implements PayView,WalletView , IW
     }
 
     @Override
-    public void setOrderInfo(OrderInfo orderInfo) {
-        this.orderInfo = orderInfo;
-        tv_from.setText(orderInfo.getSrcdetail());
-        tv_send.setText(orderInfo.getDesdetail());
-        tv_amount.setText(orderInfo.getMoney()+getString(R.string.yuan));
-        walletPresenter = new WalletPresenterImpl(this);
-        walletPresenter.getMoney(getWalletMap());
+    public void setOrderInfo(OrderInfo orderInfo,boolean state) {
+        if (state){
+            this.orderInfo = orderInfo;
+            tv_from.setText(orderInfo.getSrcdetail());
+            tv_send.setText(orderInfo.getDesdetail());
+            tv_amount.setText(orderInfo.getMoney()+getString(R.string.yuan));
+            walletPresenter = new WalletPresenterImpl(this);
+            walletPresenter.getMoney(getWalletMap());
+            if (isClickPay){
+                if (dialog!=null){
+                    dialog.dismiss();
+                }
+                tv_pay_state.setVisibility(View.VISIBLE);
+                Drawable drawable = null;
+                if (orderInfo.getStateid().equals("1")){
+                    isPaySuccess = true;
+                    button.setText(getString(R.string.ok));
+                    drawable = context.getResources().getDrawable(R.drawable.pay_success);
+                    tv_pay_state.setTextColor(R.color.textPrimary);
+                    tv_pay_state.setText(getString(R.string.pay_success));
+                    rg_pay.setVisibility(View.GONE);
+                }else if (orderInfo.getStateid().equals("0")){
+                    button.setText(getString(R.string.pay));
+                    drawable = context.getResources().getDrawable(R.drawable.pay_fail);
+                    tv_pay_state.setTextColor(R.color.red);
+                    tv_pay_state.setText(getString(R.string.pay_fail));
+                    rg_pay.setVisibility(View.VISIBLE);
+                }
+                drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
+                tv_pay_state.setCompoundDrawables(drawable,null,null,null);
+            }else {
+                tv_pay_state.setVisibility(View.GONE);
+                rg_pay.setVisibility(View.VISIBLE);
+            }
+        }else {
+            if (dialog!=null){
+                dialog.dismiss();
+            }
+        }
     }
 
     private Map<String ,String> getWalletMap(){
@@ -211,7 +256,7 @@ public class PayActivity extends BaseActivity implements PayView,WalletView , IW
     @Override
     public void setBalancePay() {
         Message message = new Message();
-        message.what = BALANCE_PAY;
+        message.what = PAY_SUCCESS;
         handler.handleMessage(message);
     }
 
@@ -246,18 +291,4 @@ public class PayActivity extends BaseActivity implements PayView,WalletView , IW
         }
     }
 
-    @Override
-    public void onReq(BaseReq baseReq) {
-
-    }
-
-    @Override
-    public void onResp(BaseResp baseResp) {
-        if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX){
-            Message message = new Message();
-            message.what = WX_PAY;
-            message.obj = baseResp.errCode;
-            handler.handleMessage(message);
-        }
-    }
 }

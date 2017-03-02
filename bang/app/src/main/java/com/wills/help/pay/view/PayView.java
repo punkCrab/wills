@@ -10,7 +10,7 @@ import com.wills.help.release.model.OrderInfo;
  */
 
 public interface PayView {
-    void setOrderInfo(OrderInfo orderInfo);
+    void setOrderInfo(OrderInfo orderInfo,boolean state);
     void setAliPaySign(String orderInfo);
     void setBalancePay();
     void setWXPaySign(WXPaySign.WXPayInfo wxPaySign);
