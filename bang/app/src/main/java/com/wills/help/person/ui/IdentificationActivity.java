@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,14 +13,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wills.help.R;
+import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
+import com.wills.help.net.HttpMap;
+import com.wills.help.person.presenter.IdCheckPresenterImpl;
+import com.wills.help.person.view.IdCheckView;
 import com.wills.help.photo.model.PhotoModel;
 import com.wills.help.photo.ui.PhotoSelectorActivity;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.StringUtils;
+import com.wills.help.utils.ToastUtils;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * com.wills.help.person.ui
@@ -26,12 +35,13 @@ import java.util.ArrayList;
  * 2016/11/17.
  */
 
-public class IdentificationActivity extends BaseActivity implements View.OnClickListener {
+public class IdentificationActivity extends BaseActivity implements View.OnClickListener , IdCheckView{
 
     private EditText et_name, et_sno;
     private TextView tv_grade, tv_specialty;
     private ImageView iv_photo;
     private Button btn_upload, btn_submit;
+    private IdCheckPresenterImpl idCheckPresenter;
     String[] grade = new String[]{"本科一年级","本科二年级","本科三年级","本科四年级","研究生一年级","研究生二年级","研究生三年级"};
     String[] specialty = new String[]{"机械工程","金融","计算机科学与技术","马克思","会计","物联网","通信","医学","环境","水利","土木","美术"};
 
@@ -40,6 +50,8 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
         setBaseView(R.layout.activity_identification);
         setBaseTitle(getString(R.string.identification));
         et_name = (EditText) findViewById(R.id.et_name);
+        et_name.setText(App.getApp().getUser().getNickname());
+        et_name.setEnabled(false);
         et_sno = (EditText) findViewById(R.id.et_sno);
         tv_grade = (TextView) findViewById(R.id.tv_grade);
         tv_specialty = (TextView) findViewById(R.id.tv_specialty);
@@ -50,6 +62,14 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
         tv_specialty.setOnClickListener(this);
         btn_upload.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
+        if (App.getApp().getUser().getUsertype().equals("1")){
+            et_sno.setText(App.getApp().getUser().getSchool_num());
+            et_sno.setEnabled(false);
+            btn_submit.setText(getString(R.string.approved));
+            btn_submit.setEnabled(false);
+        }else {
+            et_sno.addTextChangedListener(new EditTextChange());
+        }
     }
 
     @Override
@@ -68,8 +88,28 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
                 IntentUtils.startActivityForResult(IdentificationActivity.this, PhotoSelectorActivity.class,bundle,AppConfig.PHOTO);
                 break;
             case R.id.btn_submit:
+                if (btn_submit.getText().equals(getString(R.string.approve))){
+                    if (idCheckPresenter == null){
+                        idCheckPresenter = new IdCheckPresenterImpl(IdentificationActivity.this);
+                    }
+                    idCheckPresenter.idCheck(getMap());
+                }else {
+                    if (App.getApp().getUser().getUsertype().equals("1")){
+                        btn_submit.setText(getString(R.string.approved));
+                        btn_submit.setEnabled(false);
+                    }else {
+                        ToastUtils.toast(getString(R.string.identification_warn));
+                    }
+                }
                 break;
         }
+    }
+
+    private Map<String ,String> getMap(){
+        HttpMap map = new HttpMap();
+        map.put("userid", App.getApp().getUser().getUserid());
+        map.put("email", et_sno.getText().toString()+"@bjtu.edu.cn");
+        return map.getMap();
     }
 
     @Override
@@ -94,5 +134,35 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
                 textView.setText(strings[i]);
             }
         }).show();
+    }
+
+    @Override
+    public void setIdCheck() {
+        ToastUtils.toast(getString(R.string.identification_toast));
+        btn_submit.setText(getString(R.string.identification_email));
+    }
+
+    public class EditTextChange implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (!StringUtils.isNullOrEmpty(et_sno.getText().toString())) {
+                btn_submit.setEnabled(true);
+                btn_submit.setBackgroundResource(R.drawable.btn_selector);
+            } else {
+                btn_submit.setEnabled(false);
+                btn_submit.setBackgroundResource(R.color.button_gray);
+            }
+        }
     }
 }

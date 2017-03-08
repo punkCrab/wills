@@ -68,7 +68,7 @@ public interface ApiInterface {
      */
     @POST("register")
     @FormUrlEncoded
-    Observable<Empty> getRegisterCode(@Field("username") String phone);
+    Observable<Empty> getRegisterCode(@Field("phone_num") String phone);
 
     /**
      * 注册
@@ -86,7 +86,7 @@ public interface ApiInterface {
      */
     @POST("forget")
     @FormUrlEncoded
-    Observable<Empty> getResetCode(@Field("username") String phone);
+    Observable<Empty> getResetCode(@Field("phone_num") String phone);
 
     /**
      * 重置密码提交
@@ -130,7 +130,7 @@ public interface ApiInterface {
     Observable<Release> release(@FieldMap Map<String , String > map);
 
     /**
-     * 发布
+     * 修改发布
      * @param map
      * @return
      */
@@ -261,4 +261,14 @@ public interface ApiInterface {
     @POST("payment")
     @FormUrlEncoded
     Observable<Empty> balancePay(@FieldMap Map<String , String > map);
+
+
+    /**
+     * 在校生邮箱认证
+     * @param map
+     * @return
+     */
+    @POST("idcheck")
+    @FormUrlEncoded
+    Observable<Empty> idCheck(@FieldMap Map<String , String > map);
 }

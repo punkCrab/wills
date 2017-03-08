@@ -155,13 +155,13 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
                 startOrderView(tv_release_check.getText().toString(),-3,0);
                 break;
             case R.id.tv_release:
-                startOrderView(tv_release.getText().toString(),1,0);
+                startOrderView(tv_release.getText().toString(),-3,0);
                 break;
             case R.id.tv_release_progress:
-                startOrderView(tv_release_progress.getText().toString(),2,0);
+                startOrderView(tv_release_progress.getText().toString(),-1,0);
                 break;
             case R.id.tv_release_complete:
-                startOrderView(tv_release_complete.getText().toString(),4,0);
+                startOrderView(tv_release_complete.getText().toString(),-2,0);
                 break;
             case R.id.tv_release_evaluation:
                 startOrderView(tv_release_evaluation.getText().toString(),3,0);
@@ -170,13 +170,13 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
                 startOrderView(tv_assist_check.getText().toString(),-3,1);
                 break;
             case R.id.tv_assist:
-                startOrderView(tv_assist.getText().toString(),1,1);
+                startOrderView(tv_assist.getText().toString(),-3,1);
                 break;
             case R.id.tv_assist_progress:
-                startOrderView(tv_assist_progress.getText().toString(),2,1);
+                startOrderView(tv_assist_progress.getText().toString(),-1,1);
                 break;
             case R.id.tv_assist_complete:
-                startOrderView(tv_assist_complete.getText().toString(),4,1);
+                startOrderView(tv_assist_complete.getText().toString(),-2,1);
                 break;
             case R.id.tv_assist_evaluation:
                 startOrderView(tv_assist_evaluation.getText().toString(),3,1);

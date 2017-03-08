@@ -4,13 +4,17 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
+import java.io.Serializable;
+
 /**
  * com.wills.help.db.bean
  * Created by lizhaoyong
  * 2017/1/6.
  */
 @Entity
-public class PointInfo{
+public class PointInfo implements Serializable{
+
+    private static final long serialVersionUID = 5439276053411944012L;
     @Id
     private String posid;
     private String blockid;

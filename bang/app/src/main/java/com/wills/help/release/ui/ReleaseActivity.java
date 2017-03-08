@@ -1,8 +1,11 @@
 package com.wills.help.release.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -15,13 +18,14 @@ import com.wills.help.base.BaseActivity;
 import com.wills.help.db.bean.OrderTypeInfo;
 import com.wills.help.db.bean.PointInfo;
 import com.wills.help.db.manager.OrderTypeInfoHelper;
-import com.wills.help.db.manager.PointInfoHelper;
 import com.wills.help.net.HttpMap;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.Release;
 import com.wills.help.release.presenter.ReleasePresenterImpl;
 import com.wills.help.release.view.ReleaseView;
+import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.ScreenUtils;
+import com.wills.help.utils.StringUtils;
 import com.wills.help.utils.ToastUtils;
 
 import java.util.List;
@@ -39,16 +43,14 @@ import rx.schedulers.Schedulers;
 public class ReleaseActivity extends BaseActivity implements View.OnClickListener , ReleaseView{
 
     private TextView tv_release_state,tv_release_from,tv_release_send;
-    private EditText et_release_from_address,et_release_money,et_release_send_address;
+    private EditText et_release_from_address,et_release_money,et_release_send_address,et_release_remark;
     private Button btn_submit;
     private int type = 0;//0修改1为你解邮
     private String orderType;
-    private String srcId;//求助
-    private String desId;//送达
+    private String srcId = "0";//求助
+    private String desId = "0";//送达
     String[] state;
     String[] stateId;
-    String[] address;
-    String[] addressId;
     private OrderInfo orderInfo;
     private ReleasePresenterImpl releasePresenter;
     @Override
@@ -68,10 +70,16 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
         et_release_from_address = (EditText) findViewById(R.id.et_release_from_address);
         et_release_money = (EditText) findViewById(R.id.et_release_money);
         et_release_send_address = (EditText) findViewById(R.id.et_release_send_address);
+        et_release_remark = (EditText) findViewById(R.id.et_release_remark);
         btn_submit = (Button) findViewById(R.id.btn_submit);
     }
 
     private void initListener(){
+        et_release_from_address.addTextChangedListener(new EditTextChange());
+        et_release_send_address.addTextChangedListener(new EditTextChange());
+        tv_release_send.addTextChangedListener(new EditTextChange());
+        tv_release_from.addTextChangedListener(new EditTextChange());
+        et_release_money.addTextChangedListener(new EditTextChange());
         tv_release_state.setOnClickListener(this);
         tv_release_from.setOnClickListener(this);
         tv_release_send.setOnClickListener(this);
@@ -100,8 +108,17 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
                 .subscribe(new Subscriber<List<OrderTypeInfo>>() {
                     @Override
                     public void onCompleted() {
-                        tv_release_state.setText(orderInfo.getOrdertype());
+                        tv_release_state.setText(orderInfo.getOrdertypename());
                         orderType = orderInfo.getOrderid();
+                        //初始化
+                        tv_release_from.setText(orderInfo.getSrcname());
+                        tv_release_send.setText(orderInfo.getDesname());
+                        et_release_from_address.setText(orderInfo.getSrcdetail());
+                        et_release_send_address.setText(orderInfo.getDesdetail());
+                        et_release_from_address.setSelection(orderInfo.getSrcdetail().length());
+                        srcId = orderInfo.getSrcid();
+                        desId = orderInfo.getDesid();
+                        et_release_remark.setText(orderInfo.getRemark());
                     }
 
                     @Override
@@ -114,43 +131,6 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
 
                     }
                 });
-        PointInfoHelper.getInstance().queryAll()
-                .doOnNext(new Action1<List<PointInfo>>() {
-                    @Override
-                    public void call(List<PointInfo> pointInfos) {
-                        address = new String[pointInfos.size()];
-                        addressId = new String[pointInfos.size()];
-                        for (int i = 0; i < pointInfos.size(); i++) {
-                            address[i] = pointInfos.get(i).getPosname();
-                            addressId[i] = pointInfos.get(i).getPosid();
-                        }
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<PointInfo>>() {
-                    @Override
-                    public void onCompleted() {
-                        //初始化
-                        tv_release_from.setText(orderInfo.getSrcname());
-                        tv_release_send.setText(orderInfo.getDesname());
-                        et_release_from_address.setText(orderInfo.getSrcdetail());
-                        et_release_send_address.setText(orderInfo.getDesdetail());
-                        et_release_from_address.setSelection(orderInfo.getSrcdetail().length());
-                        srcId = orderInfo.getSrcid();
-                        desId = orderInfo.getDesid();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<PointInfo> pointInfos) {
-
-                    }
-                });
     }
 
     @Override
@@ -160,10 +140,10 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
                 showAlert(state,tv_release_state,0);
                 break;
             case R.id.tv_release_from:
-                showAlert(address,tv_release_from,1);
+                IntentUtils.startActivityForResult(ReleaseActivity.this,SelectPointActivity.class,405);
                 break;
             case R.id.tv_release_send:
-                showAlert(address,tv_release_send,2);
+                IntentUtils.startActivityForResult(ReleaseActivity.this,SelectPointActivity.class,406);
                 break;
             case R.id.btn_submit:
                 releasePresenter.updateOrder(getMap());
@@ -182,6 +162,7 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
         map.put("desdetail", et_release_send_address.getText().toString());
         map.put("money", et_release_money.getText().toString());
         map.put("maintype", "0");//默认订单
+        map.put("remark", et_release_remark.getText().toString());
         return map.getMap();
     }
     /**
@@ -198,12 +179,6 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
                     case 0:
                         orderType = stateId[i];
                         break;
-                    case 1:
-                        srcId = addressId[i];
-                        break;
-                    case 2:
-                        desId = addressId[i];
-                        break;
                 }
                 textView.setText(strings[i]);
             }
@@ -218,6 +193,20 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 405&&resultCode==RESULT_OK){
+            PointInfo pointInfo = (PointInfo) data.getSerializableExtra("point");
+            srcId = pointInfo.getPosid();
+            tv_release_from.setText(pointInfo.getPosname());
+        }else if (requestCode == 406&&resultCode==RESULT_OK){
+            PointInfo pointInfo = (PointInfo) data.getSerializableExtra("point");
+            desId = pointInfo.getPosid();
+            tv_release_send.setText(pointInfo.getPosname());
+        }
+    }
+
+    @Override
     public void setRelease(Release.OrderId order) {
 
     }
@@ -226,5 +215,33 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
     public void updateOrder() {
         ToastUtils.toast("修改成功");
         finish();
+    }
+
+    public class EditTextChange implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (!StringUtils.isNullOrEmpty(et_release_from_address.getText().toString())
+                    && !StringUtils.isNullOrEmpty(et_release_money.getText().toString())
+                    && !StringUtils.isNullOrEmpty(et_release_send_address.getText().toString())
+                    &&!srcId.equals("0")
+                    &&!desId.equals("0")) {
+                btn_submit.setEnabled(true);
+                btn_submit.setBackgroundResource(R.drawable.btn_selector);
+            } else {
+                btn_submit.setEnabled(false);
+                btn_submit.setBackgroundResource(R.color.button_gray);
+            }
+        }
     }
 }

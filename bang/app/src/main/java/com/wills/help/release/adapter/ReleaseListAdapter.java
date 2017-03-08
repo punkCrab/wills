@@ -1,5 +1,6 @@
 package com.wills.help.release.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -70,7 +71,6 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
     protected void BindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ReleaseHolder){
             final OrderInfo releaseInfo = list.get(position);
-            GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getReleaseavatar(),((ReleaseHolder)holder).imageView);
             if (type == 0){
                 changeView(holder,Integer.parseInt(releaseInfo.getStateid()),releaseInfo);
             }else if(type == 1){
@@ -105,7 +105,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
             Drawable drawable =null;
             if (releaseInfo.getReleasesex().equals("1")){
                 drawable = context.getResources().getDrawable(R.drawable.sex_girl);
-            }else if (releaseInfo.getReleasesex().equals("2")){
+            }else {
                 drawable = context.getResources().getDrawable(R.drawable.sex_boy);
             }
             drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
@@ -130,6 +130,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
     private void changeView(RecyclerView.ViewHolder holder , final int state , final OrderInfo releaseInfo){
         switch (state){
             case 0:
+                GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getReleaseavatar(),((ReleaseHolder)holder).imageView);
                 ((ReleaseHolder)holder).tv_release_change.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.pay));
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.GONE);
@@ -138,11 +139,12 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                     public void onClick(View v) {
                         Bundle bundle = new Bundle();
                         bundle.putString("orderId",releaseInfo.getOrderid());
-                        IntentUtils.startActivity(context,PayActivity.class,bundle);
+                        IntentUtils.startActivityForResult((Activity)context,PayActivity.class,bundle,401);
                     }
                 });
                 break;
             case 1://发布
+                GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getReleaseavatar(),((ReleaseHolder)holder).imageView);
                 ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
                 ((ReleaseHolder)holder).tv_release_change.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.GONE);
@@ -161,6 +163,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 });
                 break;
             case 2://接单
+                GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getAcceptavatar(),((ReleaseHolder)holder).imageView);
                 ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
                 ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
                 ((ReleaseHolder)holder).tv_release_change.setVisibility(View.VISIBLE);
@@ -176,6 +179,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 });
                 break;
             case 3://送达
+                GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getAcceptavatar(),((ReleaseHolder)holder).imageView);
                 ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
                 ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
                 ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
@@ -192,6 +196,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 });
                 break;
             case 4://已完成
+                GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getAcceptavatar(),((ReleaseHolder)holder).imageView);
                 ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
                 ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
                 ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);

@@ -1,9 +1,8 @@
 package com.wills.help.assist.ui;
 
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,13 +11,13 @@ import com.wills.help.R;
 import com.wills.help.assist.adapter.AssistAdapter;
 import com.wills.help.assist.presenter.AssistPresenterImpl;
 import com.wills.help.assist.view.AssistView;
-import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.base.BaseListAdapter;
 import com.wills.help.listener.BaseListLoadMoreListener;
 import com.wills.help.net.HttpMap;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
+import com.wills.help.utils.IntentUtils;
 import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
@@ -68,12 +67,12 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
         recyclerView.addOnScrollListener(listLoadMore);
         listLoadMore.setLoadMoreListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setRefreshing(true);
         onRefresh();
     }
 
     @Override
     public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
         if (assistList != null) {
             assistList.clear();
             page = 1;
@@ -88,13 +87,8 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
      */
     private Map<String, String> getMap(int type, int position) {
         HttpMap map = new HttpMap();
-        if (type == 0) {
-            map.put("srcid", srcId+"");
-            map.put("page", page + "");
-        } else if (type == 1) {
-            map.put("acceptuserid", App.getApp().getUser().getUserid());
-            map.put("orderid", assistList.get(position).getOrderid());
-        }
+        map.put("srcid", srcId+"");
+        map.put("page", page + "");
         return map.getMap();
     }
 
@@ -133,28 +127,19 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     }
 
     @Override
-    public void onItemClick(int position) {
-        showOk(position);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 501&&resultCode == RESULT_OK){
+            onRefresh();
+        }
     }
 
-    private void showOk(final int position) {
-        OrderInfo orderInfo = assistList.get(position);
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(orderInfo.getState())
-                .setMessage("从：" + orderInfo.getSrcdetail() + "\n"
-                        + "到：" + orderInfo.getDesdetail() + "\n"
-                        + "金额：" + orderInfo.getMoney() + "元")
-                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        assistPresenter.accept(getMap(1, position));
-                    }
-                }).show();
+    @Override
+    public void onItemClick(int position) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("orderInfo",assistList.get(position));
+        bundle.putString("from","accept");
+        IntentUtils.startActivityForResult(AssistListActivity.this, AssistInfoActivity.class,bundle,501);
     }
+
 }

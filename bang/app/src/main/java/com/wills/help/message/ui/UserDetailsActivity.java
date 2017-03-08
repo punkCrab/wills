@@ -74,10 +74,9 @@ public class UserDetailsActivity extends BaseActivity implements View.OnClickLis
             Drawable drawable =null;
             if (contactList.get(0).getSex().equals("1")){
                 drawable = context.getResources().getDrawable(R.drawable.sex_girl);
-            }else if (contactList.get(0).getSex().equals("2")){
+            }else {
                 drawable = context.getResources().getDrawable(R.drawable.sex_boy);
             }
-            drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
             tv_name.setCompoundDrawables(drawable,null,null,null);
         }
     }

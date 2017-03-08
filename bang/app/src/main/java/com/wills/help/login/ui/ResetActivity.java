@@ -13,6 +13,7 @@ import com.wills.help.base.BaseActivity;
 import com.wills.help.login.presenter.ResetPresenterImpl;
 import com.wills.help.login.view.ResetView;
 import com.wills.help.net.HttpMap;
+import com.wills.help.utils.AESUtils;
 import com.wills.help.utils.StringUtils;
 import com.wills.help.utils.TimeCountUtils;
 import com.wills.help.utils.ToastUtils;
@@ -60,7 +61,7 @@ public class ResetActivity extends BaseActivity implements View.OnClickListener,
                 if (StringUtils.availablePhone(phone)){
                     TimeCountUtils utils = new TimeCountUtils(context, 60000, 1000, btn_code);
                     utils.start();
-                    resetPresenter.getCode(et_register_phone.getText().toString());
+                    resetPresenter.getCode(AESUtils.getInstance().encrypt(et_register_phone.getText().toString()));
                 }else {
                     ToastUtils.toast(getString(R.string.phone_error));
                 }
@@ -73,7 +74,7 @@ public class ResetActivity extends BaseActivity implements View.OnClickListener,
 
     private Map<String, String> getMap() {
         HttpMap map = new HttpMap();
-        map.put("username", et_register_phone.getText().toString());
+        map.put("phone_num", et_register_phone.getText().toString());
         map.put("password", et_register_pwd.getText().toString());
         map.put("value", et_register_code.getText().toString());
         return map.getMap();

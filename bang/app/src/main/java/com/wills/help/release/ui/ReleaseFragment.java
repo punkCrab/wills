@@ -1,6 +1,7 @@
 package com.wills.help.release.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -18,7 +19,6 @@ import com.wills.help.base.BaseFragment;
 import com.wills.help.db.bean.OrderTypeInfo;
 import com.wills.help.db.bean.PointInfo;
 import com.wills.help.db.manager.OrderTypeInfoHelper;
-import com.wills.help.db.manager.PointInfoHelper;
 import com.wills.help.net.HttpMap;
 import com.wills.help.pay.ui.PayActivity;
 import com.wills.help.release.model.Release;
@@ -36,6 +36,8 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * com.wills.help.release.ui
  * Created by lizhaoyong
@@ -45,17 +47,15 @@ import rx.schedulers.Schedulers;
 public class ReleaseFragment extends BaseFragment implements View.OnClickListener, ReleaseView {
 
     private TextView tv_release_state, tv_release_from, tv_release_send;
-    private EditText et_release_from_address, et_release_money, et_release_send_address;
+    private EditText et_release_from_address, et_release_money, et_release_send_address,et_release_remark;
     private Button btn_submit;
     private ReleasePresenterImpl releasePresenter;
     private String orderType;
     private String orderTypeName;
-    private String srcId;//求助
-    private String desId;//送达
+    private String srcId = "0";//求助
+    private String desId = "0";//送达
     String[] state;
     String[] stateId;
-    String[] address;
-    String[] addressId;
     private int orderIndex;
 
     public static ReleaseFragment newInstance(int stateId) {
@@ -76,6 +76,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
         et_release_from_address = (EditText) view.findViewById(R.id.et_release_from_address);
         et_release_money = (EditText) view.findViewById(R.id.et_release_money);
         et_release_send_address = (EditText) view.findViewById(R.id.et_release_send_address);
+        et_release_remark = (EditText) view.findViewById(R.id.et_release_remark);
         btn_submit = (Button) view.findViewById(R.id.btn_submit);
         return view;
     }
@@ -103,6 +104,8 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
                     @Override
                     public void onCompleted() {
                         tv_release_state.setText(state[orderIndex]);
+                        orderType = stateId[orderIndex];
+                        orderTypeName = state[orderIndex];
                     }
 
                     @Override
@@ -115,55 +118,20 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
 
                     }
                 });
-        PointInfoHelper.getInstance().queryAll()
-                .doOnNext(new Action1<List<PointInfo>>() {
-                    @Override
-                    public void call(List<PointInfo> pointInfos) {
-                        address = new String[pointInfos.size()];
-                        addressId = new String[pointInfos.size()];
-                        for (int i = 0; i < pointInfos.size(); i++) {
-                            address[i] = pointInfos.get(i).getPosname();
-                            addressId[i] = pointInfos.get(i).getPosid();
-                        }
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<PointInfo>>() {
-                    @Override
-                    public void onCompleted() {
-                        //初始化
-                        tv_release_from.setText(address[0]);
-                        tv_release_send.setText(address[0]);
-                        orderType = stateId[orderIndex];
-                        orderTypeName = state[orderIndex];
-                        srcId = addressId[0];
-                        desId = addressId[0];
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<PointInfo> pointInfos) {
-
-                    }
-                });
     }
 
     private void clearData(){
         tv_release_state.setText(state[orderIndex]);
-        tv_release_from.setText(address[0]);
-        tv_release_send.setText(address[0]);
+        tv_release_from.setText(getString(R.string.select_point_click));
+        tv_release_send.setText(getString(R.string.select_point_click));
         orderType = stateId[orderIndex];
         orderTypeName = state[orderIndex];
-        srcId = addressId[0];
-        desId = addressId[0];
+        srcId = "0";
+        desId = "0";
         et_release_from_address.getText().clear();
         et_release_money.getText().clear();
         et_release_send_address.getText().clear();
+        et_release_remark.getText().clear();
     }
 
     private void initListener() {
@@ -172,6 +140,8 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
         tv_release_send.setOnClickListener(this);
         et_release_from_address.addTextChangedListener(new EditTextChange());
         et_release_send_address.addTextChangedListener(new EditTextChange());
+        tv_release_send.addTextChangedListener(new EditTextChange());
+        tv_release_from.addTextChangedListener(new EditTextChange());
         et_release_money.addTextChangedListener(new EditTextChange());
         btn_submit.setOnClickListener(this);
     }
@@ -183,10 +153,10 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
                 showAlert(state, tv_release_state, 0);
                 break;
             case R.id.tv_release_from:
-                showAlert(address, tv_release_from, 1);
+                IntentUtils.startActivityForResult(getAppCompatActivity(),SelectPointActivity.class,402);
                 break;
             case R.id.tv_release_send:
-                showAlert(address, tv_release_send, 2);
+                IntentUtils.startActivityForResult(getAppCompatActivity(),SelectPointActivity.class,403);
                 break;
             case R.id.btn_submit:
                 releasePresenter.release(getMap());
@@ -205,6 +175,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
         map.put("desdetail", et_release_send_address.getText().toString());
         map.put("money", et_release_money.getText().toString());
         map.put("maintype", "0");//默认订单
+        map.put("remark", et_release_remark.getText().toString());
         return map.getMap();
     }
 
@@ -223,12 +194,12 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
                         orderType = stateId[i];
                         orderTypeName = state[i];
                         break;
-                    case 1:
-                        srcId = addressId[i];
-                        break;
-                    case 2:
-                        desId = addressId[i];
-                        break;
+//                    case 1:
+//                        srcId = addressId[i];
+//                        break;
+//                    case 2:
+//                        desId = addressId[i];
+//                        break;
                 }
                 textView.setText(strings[i]);
             }
@@ -271,13 +242,29 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
         public void afterTextChanged(Editable editable) {
             if (!StringUtils.isNullOrEmpty(et_release_from_address.getText().toString())
                     && !StringUtils.isNullOrEmpty(et_release_money.getText().toString())
-                    && !StringUtils.isNullOrEmpty(et_release_send_address.getText().toString())) {
+                    && !StringUtils.isNullOrEmpty(et_release_send_address.getText().toString())
+                    &&!srcId.equals("0")
+                    &&!desId.equals("0")) {
                 btn_submit.setEnabled(true);
                 btn_submit.setBackgroundResource(R.drawable.btn_selector);
             } else {
                 btn_submit.setEnabled(false);
                 btn_submit.setBackgroundResource(R.color.button_gray);
             }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 402 && resultCode == RESULT_OK){
+            PointInfo info = (PointInfo) data.getSerializableExtra("point");
+            srcId = info.getPosid();
+            tv_release_from.setText(info.getPosname());
+        }else if (requestCode == 403 && resultCode == RESULT_OK){
+            PointInfo info = (PointInfo) data.getSerializableExtra("point");
+            desId = info.getPosid();
+            tv_release_send.setText(info.getPosname());
         }
     }
 }

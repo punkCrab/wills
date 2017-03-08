@@ -1,5 +1,7 @@
 package com.wills.help.release.model;
 
+import com.wills.help.utils.StringUtils;
+
 import java.io.Serializable;
 
 /**
@@ -115,7 +117,7 @@ public class OrderInfo implements Serializable{
     }
 
     public String getReleasenickname() {
-        return releasenickname;
+        return !StringUtils.isNullOrEmpty(releasenickname)?releasenickname:releaseusername;
     }
 
     public void setReleasenickname(String releasenickname) {

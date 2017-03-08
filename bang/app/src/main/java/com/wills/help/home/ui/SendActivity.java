@@ -1,12 +1,10 @@
 package com.wills.help.home.ui;
 
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,23 +13,17 @@ import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.db.bean.PointInfo;
-import com.wills.help.db.manager.PointInfoHelper;
 import com.wills.help.net.HttpMap;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.Release;
 import com.wills.help.release.presenter.ReleasePresenterImpl;
+import com.wills.help.release.ui.SelectPointActivity;
 import com.wills.help.release.view.ReleaseView;
-import com.wills.help.utils.ScreenUtils;
+import com.wills.help.utils.IntentUtils;
 import com.wills.help.utils.StringUtils;
 import com.wills.help.utils.ToastUtils;
 
-import java.util.List;
 import java.util.Map;
-
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * com.wills.help.home.ui
@@ -41,11 +33,9 @@ import rx.schedulers.Schedulers;
 
 public class SendActivity extends BaseActivity implements View.OnClickListener ,ReleaseView{
     private TextView tv_choose_address;
-    private EditText et_address;
+    private EditText et_address,et_release_remark;
     private Button btn_submit;
-    String[] address;
-    String[] addressId;
-    private String desId;
+    private String desId = "0";
     private ReleasePresenterImpl releasePresenter;
     private OrderInfo orderInfo;
     private boolean isUpdate = false;
@@ -56,8 +46,10 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
         setBaseTitle(getString(R.string.home_express));
         tv_choose_address = (TextView) findViewById(R.id.tv_choose_address);
         et_address = (EditText) findViewById(R.id.et_address);
+        tv_choose_address.addTextChangedListener(new EditTextChange());
         et_address.addTextChangedListener(new EditTextChange());
         btn_submit = (Button) findViewById(R.id.btn_submit);
+        et_release_remark = (EditText)findViewById(R.id.et_release_remark);
         tv_choose_address.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
         initData();
@@ -69,51 +61,19 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
             orderInfo = (OrderInfo) getIntent().getExtras().getSerializable("orderInfo");
             et_address.setText(orderInfo.getDesdetail());
             et_address.setSelection(orderInfo.getDesdetail().length());
+            tv_choose_address.setText(orderInfo.getDesname());
+            desId = orderInfo.getDesid();
+        }else {
+            desId = "0";
         }
         releasePresenter = new ReleasePresenterImpl(this);
-        PointInfoHelper.getInstance().queryAll()
-                .doOnNext(new Action1<List<PointInfo>>() {
-                    @Override
-                    public void call(List<PointInfo> pointInfos) {
-                        address = new String[pointInfos.size()];
-                        addressId = new String[pointInfos.size()];
-                        for (int i=0;i<pointInfos.size();i++){
-                            address[i] = pointInfos.get(i).getPosname();
-                            addressId[i] = pointInfos.get(i).getPosid();
-                        }
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<PointInfo>>() {
-                    @Override
-                    public void onCompleted() {
-                        if (orderInfo!=null){
-                            tv_choose_address.setText(orderInfo.getDesname());
-                            desId = orderInfo.getDesid();
-                        }else {
-                            tv_choose_address.setText(address[0]);
-                            desId = addressId[0];
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<PointInfo> pointInfos) {
-
-                    }
-                });
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_choose_address:
-                showAlert(address,tv_choose_address);
+                IntentUtils.startActivityForResult(SendActivity.this,SelectPointActivity.class,410);
                 break;
             case R.id.btn_submit:
                 if (isUpdate){
@@ -122,6 +82,16 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
                     releasePresenter.release(getMap());
                 }
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 410 && resultCode == RESULT_OK){
+            PointInfo info = (PointInfo) data.getSerializableExtra("point");
+            desId = info.getPosid();
+            tv_choose_address.setText(info.getPosname());
         }
     }
 
@@ -138,25 +108,8 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
         map.put("desdetail", et_address.getText().toString());
         map.put("money", "0");
         map.put("maintype", "1");
+        map.put("remark", et_release_remark.getText().toString());
         return map.getMap();
-    }
-
-    private void showAlert(final String[] strings , final TextView textView){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setItems(strings, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                desId = addressId[i];
-                textView.setText(strings[i]);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        if (strings.length>10){
-            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-            params.height = 3* ScreenUtils.getScreenHeight(context)/4;
-            dialog.getWindow().setAttributes(params);
-        }
     }
 
     @Override
@@ -186,7 +139,8 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (!StringUtils.isNullOrEmpty(et_address.getText().toString())) {
+            if (!StringUtils.isNullOrEmpty(et_address.getText().toString())
+                    &&!desId.equals("0")) {
                 btn_submit.setEnabled(true);
                 btn_submit.setBackgroundResource(R.drawable.btn_selector);
             } else {

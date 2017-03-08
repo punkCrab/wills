@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
@@ -38,6 +39,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+
 /**
  * com.wills.help.pay.ui
  * Created by lizhaoyong
@@ -47,6 +51,7 @@ import java.util.Map;
 public class PayActivity extends BaseActivity implements PayView , WalletView{
     private TextView tv_amount , tv_send , tv_from , tv_balance_amount ,tv_pay_state;
     private MyRadioGroup rg_pay;
+    private RelativeLayout rl_balance;
     private RadioButton rb_ali,rb_wx,rb_balance;
     private Button button;
     private PayPresenterImpl payPresenter;
@@ -72,9 +77,12 @@ public class PayActivity extends BaseActivity implements PayView , WalletView{
                     PayResult payResult = new PayResult((Map<String,String>)msg.obj);
                     String resultStatus = payResult.getResultStatus();
                     if (TextUtils.equals(resultStatus,"9000")){
-                        Looper.prepare();
-                        dialog = NetUtils.netDialog(context);
-                        Looper.loop();
+                        AndroidSchedulers.mainThread().createWorker().schedule(new Action0() {
+                            @Override
+                            public void call() {
+                                dialog = NetUtils.netDialog(context);
+                            }
+                        });
                         handler.sendEmptyMessageDelayed(PAY_SUCCESS,1000);
                     }else {
                         Looper.prepare();
@@ -105,6 +113,7 @@ public class PayActivity extends BaseActivity implements PayView , WalletView{
         rb_ali = (RadioButton) findViewById(R.id.rb_ali);
         rb_wx = (RadioButton) findViewById(R.id.rb_wx);
         rb_balance = (RadioButton) findViewById(R.id.rb_balance);
+        rl_balance = (RelativeLayout) findViewById(R.id.rl_balance);
         button = (Button) findViewById(R.id.btn_submit);
         rg_pay.setOnCheckedChangeListener(new MyRadioGroup.OnCheckedChangeListener() {
             @Override
@@ -167,7 +176,7 @@ public class PayActivity extends BaseActivity implements PayView , WalletView{
             map.put("timestamp", time);
             map.put("biz_content",
                     "{\"timeout_express\":\"30m\"," +
-                            "\"subject\":\""+orderInfo.getOrdertype()+"\"," +
+                            "\"subject\":\""+orderInfo.getOrdertypename()+"\"," +
                             "\"product_code\":\"QUICK_MSECURITY_PAY\"," +
                             "\"total_amount\":\""+orderInfo.getMoney()+"\"," +
                             "\"body\":\""+orderInfo.getOrdertypename()+"\"," +
@@ -280,11 +289,11 @@ public class PayActivity extends BaseActivity implements PayView , WalletView{
     @Override
     public void setMoney(Wallet.Money money) {
         if (money.getMoney().equals("0")){
-            rg_pay.findViewById(R.id.rb_balance).setVisibility(View.GONE);
+            rl_balance.setVisibility(View.GONE);
             rb_ali.setChecked(true);
             payType = 1;
         }else {
-            rg_pay.findViewById(R.id.rb_balance).setVisibility(View.VISIBLE);
+            rl_balance.setVisibility(View.VISIBLE);
             tv_balance_amount.setText(money.getMoney()+getString(R.string.yuan));
             rb_balance.setChecked(true);
             payType = 0;

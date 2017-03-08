@@ -22,6 +22,7 @@ import com.wills.help.R;
 import com.wills.help.assist.ui.AssistFragment;
 import com.wills.help.db.bean.Contact;
 import com.wills.help.db.manager.ContactHelper;
+import com.wills.help.db.manager.UserInfoHelper;
 import com.wills.help.home.ui.HomeFragment;
 import com.wills.help.login.ui.LoginActivity;
 import com.wills.help.message.ContactsView;
@@ -264,7 +265,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             changeReleaseFragment(1,0);
         }else if (requestCode == 12&&resultCode==RESULT_OK){
             bottomNavigationBar.selectTab(0);
-        }else if(requestCode == 401 && resultCode == RESULT_OK){
+        }else if((requestCode == 401||requestCode == 402||requestCode == 403) && resultCode == RESULT_OK){
             mainReleaseFragment.onActivityResult(requestCode,resultCode,data);
         }else if (requestCode == AppConfig.AVATAR && resultCode == RESULT_OK){
             personFragment.onActivityResult(requestCode,resultCode,data);
@@ -306,6 +307,11 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                     HttpMap map = new HttpMap();
                     map.put("usernames",message.getUserName());
                     contactsPresenter.getContacts(map.getMap());
+                }else if (action.contains("idcheck")){
+                    App.getApp().getUser().setUsertype("1");
+                    App.getApp().getUser().setTypename(getString(R.string.approved));
+                    App.getApp().getUser().setSchool_num(action.substring(7));
+                    UserInfoHelper.getInstance().updateData(App.getApp().getUser()).subscribe();
                 }
             }
         }

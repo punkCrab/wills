@@ -32,6 +32,7 @@ public class MainReleaseFragment extends BaseFragment {
     private int tabIndex;
     private int stateId;
     private ReleaseListFragment progressFragment,completeFragment;
+    private ReleaseFragment releaseFragment;
 
     public static MainReleaseFragment newInstance(int tabIndex, int stateId) {
 
@@ -86,8 +87,9 @@ public class MainReleaseFragment extends BaseFragment {
         //Fragment中嵌套使用Fragment一定要使用getChildFragmentManager(),否则会有问题
         progressFragment = ReleaseListFragment.newInstance(0);
         completeFragment = ReleaseListFragment.newInstance(1);
+        releaseFragment = ReleaseFragment.newInstance(stateId);
         PagerAdapter adapter = new PagerAdapter(getChildFragmentManager());
-        adapter.addFragment(ReleaseFragment.newInstance(stateId), getString(R.string.release));
+        adapter.addFragment(releaseFragment, getString(R.string.release));
         adapter.addFragment(progressFragment, getString(R.string.release_progress));
         adapter.addFragment(completeFragment, getString(R.string.release_complete));
         mViewPager.setAdapter(adapter);
@@ -130,6 +132,10 @@ public class MainReleaseFragment extends BaseFragment {
             tabLayout.getTabAt(1).select();
             if (progressFragment!=null){
                 progressFragment.onRefresh();
+            }
+        }else if ((requestCode == 402||requestCode == 403) && resultCode == RESULT_OK){
+            if (releaseFragment!=null){
+                releaseFragment.onActivityResult(requestCode,resultCode,data);
             }
         }
     }

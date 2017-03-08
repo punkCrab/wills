@@ -75,16 +75,16 @@ public class AssistAdapter extends BaseListAdapter<OrderInfo>{
             Drawable drawable =null;
             if (orderInfo.getReleasesex().equals("1")){
                 drawable = context.getResources().getDrawable(R.drawable.sex_girl);
-            }else if (orderInfo.getReleasesex().equals("2")){
+            }else {
                 drawable = context.getResources().getDrawable(R.drawable.sex_boy);
             }
             drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
             ((AssistHolder)holder).tv_name.setCompoundDrawables(drawable,null,null,null);
-            ((AssistHolder)holder).tv_name.setText(orderInfo.getReleaseusername());
+            ((AssistHolder)holder).tv_name.setText(orderInfo.getReleasenickname());
             ((AssistHolder)holder).tv_assist_time.setText(orderInfo.getCreatetime());
             ((AssistHolder)holder).tv_assist_location.setText(orderInfo.getSrcname()+orderInfo.getSrcdetail());
             ((AssistHolder)holder).tv_assist_address.setText(orderInfo.getDesname()+orderInfo.getDesdetail());
-            ((AssistHolder)holder).tv_assist_money.setText(orderInfo.getMoney());
+            ((AssistHolder)holder).tv_assist_money.setText(orderInfo.getMoney()+context.getString(R.string.yuan));
             ((AssistHolder)holder).tv_assist_progress.setVisibility(View.INVISIBLE);
             if (orderInfo.getReleaseusername().equals(App.getApp().getUser().getUsername())){
                 ((AssistHolder)holder).iv_assist_msg.setVisibility(View.INVISIBLE);

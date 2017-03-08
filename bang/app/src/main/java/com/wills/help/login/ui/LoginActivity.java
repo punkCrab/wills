@@ -79,7 +79,7 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
     @Override
     public void setLogin(User login) {
         setResult(RESULT_OK);
-        EMClient.getInstance().login(et_username.getText().toString(), StringUtils.getMD5(et_password.getText().toString()), new EMCallBack() {
+        EMClient.getInstance().login(login.getData().getUsername(), StringUtils.getMD5(et_password.getText().toString()), new EMCallBack() {
             @Override
             public void onSuccess() {
                 EMClient.getInstance().chatManager().loadAllConversations();
@@ -105,7 +105,7 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
                 String user = et_username.getText().toString();
                 String pwd = et_password.getText().toString();
                 HttpMap map = new HttpMap();
-                map.put("username", user);
+                map.put("phone_num", user);
                 map.put("password", pwd);
                 loginInfoPresenter.login(map.getMap());
                 break;

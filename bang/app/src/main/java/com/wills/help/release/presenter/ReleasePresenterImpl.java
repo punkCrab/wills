@@ -1,5 +1,6 @@
 package com.wills.help.release.presenter;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 
@@ -57,7 +58,7 @@ public class ReleasePresenterImpl implements ReleasePresenter {
 
     @Override
     public void updateOrder(Map<String, String> map) {
-        final AlertDialog dialog = NetUtils.netDialog(((Fragment) releaseView).getActivity());
+        final AlertDialog dialog = NetUtils.netDialog(((Context) releaseView));
         releaseModel.updateOrder(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

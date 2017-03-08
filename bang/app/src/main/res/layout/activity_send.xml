@@ -68,7 +68,7 @@
             android:drawablePadding="5dp"
             android:drawableRight="@drawable/release_arrow"
             android:gravity="center"
-            android:text="北京交通大学第九教学楼"
+            android:text="@string/select_point_click"
             android:textColor="@color/textSecondary"
             android:textSize="16sp" />
     </LinearLayout>
@@ -104,6 +104,38 @@
             android:layout_marginLeft="30dp"
             android:background="@null"
             android:hint="@string/address_hint"
+            android:textColor="@color/textSecondary"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@color/colorDividerLight"></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release_remark"
+            android:textColor="@color/textSecondary"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/et_release_remark"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="30dp"
+            android:background="@null"
+            android:hint="@string/release_remark_content"
             android:textColor="@color/textSecondary"
             android:textSize="16sp" />
     </LinearLayout>

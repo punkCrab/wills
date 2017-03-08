@@ -1,14 +1,18 @@
 package com.wills.help.person.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.wills.help.R;
+import com.wills.help.assist.ui.AssistInfoActivity;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
+import com.wills.help.base.BaseListAdapter;
 import com.wills.help.listener.BaseListLoadMoreListener;
 import com.wills.help.net.HttpMap;
 import com.wills.help.person.adapter.OrderAdapter;
@@ -16,6 +20,7 @@ import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
 import com.wills.help.release.presenter.ReleaseListPresenterImpl;
 import com.wills.help.release.view.ReleaseListView;
+import com.wills.help.utils.IntentUtils;
 import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
@@ -28,7 +33,7 @@ import java.util.Map;
  * 2016/12/5.
  */
 
-public class OrderListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener , BaseListLoadMoreListener.LoadMoreListener , ReleaseListView{
+public class OrderListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener , BaseListLoadMoreListener.LoadMoreListener , ReleaseListView ,BaseListAdapter.BaseItemClickListener,OrderAdapter.ButtonClickListener{
 
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
@@ -62,17 +67,19 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new MyItemDecoration(context,5));
         orderAdapter = new OrderAdapter(context,orderArrayList,type,action);
+        orderAdapter.setBaseItemClickListener(this);
+        orderAdapter.setButtonClickListener(this);
         recyclerView.setAdapter(orderAdapter);
         BaseListLoadMoreListener listLoadMore = new BaseListLoadMoreListener(linearLayoutManager,orderAdapter);
         recyclerView.addOnScrollListener(listLoadMore);
         listLoadMore.setLoadMoreListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setRefreshing(true);
         onRefresh();
     }
 
     @Override
     public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
         if(orderArrayList != null) {
             orderArrayList.clear();
             page=1;
@@ -101,6 +108,13 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         return map.getMap();
     }
 
+    private Map<String , String> getMap(OrderInfo releaseInfo){
+        HttpMap map = new HttpMap();
+        map.put("releaseuserid", App.getApp().getUser().getUserid());
+        map.put("orderid", releaseInfo.getOrderid());
+        return map.getMap();
+    }
+
     @Override
     public void setReleaseList(OrderList releaseList) {
         if (swipeRefreshLayout.isRefreshing()){
@@ -122,6 +136,35 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
 
     @Override
     public void confirm() {
+        onRefresh();
+    }
 
+    @Override
+    public void onItemClick(int position) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("orderInfo",orderArrayList.get(position));
+        bundle.putString("from","orderList");
+        IntentUtils.startActivityForResult(OrderListActivity.this, AssistInfoActivity.class,bundle,501);
+    }
+    private void showOk(final OrderInfo releaseInfo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(getString(R.string.release_state_ok))
+                .setMessage(getString(R.string.release_state_ok_confirm))
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        releaseListPresenter.confirm(getMap(releaseInfo));
+                    }
+                }).show();
+    }
+    @Override
+    public void buttonClick(OrderInfo releaseInfo) {
+        showOk(releaseInfo);
     }
 }

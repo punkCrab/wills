@@ -9,6 +9,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -75,7 +76,8 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="horizontal"
-            android:padding="@dimen/activity_horizontal_margin">
+            android:padding="@dimen/activity_horizontal_margin"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -99,14 +101,16 @@
             android:layout_height="0.5dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@color/colorDividerLight"></View>
+            android:background="@color/colorDividerLight"
+            android:visibility="gone"></View>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="horizontal"
-            android:padding="@dimen/activity_horizontal_margin">
+            android:padding="@dimen/activity_horizontal_margin"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -130,14 +134,16 @@
             android:layout_height="0.5dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@color/colorDividerLight"></View>
+            android:background="@color/colorDividerLight"
+            android:visibility="gone"></View>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="horizontal"
-            android:padding="@dimen/activity_horizontal_margin">
+            android:padding="@dimen/activity_horizontal_margin"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_photo"
@@ -171,6 +177,14 @@
                 android:textSize="14sp" />
         </RelativeLayout>
 
+        <TextView
+            android:text="@string/identification_content"
+            android:gravity="right"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange"
+            android:textSize="12sp"/>
         <Button
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"

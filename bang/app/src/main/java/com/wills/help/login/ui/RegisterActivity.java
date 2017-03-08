@@ -17,11 +17,13 @@ import android.widget.TextView;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.wills.help.R;
+import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.login.model.User;
 import com.wills.help.login.presenter.RegisterPresenterImpl;
 import com.wills.help.login.view.RegisterView;
 import com.wills.help.net.HttpMap;
+import com.wills.help.utils.AESUtils;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.KeyBoardUtils;
 import com.wills.help.utils.NetUtils;
@@ -91,7 +93,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 if (StringUtils.availablePhone(phone)){
                     TimeCountUtils utils = new TimeCountUtils(context, 60000, 1000, btn_code);
                     utils.start();
-                    registerPresenter.getCode(et_register_phone.getText().toString());
+                    registerPresenter.getCode(AESUtils.getInstance().encrypt(et_register_phone.getText().toString()));
                 }else {
                     ToastUtils.toast(getString(R.string.phone_error));
                 }
@@ -105,7 +107,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private Map<String,String> getMap(){
         HttpMap map = new HttpMap();
-        map.put("username",et_register_phone.getText().toString());
+        map.put("phone_num",et_register_phone.getText().toString());
         map.put("password",et_register_pwd.getText().toString());
         map.put("value",et_register_code.getText().toString());
         return map.getMap();
@@ -130,7 +132,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             super.handleMessage(msg);
             switch (msg.what){
                 case 1:
-                    EMClient.getInstance().login(et_register_phone.getText().toString(), StringUtils.getMD5(et_register_pwd.getText().toString()), new EMCallBack() {
+                    EMClient.getInstance().login(App.getApp().getUser().getUsername(), StringUtils.getMD5(et_register_pwd.getText().toString()), new EMCallBack() {
                         @Override
                         public void onSuccess() {
                             if (dialog!=null){
