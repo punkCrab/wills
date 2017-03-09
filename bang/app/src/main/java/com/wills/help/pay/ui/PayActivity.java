@@ -59,7 +59,7 @@ public class PayActivity extends BaseActivity implements PayView , WalletView{
     private OrderInfo orderInfo;
     private WalletPresenterImpl walletPresenter;
     private int payType = 0;//1支付宝2微信
-
+    private float amount;//我的钱
     private boolean isClickPay = false;//是否点过支付
     private boolean isPaySuccess =false;//是否支付成功
 
@@ -288,15 +288,23 @@ public class PayActivity extends BaseActivity implements PayView , WalletView{
 
     @Override
     public void setMoney(Wallet.Money money) {
+        amount = Float.parseFloat(money.getMoney());
         if (money.getMoney().equals("0")){
             rl_balance.setVisibility(View.GONE);
             rb_ali.setChecked(true);
             payType = 1;
         }else {
-            rl_balance.setVisibility(View.VISIBLE);
             tv_balance_amount.setText(money.getMoney()+getString(R.string.yuan));
-            rb_balance.setChecked(true);
-            payType = 0;
+            if (amount<Float.parseFloat(orderInfo.getMoney())){
+                rb_balance.setEnabled(false);
+                rb_balance.setVisibility(View.GONE);
+                rb_ali.setChecked(true);
+                payType = 1;
+            }else {
+                rl_balance.setVisibility(View.VISIBLE);
+                rb_balance.setChecked(true);
+                payType = 0;
+            }
         }
     }
 

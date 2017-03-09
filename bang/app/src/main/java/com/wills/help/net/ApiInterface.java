@@ -139,6 +139,15 @@ public interface ApiInterface {
     Observable<Empty> updateOrder(@FieldMap Map<String , String > map);
 
     /**
+     * 删除订单
+     * @param map
+     * @return
+     */
+    @POST("cancel")
+    @FormUrlEncoded
+    Observable<Empty> cancelOrder(@FieldMap Map<String , String > map);
+
+    /**
      * 获取订单列表
      * @param map
      * @return
@@ -252,6 +261,15 @@ public interface ApiInterface {
     @POST("confirm")
     @FormUrlEncoded
     Observable<Empty> confirm(@FieldMap Map<String , String > map);
+
+    /**
+     * 订单状态变更进行中
+     * @param map
+     * @return
+     */
+    @POST("exec")
+    @FormUrlEncoded
+    Observable<Empty> exec(@FieldMap Map<String , String > map);
 
     /**
      * 余额支付

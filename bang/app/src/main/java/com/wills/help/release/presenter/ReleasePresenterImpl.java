@@ -80,4 +80,29 @@ public class ReleasePresenterImpl implements ReleasePresenter {
                     }
                 });
     }
+
+    @Override
+    public void cancelOrder(Map<String, String> map) {
+        final AlertDialog dialog = NetUtils.netDialog(((Context) releaseView));
+        releaseModel.cancelOrder(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiSubscriber<Empty>() {
+                    @Override
+                    public void onCompleted() {
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onNext(Empty empty) {
+                        releaseView.deleteOrder();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        dialog.dismiss();
+                    }
+                });
+    }
 }

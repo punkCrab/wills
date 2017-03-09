@@ -11,4 +11,5 @@ import java.util.Map;
 public interface ReleasePresenter {
     void release(Map<String,String> map);
     void updateOrder(Map<String,String> map);
+    void cancelOrder(Map<String,String> map);
 }

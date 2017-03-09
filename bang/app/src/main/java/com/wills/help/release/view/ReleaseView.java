@@ -11,4 +11,5 @@ import com.wills.help.release.model.Release;
 public interface ReleaseView {
     void setRelease(Release.OrderId order);
     void updateOrder();
+    void deleteOrder();
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.wills.help.widget.DropDownMenu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dropDownMenu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:dividerColor="@color/colorPrimary"
+    app:maskColor="@android:color/transparent"
+    app:menuBackgroundColor="@color/common_bg"
+    app:menuSelectedIcon="@drawable/arrow_up"
+    app:menuTextSize="16sp"
+    app:menuUnselectedIcon="@drawable/arrow_down"
+    app:textSelectedColor="@color/colorPrimary"
+    app:textUnselectedColor="@color/textSecondary"
+    app:underlineColor="@color/colorDivider"></com.wills.help.widget.DropDownMenu>

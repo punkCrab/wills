@@ -226,6 +226,11 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
 
     }
 
+    @Override
+    public void deleteOrder() {
+
+    }
+
     public class EditTextChange implements TextWatcher {
 
         @Override

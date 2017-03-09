@@ -66,7 +66,7 @@
             android:layout_marginLeft="30dp"
             android:background="@drawable/release_shape"
             android:drawablePadding="5dp"
-            android:drawableRight="@drawable/release_arrow"
+            android:drawableRight="@drawable/arrow_down"
             android:gravity="center"
             android:text="@string/select_point_click"
             android:textColor="@color/textSecondary"

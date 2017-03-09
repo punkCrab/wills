@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -72,6 +74,23 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         walletPresenter.getMoney(getMap());
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_wallet,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_history:
+                break;
+            case R.id.action_approve:
+                break;
+        }
+        return true;
+    }
+
     private Map<String ,String> getMap(){
         HttpMap map = new HttpMap();
         map.put("userid", App.getApp().getUser().getUserid());
@@ -96,4 +115,6 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
         tv_amount.withNumber(amount);
         tv_amount.start();
     }
+
+
 }

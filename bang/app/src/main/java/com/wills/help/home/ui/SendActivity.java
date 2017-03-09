@@ -114,15 +114,21 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
 
     @Override
     public void setRelease(Release.OrderId order) {
-        ToastUtils.toast("免费派送成功");
+        ToastUtils.toast(getString(R.string.release_free));
         setResult(RESULT_OK);
         finish();
     }
 
     @Override
     public void updateOrder() {
-        ToastUtils.toast("修改成功");
+        ToastUtils.toast(getString(R.string.change_success));
+        setResult(RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void deleteOrder() {
+
     }
 
     public class EditTextChange implements TextWatcher {

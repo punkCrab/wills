@@ -213,7 +213,7 @@ public class OrderInfo implements Serializable{
     }
 
     public String getAcceptnickname() {
-        return acceptnickname;
+        return !StringUtils.isNullOrEmpty(acceptnickname)?acceptnickname:acceptusername;
     }
 
     public void setAcceptnickname(String acceptnickname) {

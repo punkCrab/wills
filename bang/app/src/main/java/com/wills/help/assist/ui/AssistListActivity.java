@@ -6,23 +6,40 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.wills.help.R;
 import com.wills.help.assist.adapter.AssistAdapter;
+import com.wills.help.assist.adapter.OrderTypeListAdapter;
+import com.wills.help.assist.adapter.PointListAdapter;
 import com.wills.help.assist.presenter.AssistPresenterImpl;
 import com.wills.help.assist.view.AssistView;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.base.BaseListAdapter;
+import com.wills.help.db.bean.OrderTypeInfo;
+import com.wills.help.db.bean.PointInfo;
+import com.wills.help.db.manager.OrderTypeInfoHelper;
+import com.wills.help.db.manager.PointInfoHelper;
 import com.wills.help.listener.BaseListLoadMoreListener;
 import com.wills.help.net.HttpMap;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.widget.DropDownMenu;
 import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * com.wills.help.assist.ui
@@ -42,18 +59,158 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     private AssistPresenterImpl assistPresenter;
     private int srcId;
 
+    private String headers[] = {"求助内容", "求助定位", "送达地址"};
+    private ListView listView1, listView2, listView3;
+    private List<View> viewList = new ArrayList<>();
+    private OrderTypeListAdapter adapter1;
+    private PointListAdapter adapter2, adapter3;
+    private DropDownMenu dropDownMenu;
+    private List<PointInfo> pointInfoList2, pointInfoList3;
+    private List<OrderTypeInfo> orderTypeInfoList;
+
     @Override
     protected void initViews(Bundle savedInstanceState) {
-        setBaseView(R.layout.page_list);
+        setBaseView(R.layout.activity_assist_list);
         setBaseTitle(getString(R.string.tab_assist));
         srcId = getIntent().getExtras().getInt("srcid");
-        recyclerView = (RecyclerView) findViewById(R.id.list);
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.srl);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorPrimary, R.color.colorPrimaryLight, R.color.colorAccent);
+        dropDownMenu = (DropDownMenu) findViewById(R.id.dropDownMenu);
         initData();
     }
 
     private void initData() {
+        OrderTypeInfoHelper.getInstance().queryAll()
+                .doOnNext(new Action1<List<OrderTypeInfo>>() {
+                    @Override
+                    public void call(List<OrderTypeInfo> orderTypeInfos) {
+                        orderTypeInfoList = new ArrayList<OrderTypeInfo>();
+                        OrderTypeInfo orderTypeInfo = new OrderTypeInfo();
+                        orderTypeInfo.setTypeid("0");
+                        orderTypeInfo.setOrdertype(getString(R.string.person_all_order));
+                        orderTypeInfoList.add(orderTypeInfo);
+                        orderTypeInfoList.addAll(orderTypeInfos);
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<OrderTypeInfo>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<OrderTypeInfo> orderTypeInfos) {
+                        PointInfoHelper.getInstance().queryAll()
+                                .doOnNext(new Action1<List<PointInfo>>() {
+                                    @Override
+                                    public void call(List<PointInfo> pointInfos) {
+                                        pointInfoList3 = new ArrayList<PointInfo>();
+                                        PointInfo pointInfo = new PointInfo();
+                                        pointInfo.setBlockid("0");
+                                        pointInfo.setPosid("0");
+                                        pointInfo.setPosname(getString(R.string.person_all_order));
+                                        pointInfoList3.add(pointInfo);
+                                        pointInfoList3.addAll(pointInfos);
+                                    }
+                                }).subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Subscriber<List<PointInfo>>() {
+                                    @Override
+                                    public void onCompleted() {
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(List<PointInfo> pointInfos) {
+                                        PointInfoHelper.getInstance().queryByUserBlockId("1")
+                                                .doOnNext(new Action1<List<PointInfo>>() {
+                                                    @Override
+                                                    public void call(List<PointInfo> pointInfos) {
+                                                        pointInfoList2 = new ArrayList<PointInfo>();
+                                                        PointInfo pointInfo = new PointInfo();
+                                                        pointInfo.setBlockid("0");
+                                                        pointInfo.setPosid("0");
+                                                        pointInfo.setPosname(getString(R.string.person_all_order));
+                                                        pointInfoList2.add(pointInfo);
+                                                        pointInfoList2.addAll(pointInfos);
+                                                    }
+                                                }).subscribeOn(Schedulers.io())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe(new Subscriber<List<PointInfo>>() {
+                                                    @Override
+                                                    public void onCompleted() {
+                                                        setData();
+                                                    }
+
+                                                    @Override
+                                                    public void onError(Throwable e) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onNext(List<PointInfo> pointInfos) {
+
+                                                    }
+                                                });
+                                    }
+                                });
+                    }
+                });
+    }
+
+    private void setData(){
+        listView1 = new ListView(context);
+        listView1.setDividerHeight(0);
+        adapter1 = new OrderTypeListAdapter(context, orderTypeInfoList);
+        listView1.setAdapter(adapter1);
+        listView2 = new ListView(context);
+        listView2.setDividerHeight(0);
+        adapter2 = new PointListAdapter(context, pointInfoList2);
+        listView2.setAdapter(adapter2);
+        listView3 = new ListView(context);
+        listView3.setDividerHeight(0);
+        adapter3 = new PointListAdapter(context, pointInfoList3);
+        listView3.setAdapter(adapter3);
+        viewList.add(listView1);
+        viewList.add(listView2);
+        viewList.add(listView3);
+
+        listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                dropDownMenu.setTabText(orderTypeInfoList.get(i).getOrdertype());
+                dropDownMenu.closeMenu();
+            }
+        });
+        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                dropDownMenu.setTabText(pointInfoList2.get(i).getPosname());
+                dropDownMenu.closeMenu();
+            }
+        });
+        listView3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                dropDownMenu.setTabText(pointInfoList3.get(i).getPosname());
+                dropDownMenu.closeMenu();
+            }
+        });
+
+        View view = LayoutInflater.from(context).inflate(R.layout.page_list, null);
+        recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorPrimary, R.color.colorPrimaryLight, R.color.colorAccent);
+
+        dropDownMenu.setDropDownMenu(Arrays.asList(headers), viewList, view);
+
         assistPresenter = new AssistPresenterImpl(this);
         linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setHasFixedSize(true);
@@ -87,7 +244,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
      */
     private Map<String, String> getMap(int type, int position) {
         HttpMap map = new HttpMap();
-        map.put("srcid", srcId+"");
+        map.put("srcid", srcId + "");
         map.put("page", page + "");
         return map.getMap();
     }
@@ -121,7 +278,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
             assistList.addAll(orderList.getData());
             assistAdapter.setList(assistList);
             page++;
-        }else {
+        } else {
             assistAdapter.setEmpty();
         }
     }
@@ -129,7 +286,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 501&&resultCode == RESULT_OK){
+        if (requestCode == 501 && resultCode == RESULT_OK) {
             onRefresh();
         }
     }
@@ -137,9 +294,9 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     @Override
     public void onItemClick(int position) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("orderInfo",assistList.get(position));
-        bundle.putString("from","accept");
-        IntentUtils.startActivityForResult(AssistListActivity.this, AssistInfoActivity.class,bundle,501);
+        bundle.putSerializable("orderInfo", assistList.get(position));
+        bundle.putString("from", "accept");
+        IntentUtils.startActivityForResult(AssistListActivity.this, AssistInfoActivity.class, bundle, 501);
     }
 
 }

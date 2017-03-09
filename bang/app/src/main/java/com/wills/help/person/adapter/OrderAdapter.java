@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseListAdapter;
-import com.wills.help.db.bean.OrderTypeInfo;
-import com.wills.help.db.manager.OrderTypeInfoHelper;
 import com.wills.help.message.EaseConstant;
 import com.wills.help.message.ui.ChatActivity;
 import com.wills.help.release.model.OrderInfo;
@@ -22,10 +20,6 @@ import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
 
 import java.util.List;
-
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * com.wills.help.person.adapter
@@ -61,32 +55,7 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
     protected void BindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof OrderHolder){
             final OrderInfo orderInfo = list.get(position);
-            GlideUtils.getInstance().displayCircleImage(context ,orderInfo.getReleaseavatar() ,((OrderHolder)holder).imageView);
-            ((OrderHolder)holder).tv_name.setText(orderInfo.getReleasenickname());
-            OrderTypeInfoHelper.getInstance().queryById(orderInfo.getOrdertype())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<OrderTypeInfo>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable throwable) {
-
-                        }
-
-                        @Override
-                        public void onNext(OrderTypeInfo orderTypeInfo) {
-                            ((OrderHolder)holder).tv_assist_state.setText(context.getString(R.string.help)+orderTypeInfo.getOrdertype());
-                        }
-                    });
-            if (!orderInfo.getStateid().equals("0")&&!orderInfo.getStateid().equals("1")){
-                ((OrderHolder)holder).iv_assist_msg.setVisibility(View.VISIBLE);
-            }else {
-                ((OrderHolder)holder).iv_assist_msg.setVisibility(View.INVISIBLE);
-            }
+            ((OrderHolder)holder).tv_assist_state.setText(context.getString(R.string.help)+orderInfo.getOrdertypename());
             Drawable drawable =null;
             if (orderInfo.getReleasesex().equals("1")){
                 drawable = context.getResources().getDrawable(R.drawable.sex_girl);
@@ -101,8 +70,12 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
             ((OrderHolder)holder).tv_assist_money.setText(orderInfo.getMoney()+context.getString(R.string.yuan));
             if (mainType == 0){
                 if (orderInfo.getStateid().equals("0")||orderInfo.getStateid().equals("1")){
+                    GlideUtils.getInstance().displayCircleImage(context ,orderInfo.getReleaseavatar() ,((OrderHolder)holder).imageView);
+                    ((OrderHolder)holder).tv_name.setText(orderInfo.getReleasenickname());
                     ((OrderHolder)holder).iv_assist_msg.setVisibility(View.INVISIBLE);
                 }else {
+                    GlideUtils.getInstance().displayCircleImage(context ,orderInfo.getAcceptavatar() ,((OrderHolder)holder).imageView);
+                    ((OrderHolder)holder).tv_name.setText(orderInfo.getAcceptnickname());
                     ((OrderHolder)holder).iv_assist_msg.setVisibility(View.VISIBLE);
                     ((OrderHolder)holder).iv_assist_msg.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -127,14 +100,14 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
                             IntentUtils.startActivity(context,AppraiseActivity.class,bundle);
                         }
                     });
-                }else if (orderInfo.getStateid().equals("3")){
+                }else if (orderInfo.getStateid().equals("2")||orderInfo.getStateid().equals("3")){
                     ((OrderHolder)holder).tv_assist_progress.setVisibility(View.VISIBLE);
                     ((OrderHolder)holder).tv_assist_progress.setText(context.getString(R.string.release_state_ok));
                     ((OrderHolder)holder).tv_assist_progress.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if (buttonClickListener!=null){
-                                buttonClickListener.buttonClick(orderInfo);
+                                buttonClickListener.buttonClick(2,orderInfo);
                             }
                         }
                     });
@@ -142,6 +115,8 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
                     ((OrderHolder)holder).tv_assist_progress.setVisibility(View.GONE);
                 }
             }else if (mainType == 1){
+                GlideUtils.getInstance().displayCircleImage(context ,orderInfo.getReleaseavatar() ,((OrderHolder)holder).imageView);
+                ((OrderHolder)holder).tv_name.setText(orderInfo.getReleasenickname());
                 ((OrderHolder)holder).iv_assist_msg.setVisibility(View.VISIBLE);
                 ((OrderHolder)holder).tv_assist_progress.setVisibility(View.GONE);
                 ((OrderHolder)holder).iv_assist_msg.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +129,18 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
                         IntentUtils.startActivity(context,ChatActivity.class,bundle);
                     }
                 });
+                if (orderInfo.getStateid().equals("2")){
+                    ((OrderHolder)holder).tv_assist_progress.setVisibility(View.VISIBLE);
+                    ((OrderHolder)holder).tv_assist_progress.setText(context.getString(R.string.release_state_arrive));
+                    ((OrderHolder)holder).tv_assist_progress.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (buttonClickListener!=null){
+                                buttonClickListener.buttonClick(1,orderInfo);
+                            }
+                        }
+                    });
+                }
             }
             ((OrderHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -198,6 +185,7 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
     }
 
     public interface ButtonClickListener{
-        void buttonClick(OrderInfo releaseInfo);
+        //1:进行中2：确认收货
+        void buttonClick(int state ,OrderInfo releaseInfo);
     }
 }

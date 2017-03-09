@@ -72,6 +72,12 @@ public class App extends MultiDexApplication {
     }
 
     public boolean getIsLogin(){
+        if (isLogin == false){
+            if (StringUtils.isNullOrEmpty((String) SharedPreferencesUtils.getInstance().get(AppConfig.SP_USER,"")))
+                setIsLogin(false);
+            else
+                setIsLogin(true);
+        }
         return isLogin;
     }
 

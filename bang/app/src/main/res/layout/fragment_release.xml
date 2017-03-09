@@ -30,7 +30,7 @@
                 android:layout_marginLeft="30dp"
                 android:background="@drawable/release_shape"
                 android:drawablePadding="5dp"
-                android:drawableRight="@drawable/release_arrow"
+                android:drawableRight="@drawable/arrow_down"
                 android:gravity="center"
                 android:textColor="@color/textSecondary"
                 android:textSize="16sp" />
@@ -64,11 +64,11 @@
                 android:layout_marginLeft="30dp"
                 android:background="@drawable/release_shape"
                 android:drawablePadding="5dp"
-                android:drawableRight="@drawable/release_arrow"
+                android:drawableRight="@drawable/arrow_down"
                 android:gravity="center"
+                android:text="@string/select_point_click"
                 android:textColor="@color/textSecondary"
-                android:textSize="16sp"
-                android:text="@string/select_point_click"/>
+                android:textSize="16sp" />
         </LinearLayout>
 
         <View
@@ -171,10 +171,10 @@
                 android:layout_marginLeft="30dp"
                 android:background="@drawable/release_shape"
                 android:drawablePadding="5dp"
-                android:drawableRight="@drawable/release_arrow"
+                android:drawableRight="@drawable/arrow_down"
                 android:gravity="center"
-                android:textColor="@color/textSecondary"
                 android:text="@string/select_point_click"
+                android:textColor="@color/textSecondary"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -242,15 +242,36 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_submit"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/btn_submit_height"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:background="@color/button_gray"
-            android:enabled="false"
-            android:text="@string/release_submit"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_change"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_submit_height"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:background="@drawable/btn_selector"
+                android:enabled="false"
+                android:text="@string/delete"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_submit_height"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:background="@color/button_gray"
+                android:enabled="false"
+                android:text="@string/release_submit"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

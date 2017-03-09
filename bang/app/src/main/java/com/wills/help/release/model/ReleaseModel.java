@@ -20,4 +20,7 @@ public class ReleaseModel {
     public Observable<Empty> updateOrder(Map<String , String > map){
         return HttpManager.getApiInterface().updateOrder(map);
     }
+    public Observable<Empty> cancelOrder(Map<String , String > map){
+        return HttpManager.getApiInterface().cancelOrder(map);
+    }
 }

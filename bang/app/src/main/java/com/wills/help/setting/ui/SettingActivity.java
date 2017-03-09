@@ -1,8 +1,11 @@
 package com.wills.help.setting.ui;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,6 +17,8 @@ import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.utils.CacheCleanUtils;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.ToastUtils;
+import com.wills.help.widget.PayPwdEditText;
 
 /**
  * com.wills.help.login.ui
@@ -52,6 +57,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_about:
+                payDialog(context);
                 break;
             case R.id.tv_msg:
                 IntentUtils.startActivity(context,MessageSettingActivity.class);
@@ -117,5 +123,28 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
 
-
+    public AlertDialog payDialog(Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.dialog_pay,null);
+        final PayPwdEditText et_password = (PayPwdEditText) view.findViewById(R.id.et_password);
+        et_password.initStyle(R.drawable.pay_shape,6,1.0f,R.color.colorPrimaryDark,R.color.colorPrimaryDark,20);
+        final AlertDialog dialog = builder.setView(view).create();
+        if (!((Activity)context).isFinishing()){
+            dialog.show();
+        }
+        et_password.setOnTextFinishListener(new PayPwdEditText.OnTextFinishListener() {
+            @Override
+            public void onFinish(String str) {
+                ToastUtils.toast(str);
+                dialog.dismiss();
+            }
+        });
+        et_password.post(new Runnable() {
+            @Override
+            public void run() {
+                et_password.setFocus();
+            }
+        });
+        return dialog;
+    }
 }

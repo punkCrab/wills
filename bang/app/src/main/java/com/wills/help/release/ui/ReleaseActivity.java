@@ -44,7 +44,7 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
 
     private TextView tv_release_state,tv_release_from,tv_release_send;
     private EditText et_release_from_address,et_release_money,et_release_send_address,et_release_remark;
-    private Button btn_submit;
+    private Button btn_submit,btn_change;
     private int type = 0;//0修改1为你解邮
     private String orderType;
     private String srcId = "0";//求助
@@ -72,6 +72,9 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
         et_release_send_address = (EditText) findViewById(R.id.et_release_send_address);
         et_release_remark = (EditText) findViewById(R.id.et_release_remark);
         btn_submit = (Button) findViewById(R.id.btn_submit);
+        btn_submit.setText(getString(R.string.release_state_change));
+        btn_change = (Button) findViewById(R.id.btn_change);
+        btn_change.setVisibility(View.VISIBLE);
     }
 
     private void initListener(){
@@ -84,6 +87,7 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
         tv_release_from.setOnClickListener(this);
         tv_release_send.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
+        btn_change.setOnClickListener(this);
     }
 
 
@@ -160,7 +164,6 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
         map.put("srcdetail", et_release_from_address.getText().toString());
         map.put("desid", desId);
         map.put("desdetail", et_release_send_address.getText().toString());
-        map.put("money", et_release_money.getText().toString());
         map.put("maintype", "0");//默认订单
         map.put("remark", et_release_remark.getText().toString());
         return map.getMap();
@@ -213,7 +216,15 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void updateOrder() {
-        ToastUtils.toast("修改成功");
+        ToastUtils.toast(getString(R.string.change_success));
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    @Override
+    public void deleteOrder() {
+        ToastUtils.toast(getString(R.string.delete_success));
+        setResult(RESULT_OK);
         finish();
     }
 

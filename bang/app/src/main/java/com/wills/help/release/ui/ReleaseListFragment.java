@@ -142,6 +142,11 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
         onRefresh();
     }
 
+    @Override
+    public void exec() {
+
+    }
+
     private void showOk(final OrderInfo releaseInfo) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getAppCompatActivity());
         builder.setTitle(getString(R.string.release_state_ok))
@@ -155,7 +160,7 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        releaseListPresenter.confirm(getMap(releaseInfo));
+                        releaseListPresenter.confirm(getMap(releaseInfo),2);
                     }
                 }).show();
     }

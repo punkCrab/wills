@@ -107,6 +107,8 @@
         <activity android:name=".setting.ui.AccountActivity" />
         <activity android:name=".assist.ui.AssistInfoActivity" />
         <activity android:name=".release.ui.SelectPointActivity" />
+        <activity android:name=".setting.ui.PayPasswordActivity"
+            android:windowSoftInputMode="stateVisible|adjustPan"/>
 
         <!-- alipay sdk begin -->
 

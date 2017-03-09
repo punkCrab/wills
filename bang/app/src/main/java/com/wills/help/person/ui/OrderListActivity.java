@@ -115,6 +115,14 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         return map.getMap();
     }
 
+
+    private Map<String , String> getExecMap(OrderInfo releaseInfo){
+        HttpMap map = new HttpMap();
+        map.put("acceptuserid", App.getApp().getUser().getUserid());
+        map.put("orderid", releaseInfo.getOrderid());
+        return map.getMap();
+    }
+
     @Override
     public void setReleaseList(OrderList releaseList) {
         if (swipeRefreshLayout.isRefreshing()){
@@ -140,6 +148,11 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     }
 
     @Override
+    public void exec() {
+        onRefresh();
+    }
+
+    @Override
     public void onItemClick(int position) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("orderInfo",orderArrayList.get(position));
@@ -159,12 +172,20 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        releaseListPresenter.confirm(getMap(releaseInfo));
+                        releaseListPresenter.confirm(getMap(releaseInfo),1);
                     }
                 }).show();
     }
+
     @Override
-    public void buttonClick(OrderInfo releaseInfo) {
-        showOk(releaseInfo);
+    public void buttonClick(int state, OrderInfo releaseInfo) {
+        switch (state){
+            case 1:
+                releaseListPresenter.exec(getExecMap(releaseInfo),1);
+                break;
+            case 2:
+            showOk(releaseInfo);
+            break;
+        }
     }
 }

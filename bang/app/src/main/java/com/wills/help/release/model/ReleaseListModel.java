@@ -21,4 +21,8 @@ public class ReleaseListModel {
     public Observable<Empty> confirm(Map<String , String > map){
         return HttpManager.getApiInterface().confirm(map);
     }
+
+    public Observable<Empty> exec(Map<String , String > map){
+        return HttpManager.getApiInterface().exec(map);
+    }
 }
