@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -66,49 +66,141 @@
 
         <activity
             android:name=".base.MainActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            android:launchMode="singleTask"></activity>
-        <activity android:name=".assist.ui.AssistListActivity"></activity>
-        <activity android:name=".login.ui.FlashActivity">
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity
+            android:name=".assist.ui.AssistListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".login.ui.FlashActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.ui.LoginActivity"></activity>
-        <activity android:name=".login.ui.RegisterActivity"></activity>
-        <activity android:name=".login.ui.ResetActivity"></activity>
-        <activity android:name=".setting.ui.SettingActivity"></activity>
-        <activity android:name=".setting.ui.MessageSettingActivity"></activity>
-        <activity android:name=".person.ui.IdentificationActivity"
-            android:windowSoftInputMode="stateHidden|stateUnchanged" ></activity>
-        <activity android:name=".person.ui.WalletActivity"></activity>
-        <activity android:name=".person.ui.UserInfoActivity"></activity>
-        <activity android:name=".person.ui.ChangeNameActivity"></activity>
-        <activity android:name=".photo.ui.PhotoSelectorActivity" />
-        <activity android:name=".person.ui.OrderListActivity"></activity>
-        <activity android:name=".photo.ui.PhotoPreviewActivity" />
-        <activity android:name=".pay.ui.PayActivity" />
-        <activity android:name=".message.ui.MessageActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".login.ui.LoginActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".login.ui.RegisterActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".login.ui.ResetActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".setting.ui.SettingActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".setting.ui.MessageSettingActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".person.ui.IdentificationActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"></activity>
+        <activity
+            android:name=".person.ui.WalletActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".person.ui.UserInfoActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".person.ui.ChangeNameActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".photo.ui.PhotoSelectorActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".person.ui.OrderListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".photo.ui.PhotoPreviewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".pay.ui.PayActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".message.ui.MessageActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".message.ui.ChatActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            android:launchMode="singleTask"></activity>
-        <activity android:name=".message.ui.EaseShowBigImageActivity" />
-        <activity android:name=".message.ui.EaseBaiduMapActivity" />
-        <activity android:name=".message.ui.UserDetailsActivity" />
-        <activity android:name=".home.ui.ExpressListActivity" />
-        <activity android:name=".release.ui.ReleaseActivity" />
-        <activity android:name=".release.ui.AppraiseActivity" />
-        <activity android:name=".home.ui.SendActivity" />
-        <activity android:name=".base.WebViewActivity" />
-        <activity android:name=".setting.ui.AccountActivity" />
-        <activity android:name=".assist.ui.AssistInfoActivity" />
-        <activity android:name=".release.ui.SelectPointActivity" />
-        <activity android:name=".setting.ui.PayPasswordActivity"
-            android:windowSoftInputMode="stateVisible|adjustPan"/>
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity
+            android:name=".message.ui.EaseShowBigImageActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".message.ui.EaseBaiduMapActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".message.ui.UserDetailsActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".home.ui.ExpressListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".release.ui.ReleaseActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".release.ui.AppraiseActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".home.ui.SendActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".base.WebViewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".setting.ui.AccountActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".assist.ui.AssistInfoActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".release.ui.SelectPointActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".person.ui.ApproveActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".setting.ui.PayPasswordActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
 
         <!-- alipay sdk begin -->
 
@@ -130,7 +222,7 @@
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
 
     </application>
 

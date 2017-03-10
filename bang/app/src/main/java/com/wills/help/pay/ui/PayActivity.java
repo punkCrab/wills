@@ -1,5 +1,8 @@
 package com.wills.help.pay.ui;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,6 +10,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -29,10 +33,15 @@ import com.wills.help.person.model.Wallet;
 import com.wills.help.person.presenter.WalletPresenterImpl;
 import com.wills.help.person.view.WalletView;
 import com.wills.help.release.model.OrderInfo;
+import com.wills.help.setting.ui.PayPasswordActivity;
 import com.wills.help.utils.AppConfig;
+import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.KeyBoardUtils;
 import com.wills.help.utils.NetUtils;
+import com.wills.help.utils.StringUtils;
 import com.wills.help.utils.ToastUtils;
 import com.wills.help.widget.MyRadioGroup;
+import com.wills.help.widget.PayPwdEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,6 +76,8 @@ public class PayActivity extends BaseActivity implements PayView , WalletView{
     private static final int PAY_SUCCESS = 2;
 
     private AlertDialog dialog;
+
+    private String payPassword;
 
     private Handler handler = new Handler(){
         @Override
@@ -136,7 +147,11 @@ public class PayActivity extends BaseActivity implements PayView , WalletView{
                 }else {
                     isClickPay = true;
                     if (payType == 0){
-                        payPresenter.balancePay(getBalanceMap());
+                        if (StringUtils.isNullOrEmpty(App.getApp().getUser().getPaypwd())){
+                            showOk();
+                        }else {
+                            payDialog(context);
+                        }
                     }else if (payType == 1){
                         payPresenter.AliPaySign(getPayMap());
                     }else if (payType == 2){
@@ -145,6 +160,56 @@ public class PayActivity extends BaseActivity implements PayView , WalletView{
                 }
             }
         });
+    }
+
+    private void showOk() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(orderInfo.getState())
+                .setMessage(getString(R.string.pay_balance_warn))
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton(getString(R.string.setting_set_pay_pwd), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        IntentUtils.startActivity(PayActivity.this, PayPasswordActivity.class);
+                    }
+                }).show();
+    }
+
+
+    public AlertDialog payDialog(final Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.dialog_pay,null);
+        final PayPwdEditText et_password = (PayPwdEditText) view.findViewById(R.id.et_password);
+        et_password.initStyle(R.drawable.pay_shape,6,1.0f,R.color.colorPrimaryDark,R.color.colorPrimaryDark,20);
+        final AlertDialog dialog = builder.setView(view).create();
+        if (!((Activity)context).isFinishing()){
+            dialog.show();
+        }
+        et_password.setOnTextFinishListener(new PayPwdEditText.OnTextFinishListener() {
+            @Override
+            public void onFinish(String str) {
+                payPassword = str;
+                if (App.getApp().getUser().getPaypwd().equals(StringUtils.getMD5(str))){
+                    payPresenter.balancePay(getBalanceMap());
+                    KeyBoardUtils.closeKeybord(context,et_password.getEditText());
+                    dialog.dismiss();
+                }else {
+                    ToastUtils.toast(getString(R.string.pay_pwd_error));
+                }
+            }
+        });
+        et_password.post(new Runnable() {
+            @Override
+            public void run() {
+                et_password.setFocus();
+            }
+        });
+        return dialog;
     }
 
     @Override
@@ -193,6 +258,7 @@ public class PayActivity extends BaseActivity implements PayView , WalletView{
         HttpMap map = new HttpMap();
         map.put("releaseuserid", App.getApp().getUser().getUserid());
         map.put("orderid", orderId);
+        map.put("paypwd", payPassword);
         return map.getMap();
     }
 

@@ -74,6 +74,7 @@
     <string name="release_from">求助定位</string>
     <string name="release_from_address">详细地址</string>
     <string name="release_money">薪酬金额</string>
+    <string name="release_money_warn">金额最小单位为角</string>
     <string name="yuan">元</string>
     <string name="release_send">送达地址</string>
     <string name="release_send_address">详细地址</string>
@@ -176,12 +177,16 @@
     <string name="pay_success">支付成功</string>
     <string name="pay_fail">支付失败，请重新支付</string>
     <string name="pay_history">账单记录</string>
-    <string name="pay_approve">认证查看</string>
+    <string name="pay_approve">认证</string>
     <string name="name">姓\t\t名</string>
     <string name="zfb">支付宝</string>
     <string name="zfb_input">请输入支付宝</string>
+    <string name="pay_pwd_original_input">请输入原始支付密码</string>
     <string name="pay_pwd_input">请输入支付密码</string>
+    <string name="pay_pwd_input_again">请再次输入支付密码</string>
     <string name="pay_approve_warn">\t\t温馨提示：为保证提现安全，输入的姓名需要和支付宝实名认证姓名一致，确保姓名和支付宝无误后再提交。</string>
+    <string name="pay_balance_warn">您还没有设置支付密码，请设置完成后再进行余额支付。</string>
+    <string name="pay_pwd_error">支付密码错误</string>
 
     <string name="user_details">详细资料</string>
     <string name="send_msg">发消息</string>
@@ -294,6 +299,7 @@
     <string name="To_join_the_chat">加入群聊</string>
     <string name="user_name">用户名</string>
     <string name="password">密码</string>
+    <string name="password_error">密码错误</string>
     <string name="confirmpassword">确认密码</string>
     <string name="downwaiting">正在下载文件请稍后</string>
     <string name="mute">静音</string>

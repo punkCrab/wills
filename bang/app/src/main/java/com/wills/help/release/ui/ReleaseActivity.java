@@ -99,11 +99,13 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
                 .doOnNext(new Action1<List<OrderTypeInfo>>() {
                     @Override
                     public void call(List<OrderTypeInfo> orderTypeInfos) {
-                        state = new String[orderTypeInfos.size()];
-                        stateId = new String[orderTypeInfos.size()];
-                        for (int i = 0; i < orderTypeInfos.size(); i++) {
-                            state[i] = orderTypeInfos.get(i).getOrdertype();
-                            stateId[i] = orderTypeInfos.get(i).getTypeid();
+                        if (orderTypeInfos !=null&&orderTypeInfos.size()>0){
+                            state = new String[orderTypeInfos.size()];
+                            stateId = new String[orderTypeInfos.size()];
+                            for (int i = 0; i < orderTypeInfos.size(); i++) {
+                                state[i] = orderTypeInfos.get(i).getOrdertype();
+                                stateId[i] = orderTypeInfos.get(i).getTypeid();
+                            }
                         }
                     }
                 })

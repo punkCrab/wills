@@ -67,4 +67,16 @@ public class StringUtils {
             return false;
         }
     }
+
+    /**
+     * 判断金钱
+     * @param number 数字
+     * @param prev 小数点前 后1位
+     * @return
+     */
+    public static boolean moneyVerify(String number, int prev) {
+        Pattern p = Pattern.compile("^\\d{1," + prev + "}(\\.\\d{1})?$");
+        Matcher m = p.matcher(number);
+        return m.matches();
+    }
 }

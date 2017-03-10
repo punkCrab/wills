@@ -232,6 +232,10 @@ public class PayPwdEditText extends RelativeLayout {
         showKeyBord(editText);
     }
 
+    public EditText getEditText() {
+        return editText;
+    }
+
     /**
      * 显示键盘
      *

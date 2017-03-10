@@ -1,13 +1,16 @@
 package com.wills.help.setting.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wills.help.R;
+import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.StringUtils;
 
 /**
  * com.wills.help.setting.ui
@@ -30,6 +33,11 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         tv_change_phone.setOnClickListener(this);
         tv_change_pwd.setOnClickListener(this);
         rl_pay_pwd.setOnClickListener(this);
+        if(!StringUtils.isNullOrEmpty(App.getApp().getUser().getPaypwd())){
+            tv_pay_state.setText(getString(R.string.setting_change_pay_pwd));
+        }else {
+            tv_pay_state.setText(getString(R.string.setting_set_pay_pwd));
+        }
     }
 
     @Override
@@ -40,8 +48,16 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
             case R.id.tv_change_pwd:
                 break;
             case R.id.rl_pay_pwd:
-                IntentUtils.startActivity(context,PayPasswordActivity.class);
+                IntentUtils.startActivityForResult(AccountActivity.this,PayPasswordActivity.class,502);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 502&&resultCode==RESULT_OK){
+            tv_pay_state.setText(getString(R.string.setting_change_pay_pwd));
         }
     }
 }

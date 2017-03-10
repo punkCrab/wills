@@ -28,11 +28,14 @@ public class UserInfo {
     private String authid;
     private String createtime;
     private String school;
-    @Generated(hash = 1900884608)
+    private String aliaccount;
+    private String paypwd;
+    @Generated(hash = 965761020)
     public UserInfo(String userid, String username, String phone_num, String avatar,
             String sex, String nickname, String realname, String school_num,
             String classname, String usertype, String typename, String usergroup,
-            String authid, String createtime, String school) {
+            String authid, String createtime, String school, String aliaccount,
+            String paypwd) {
         this.userid = userid;
         this.username = username;
         this.phone_num = phone_num;
@@ -48,6 +51,8 @@ public class UserInfo {
         this.authid = authid;
         this.createtime = createtime;
         this.school = school;
+        this.aliaccount = aliaccount;
+        this.paypwd = paypwd;
     }
     @Generated(hash = 1279772520)
     public UserInfo() {
@@ -141,6 +146,18 @@ public class UserInfo {
     }
     public void setSchool(String school) {
         this.school = school;
+    }
+    public String getAliaccount() {
+        return this.aliaccount;
+    }
+    public void setAliaccount(String aliaccount) {
+        this.aliaccount = aliaccount;
+    }
+    public String getPaypwd() {
+        return this.paypwd;
+    }
+    public void setPaypwd(String paypwd) {
+        this.paypwd = paypwd;
     }
     
 }

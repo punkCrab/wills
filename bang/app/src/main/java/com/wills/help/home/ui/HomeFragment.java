@@ -190,10 +190,12 @@ public class HomeFragment extends BaseFragment implements HomeView ,SwipeRefresh
             if (poster!=null){
                 poster.resumeScroll();
             }
-            if (expressListener!=null&& App.getApp().getIsLogin()){
-                expressListener.expressRefresh();
-            }else {
-                expressListener.expressClear();
+            if (expressListener!=null){
+                if (App.getApp().getIsLogin()){
+                    expressListener.expressRefresh();
+                }else {
+                    expressListener.expressClear();
+                }
             }
         }
     }

@@ -142,7 +142,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
         et_release_send_address.addTextChangedListener(new EditTextChange());
         tv_release_send.addTextChangedListener(new EditTextChange());
         tv_release_from.addTextChangedListener(new EditTextChange());
-        et_release_money.addTextChangedListener(new EditTextChange());
+        et_release_money.addTextChangedListener(new EditTextChange(1));
         btn_submit.setOnClickListener(this);
     }
 
@@ -233,14 +233,46 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
 
     public class EditTextChange implements TextWatcher {
 
+        private int type = 0;//输入金额
+
+        public EditTextChange(int type) {
+            this.type = type;
+        }
+
+        public EditTextChange() {
+        }
+
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
         }
 
         @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+            if (type == 1){
+                if (s.toString().contains(".")) {
+                    if (s.length() - 1 - s.toString().indexOf(".") > 1) {
+                        s = s.toString().subSequence(0,
+                                s.toString().indexOf(".") + 2);
+                        et_release_money.setText(s);
+                        et_release_money.setSelection(s.length());
+                    }
+                }
+                if (s.toString().trim().substring(0).equals(".")) {
+                    s = "0" + s;
+                    et_release_money.setText(s);
+                    et_release_money.setSelection(2);
+                }
 
+                if (s.toString().startsWith("0")
+                        && s.toString().trim().length() > 1) {
+                    if (!s.toString().substring(1, 2).equals(".")) {
+                        et_release_money.setText(s.subSequence(0, 1));
+                        et_release_money.setSelection(1);
+                        return;
+                    }
+                }
+            }
         }
 
         @Override

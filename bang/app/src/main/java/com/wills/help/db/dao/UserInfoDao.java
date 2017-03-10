@@ -39,6 +39,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, String> {
         public final static Property Authid = new Property(12, String.class, "authid", false, "AUTHID");
         public final static Property Createtime = new Property(13, String.class, "createtime", false, "CREATETIME");
         public final static Property School = new Property(14, String.class, "school", false, "SCHOOL");
+        public final static Property Aliaccount = new Property(15, String.class, "aliaccount", false, "ALIACCOUNT");
+        public final static Property Paypwd = new Property(16, String.class, "paypwd", false, "PAYPWD");
     }
 
 
@@ -68,7 +70,9 @@ public class UserInfoDao extends AbstractDao<UserInfo, String> {
                 "\"USERGROUP\" TEXT," + // 11: usergroup
                 "\"AUTHID\" TEXT," + // 12: authid
                 "\"CREATETIME\" TEXT," + // 13: createtime
-                "\"SCHOOL\" TEXT);"); // 14: school
+                "\"SCHOOL\" TEXT," + // 14: school
+                "\"ALIACCOUNT\" TEXT," + // 15: aliaccount
+                "\"PAYPWD\" TEXT);"); // 16: paypwd
     }
 
     /** Drops the underlying database table. */
@@ -155,6 +159,16 @@ public class UserInfoDao extends AbstractDao<UserInfo, String> {
         if (school != null) {
             stmt.bindString(15, school);
         }
+ 
+        String aliaccount = entity.getAliaccount();
+        if (aliaccount != null) {
+            stmt.bindString(16, aliaccount);
+        }
+ 
+        String paypwd = entity.getPaypwd();
+        if (paypwd != null) {
+            stmt.bindString(17, paypwd);
+        }
     }
 
     @Override
@@ -235,6 +249,16 @@ public class UserInfoDao extends AbstractDao<UserInfo, String> {
         if (school != null) {
             stmt.bindString(15, school);
         }
+ 
+        String aliaccount = entity.getAliaccount();
+        if (aliaccount != null) {
+            stmt.bindString(16, aliaccount);
+        }
+ 
+        String paypwd = entity.getPaypwd();
+        if (paypwd != null) {
+            stmt.bindString(17, paypwd);
+        }
     }
 
     @Override
@@ -259,7 +283,9 @@ public class UserInfoDao extends AbstractDao<UserInfo, String> {
             cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // usergroup
             cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // authid
             cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // createtime
-            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14) // school
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // school
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // aliaccount
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16) // paypwd
         );
         return entity;
     }
@@ -281,6 +307,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, String> {
         entity.setAuthid(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
         entity.setCreatetime(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
         entity.setSchool(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setAliaccount(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setPaypwd(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
      }
     
     @Override

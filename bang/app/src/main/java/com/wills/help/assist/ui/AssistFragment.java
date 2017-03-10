@@ -77,7 +77,7 @@ public class AssistFragment extends BaseFragment implements MapAdapter.MapItemCl
     @Override
     public void onItemClick(int position) {
         Bundle bundle = new Bundle();
-        bundle.putInt("srcid",position);
+        bundle.putInt("blockId",position+1);
         IntentUtils.startActivity(getAppCompatActivity(),AssistListActivity.class,bundle);
     }
 

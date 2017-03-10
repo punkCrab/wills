@@ -24,7 +24,6 @@ import com.wills.help.db.bean.PointInfo;
 import com.wills.help.db.manager.OrderTypeInfoHelper;
 import com.wills.help.db.manager.PointInfoHelper;
 import com.wills.help.listener.BaseListLoadMoreListener;
-import com.wills.help.net.HttpMap;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
 import com.wills.help.utils.IntentUtils;
@@ -33,6 +32,7 @@ import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +57,8 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     private int page = 1;
     private int count = 0;
     private AssistPresenterImpl assistPresenter;
-    private int srcId;
+    private int blockId;
+    private String srcId="0",desId="0",typeorder="0";
 
     private String headers[] = {"求助内容", "求助定位", "送达地址"};
     private ListView listView1, listView2, listView3;
@@ -72,7 +73,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     protected void initViews(Bundle savedInstanceState) {
         setBaseView(R.layout.activity_assist_list);
         setBaseTitle(getString(R.string.tab_assist));
-        srcId = getIntent().getExtras().getInt("srcid");
+        blockId = getIntent().getExtras().getInt("blockId");
         dropDownMenu = (DropDownMenu) findViewById(R.id.dropDownMenu);
         initData();
     }
@@ -186,21 +187,27 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 dropDownMenu.setTabText(orderTypeInfoList.get(i).getOrdertype());
+                typeorder = orderTypeInfoList.get(i).getTypeid();
                 dropDownMenu.closeMenu();
+                onRefresh();
             }
         });
         listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 dropDownMenu.setTabText(pointInfoList2.get(i).getPosname());
+                srcId = pointInfoList2.get(i).getPosid();
                 dropDownMenu.closeMenu();
+                onRefresh();
             }
         });
         listView3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 dropDownMenu.setTabText(pointInfoList3.get(i).getPosname());
+                desId = pointInfoList3.get(i).getPosid();
                 dropDownMenu.closeMenu();
+                onRefresh();
             }
         });
 
@@ -234,25 +241,32 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
             assistList.clear();
             page = 1;
         }
-        assistPresenter.getAssistList(getMap(0, 0));
+        assistPresenter.getAssistList(getMap());
     }
 
     /**
-     * @param type     0获取列表 1接单
-     * @param position
      * @return
      */
-    private Map<String, String> getMap(int type, int position) {
-        HttpMap map = new HttpMap();
-        map.put("srcid", srcId + "");
+    private Map<String, String> getMap() {
+        Map<String,String> map = new HashMap<>();
+        map.put("blockid", blockId + "");
+        if (!srcId.equals("0")){
+            map.put("srcid", srcId);
+        }
+        if (!desId.equals("0")){
+            map.put("desid", desId);
+        }
+        if (typeorder.equals("0")){
+            map.put("typeorder", typeorder);
+        }
         map.put("page", page + "");
-        return map.getMap();
+        return map;
     }
 
     @Override
     public void loadMore() {
         if (count > assistList.size()) {
-            assistPresenter.getAssistList(getMap(0, 0));
+            assistPresenter.getAssistList(getMap());
         } else {
             assistAdapter.setLoadMore(assistAdapter.EMPTY);
         }

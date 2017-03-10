@@ -18,6 +18,7 @@ import com.wills.help.net.HttpMap;
 import com.wills.help.person.model.Wallet;
 import com.wills.help.person.presenter.WalletPresenterImpl;
 import com.wills.help.person.view.WalletView;
+import com.wills.help.utils.IntentUtils;
 import com.wills.help.widget.RiseNumberTextView;
 
 import java.util.Map;
@@ -86,6 +87,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
             case R.id.action_history:
                 break;
             case R.id.action_approve:
+                IntentUtils.startActivity(context,ApproveActivity.class);
                 break;
         }
         return true;
