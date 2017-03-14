@@ -3,7 +3,6 @@ package com.wills.help.net;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
-import com.wills.help.utils.AESUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -35,7 +34,8 @@ final class MyResponseBodyConverter<T> implements Converter<ResponseBody, T> {
 
     @Override
     public T convert(ResponseBody value) throws IOException {
-        String response = AESUtils.getInstance().decrypt(value.string());
+//        String response = AESUtils.getInstance().decrypt(value.string());
+        String response = value.string();
         HttpResult httpResult = gson.fromJson(response, HttpResult.class);
         if (httpResult.isCodeInvalid()) {
             value.close();

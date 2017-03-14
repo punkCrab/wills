@@ -19,6 +19,7 @@ import com.wills.help.person.adapter.OrderAdapter;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
 import com.wills.help.release.presenter.ReleaseListPresenterImpl;
+import com.wills.help.release.ui.AppraiseActivity;
 import com.wills.help.release.view.ReleaseListView;
 import com.wills.help.utils.IntentUtils;
 import com.wills.help.widget.MyItemDecoration;
@@ -45,6 +46,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     private int action = 0;
     private int type = 0;//0发布1接单
     private int count=0;
+    private OrderInfo orderInfo;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -145,6 +147,9 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     public void confirm() {
         onRefresh();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("orderId",orderInfo.getOrderid());
+        IntentUtils.startActivity(context,AppraiseActivity.class,bundle);
     }
 
     @Override
@@ -179,6 +184,7 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
 
     @Override
     public void buttonClick(int state, OrderInfo releaseInfo) {
+        this.orderInfo = releaseInfo;
         switch (state){
             case 1:
                 releaseListPresenter.exec(getExecMap(releaseInfo),1);

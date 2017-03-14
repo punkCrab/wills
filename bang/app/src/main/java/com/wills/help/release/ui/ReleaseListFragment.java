@@ -20,6 +20,7 @@ import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
 import com.wills.help.release.presenter.ReleaseListPresenterImpl;
 import com.wills.help.release.view.ReleaseListView;
+import com.wills.help.utils.IntentUtils;
 import com.wills.help.widget.MyItemDecoration;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
     ReleaseListPresenterImpl releaseListPresenter;
     private int page = 1;
     private int count = 0;
+    private OrderInfo orderInfo;
 
     public static ReleaseListFragment newInstance(int type) {
         Bundle args = new Bundle();
@@ -140,6 +142,9 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
     @Override
     public void confirm() {
         onRefresh();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("orderId",orderInfo.getOrderid());
+        IntentUtils.startActivity(getAppCompatActivity(),AppraiseActivity.class,bundle);
     }
 
     @Override
@@ -167,6 +172,7 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
 
     @Override
     public void buttonClick(int state, OrderInfo releaseInfo) {
+        this.orderInfo = releaseInfo;
         switch (state){
             case 2:
                 showOk(releaseInfo);
