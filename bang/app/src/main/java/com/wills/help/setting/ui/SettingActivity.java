@@ -52,6 +52,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_about:
+                IntentUtils.startActivity(context,AboutActivity.class);
                 break;
             case R.id.tv_msg:
                 IntentUtils.startActivity(context,MessageSettingActivity.class);

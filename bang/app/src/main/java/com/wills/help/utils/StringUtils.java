@@ -79,4 +79,47 @@ public class StringUtils {
         Matcher m = p.matcher(number);
         return m.matches();
     }
+
+    /**
+     * 返回星星
+     * @param len
+     * @return
+     */
+    private static String getStar(int len){
+        String str = "";
+        for (int i = 0; i < len; i++) {
+            str += "*";
+        }
+        return str;
+    }
+
+    /**
+     * 隐藏中间字符串
+     * @param str
+     * @param starLen
+     * @param endLen
+     * @return
+     */
+    public static String getStarStr(String str, int starLen, int endLen) {
+        if (isNullOrEmpty(str))
+            return "";
+        if (str.length() < (starLen + endLen))
+            return str;
+        return str.substring(0, starLen)
+                + getStar(str.length() - starLen - endLen)
+                + str.substring(str.length() - endLen);
+    }
+
+    /**
+     * 获取支付宝帐号
+     * @param str
+     * @return
+     */
+    public static String getZFB(String str){
+        if (str.contains("@")){
+            return getStarStr(str.split("@")[0],3,0)+"@"+str.split("@")[1];
+        }else {
+            return getStarStr(str,3,4);
+        }
+    }
 }

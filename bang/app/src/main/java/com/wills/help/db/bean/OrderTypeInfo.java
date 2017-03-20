@@ -14,11 +14,13 @@ public class OrderTypeInfo {
     @Id
     private String typeid;
     private String ordertype;
+    private int showing;
 
-    @Generated(hash = 604748641)
-    public OrderTypeInfo(String typeid, String ordertype) {
+    @Generated(hash = 637024865)
+    public OrderTypeInfo(String typeid, String ordertype, int showing) {
         this.typeid = typeid;
         this.ordertype = ordertype;
+        this.showing = showing;
     }
 
     @Generated(hash = 2134308605)
@@ -39,5 +41,13 @@ public class OrderTypeInfo {
 
     public void setOrdertype(String ordertype) {
         this.ordertype = ordertype;
+    }
+
+    public int getShowing() {
+        return this.showing;
+    }
+
+    public void setShowing(int showing) {
+        this.showing = showing;
     }
 }

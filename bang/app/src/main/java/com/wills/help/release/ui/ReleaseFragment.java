@@ -159,7 +159,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
                 IntentUtils.startActivityForResult(getAppCompatActivity(),SelectPointActivity.class,403);
                 break;
             case R.id.btn_submit:
-                releasePresenter.release(getMap());
+                releasePresenter.release(getMap(),2);
                 break;
         }
     }

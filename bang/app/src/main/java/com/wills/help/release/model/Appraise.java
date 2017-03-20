@@ -53,7 +53,16 @@ public class Appraise {
 
         private String appraiselabelid;
         private String appraiselabel;
+        private String appraiselevel;
         private int select;
+
+        public String getAppraiselevel() {
+            return appraiselevel;
+        }
+
+        public void setAppraiselevel(String appraiselevel) {
+            this.appraiselevel = appraiselevel;
+        }
 
         public int getSelect() {
             return select;

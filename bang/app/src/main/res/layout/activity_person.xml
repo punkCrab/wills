@@ -144,33 +144,4 @@
             android:textSize="14sp" />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:background="@color/colorDividerLight"></View>
-
-    <RelativeLayout
-        android:id="@+id/rl_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/item_selector"
-        android:padding="@dimen/activity_horizontal_margin">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/my_address"
-            android:textColor="@color/textPrimary"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:textSize="14sp" />
-    </RelativeLayout>
-
 </LinearLayout>

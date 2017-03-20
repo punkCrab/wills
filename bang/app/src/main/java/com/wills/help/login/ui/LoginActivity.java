@@ -88,7 +88,7 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
 
             @Override
             public void onError(int i, String s) {
-
+                finish();
             }
 
             @Override

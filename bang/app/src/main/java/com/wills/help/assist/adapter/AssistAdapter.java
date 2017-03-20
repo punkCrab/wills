@@ -2,7 +2,6 @@ package com.wills.help.assist.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wills.help.R;
-import com.wills.help.base.App;
 import com.wills.help.base.BaseListAdapter;
 import com.wills.help.db.bean.OrderTypeInfo;
 import com.wills.help.db.manager.OrderTypeInfoHelper;
-import com.wills.help.message.EaseConstant;
-import com.wills.help.message.ui.ChatActivity;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.utils.GlideUtils;
-import com.wills.help.utils.IntentUtils;
 
 import java.util.List;
 
@@ -85,22 +80,15 @@ public class AssistAdapter extends BaseListAdapter<OrderInfo>{
             ((AssistHolder)holder).tv_assist_location.setText(orderInfo.getSrcname()+orderInfo.getSrcdetail());
             ((AssistHolder)holder).tv_assist_address.setText(orderInfo.getDesname()+orderInfo.getDesdetail());
             ((AssistHolder)holder).tv_assist_money.setText(orderInfo.getMoney()+context.getString(R.string.yuan));
-            ((AssistHolder)holder).tv_assist_progress.setVisibility(View.INVISIBLE);
-            if (orderInfo.getReleaseusername().equals(App.getApp().getUser().getUsername())){
-                ((AssistHolder)holder).iv_assist_msg.setVisibility(View.INVISIBLE);
-            }else {
-                ((AssistHolder)holder).iv_assist_msg.setVisibility(View.VISIBLE);
-                ((AssistHolder)holder).iv_assist_msg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString(EaseConstant.EXTRA_USER_ID,orderInfo.getReleaseusername());
-                        bundle.putString(EaseConstant.EXTRA_USER_AVATAR,orderInfo.getReleaseavatar());
-                        bundle.putString(EaseConstant.EXTRA_USER_NAME,orderInfo.getReleasenickname());
-                        IntentUtils.startActivity(context,ChatActivity.class,bundle);
-                    }
-                });
-            }
+            ((AssistHolder)holder).tv_assist_progress.setVisibility(View.VISIBLE);
+            ((AssistHolder)holder).tv_assist_progress.setText(context.getString(R.string.accept));
+            ((AssistHolder)holder).tv_assist_progress.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    buttonClickListener.buttonClick(3,orderInfo);
+                }
+            });
+            ((AssistHolder)holder).iv_assist_msg.setVisibility(View.INVISIBLE);
             ((AssistHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -129,5 +117,15 @@ public class AssistAdapter extends BaseListAdapter<OrderInfo>{
             tv_assist_location = (TextView) itemView.findViewById(R.id.tv_assist_location);
             tv_assist_progress = (TextView) itemView.findViewById(R.id.tv_assist_progress);
         }
+    }
+
+    private ButtonClickListener buttonClickListener;
+
+    public void setButtonClickListener(ButtonClickListener buttonClickListener) {
+        this.buttonClickListener = buttonClickListener;
+    }
+
+    public interface ButtonClickListener{
+        void buttonClick(int state , OrderInfo orderInfo);
     }
 }

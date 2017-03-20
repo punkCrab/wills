@@ -40,6 +40,7 @@ public class AppraiseActivity extends BaseActivity implements View.OnClickListen
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private AppraiseLabelAdapter adapter;
     private List<Appraise.Label> labels;
+    private List<Appraise.Label> subLabels;
     private List<String> labelIds;
     private AppraisePresenterImpl appraisePresenter;
     private String orderId;
@@ -73,6 +74,19 @@ public class AppraiseActivity extends BaseActivity implements View.OnClickListen
                     for (int a =4;a>view.getId();a--){
                         ((ImageView)ll_star.getChildAt(a)).setImageResource(R.drawable.star_s);
                     }
+                    if (subLabels == null){
+                        subLabels = new ArrayList<Appraise.Label>();
+                    }else {
+                        subLabels.clear();
+                    }
+                    subLabels.addAll(getSubLabels(String.valueOf(star)));
+                    if (adapter == null){
+                        adapter = new AppraiseLabelAdapter(context,subLabels);
+                        adapter.setLabelItemOnClickListener(AppraiseActivity.this);
+                        recyclerView.setAdapter(adapter);
+                    }else {
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             });
             ll_star.addView(img);
@@ -105,9 +119,6 @@ public class AppraiseActivity extends BaseActivity implements View.OnClickListen
             labels = new ArrayList<>();
         }
         labels.addAll(labelList);
-        adapter = new AppraiseLabelAdapter(context,labels);
-        adapter.setLabelItemOnClickListener(this);
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -147,5 +158,15 @@ public class AppraiseActivity extends BaseActivity implements View.OnClickListen
             return ids.substring(0,ids.length()-1);
         }
         return ids;
+    }
+
+    private List<Appraise.Label> getSubLabels(String tag){
+        List<Appraise.Label> subLabels = new ArrayList<>();
+        for (Appraise.Label label : labels){
+            if (label.getAppraiselevel().equals(tag)){
+                subLabels.add(label);
+            }
+        }
+        return subLabels;
     }
 }

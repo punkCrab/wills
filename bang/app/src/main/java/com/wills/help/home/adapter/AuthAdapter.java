@@ -38,12 +38,17 @@ public class AuthAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ((AuthHolder)holder).imageView.setImageResource(list.get(position).getImgId());
         ((AuthHolder)holder).textView.setText(list.get(position).getTitle());
-        ((AuthHolder)holder).view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                authItemClickListener.onItemClick(position);
-            }
-        });
+        if (position == 0){
+            ((AuthHolder)holder).view.setBackgroundResource(R.drawable.item_selector);
+            ((AuthHolder)holder).view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    authItemClickListener.onItemClick(position);
+                }
+            });
+        }else {
+            ((AuthHolder)holder).view.setBackgroundResource(R.color.colorDividerLight);
+        }
     }
 
     @Override

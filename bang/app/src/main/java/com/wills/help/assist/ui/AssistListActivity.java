@@ -1,8 +1,10 @@
 package com.wills.help.assist.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +19,7 @@ import com.wills.help.assist.adapter.OrderTypeListAdapter;
 import com.wills.help.assist.adapter.PointListAdapter;
 import com.wills.help.assist.presenter.AssistPresenterImpl;
 import com.wills.help.assist.view.AssistView;
+import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.base.BaseListAdapter;
 import com.wills.help.db.bean.OrderTypeInfo;
@@ -24,9 +27,11 @@ import com.wills.help.db.bean.PointInfo;
 import com.wills.help.db.manager.OrderTypeInfoHelper;
 import com.wills.help.db.manager.PointInfoHelper;
 import com.wills.help.listener.BaseListLoadMoreListener;
+import com.wills.help.net.HttpMap;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.ToastUtils;
 import com.wills.help.widget.DropDownMenu;
 import com.wills.help.widget.MyItemDecoration;
 
@@ -47,7 +52,8 @@ import rx.schedulers.Schedulers;
  * 2016/11/16.
  */
 
-public class AssistListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, BaseListLoadMoreListener.LoadMoreListener, AssistView, BaseListAdapter.BaseItemClickListener {
+public class AssistListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,
+        BaseListLoadMoreListener.LoadMoreListener, AssistView, BaseListAdapter.BaseItemClickListener ,AssistAdapter.ButtonClickListener{
 
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
@@ -225,6 +231,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new MyItemDecoration(context, 5));
         assistAdapter = new AssistAdapter(context, assistList);
+        assistAdapter.setButtonClickListener(this);
         assistAdapter.setBaseItemClickListener(this);
         recyclerView.setAdapter(assistAdapter);
         BaseListLoadMoreListener listLoadMore = new BaseListLoadMoreListener(linearLayoutManager, assistAdapter);
@@ -275,7 +282,8 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
 
     @Override
     public void accept() {
-
+        ToastUtils.toast(getString(R.string.accept_success));
+        onRefresh();
     }
 
     @Override
@@ -313,4 +321,38 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
         IntentUtils.startActivityForResult(AssistListActivity.this, AssistInfoActivity.class, bundle, 501);
     }
 
+    @Override
+    public void buttonClick(int state, OrderInfo orderInfo) {
+        if (state ==3){
+            showOk(orderInfo);
+        }
+    }
+
+    private void showOk(final OrderInfo orderInfo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(orderInfo.getState())
+                .setMessage(getString(R.string.accept_ok))
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (assistPresenter == null){
+                            assistPresenter = new AssistPresenterImpl(AssistListActivity.this);
+                        }
+                        assistPresenter.accept(getAcceptMap(orderInfo));
+                    }
+                }).show();
+    }
+
+    private Map<String, String> getAcceptMap(OrderInfo orderInfo) {
+        HttpMap map = new HttpMap();
+        map.put("acceptuserid", App.getApp().getUser().getUserid());
+        map.put("orderid", orderInfo.getOrderid());
+        return map.getMap();
+    }
 }

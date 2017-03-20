@@ -46,7 +46,7 @@ public class OrderTypeInfoHelper implements IDBHelper<OrderTypeInfo>{
 
     @Override
     public Observable<List<OrderTypeInfo>> queryAll() {
-        return orderTypeInfoDao.queryBuilder().rx().list();
+        return orderTypeInfoDao.queryBuilder().where(OrderTypeInfoDao.Properties.Showing.eq(1)).rx().list();
     }
 
     @Override

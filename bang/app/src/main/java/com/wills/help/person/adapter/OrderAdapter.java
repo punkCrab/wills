@@ -140,6 +140,8 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
                             }
                         }
                     });
+                }else {
+                    ((OrderHolder)holder).tv_assist_progress.setVisibility(View.GONE);
                 }
             }
             ((OrderHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {

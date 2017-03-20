@@ -26,6 +26,7 @@ public class OrderTypeInfoDao extends AbstractDao<OrderTypeInfo, String> {
     public static class Properties {
         public final static Property Typeid = new Property(0, String.class, "typeid", true, "TYPEID");
         public final static Property Ordertype = new Property(1, String.class, "ordertype", false, "ORDERTYPE");
+        public final static Property Showing = new Property(2, int.class, "showing", false, "SHOWING");
     }
 
 
@@ -42,7 +43,8 @@ public class OrderTypeInfoDao extends AbstractDao<OrderTypeInfo, String> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"ORDER_TYPE_INFO\" (" + //
                 "\"TYPEID\" TEXT PRIMARY KEY NOT NULL ," + // 0: typeid
-                "\"ORDERTYPE\" TEXT);"); // 1: ordertype
+                "\"ORDERTYPE\" TEXT," + // 1: ordertype
+                "\"SHOWING\" INTEGER NOT NULL );"); // 2: showing
     }
 
     /** Drops the underlying database table. */
@@ -64,6 +66,7 @@ public class OrderTypeInfoDao extends AbstractDao<OrderTypeInfo, String> {
         if (ordertype != null) {
             stmt.bindString(2, ordertype);
         }
+        stmt.bindLong(3, entity.getShowing());
     }
 
     @Override
@@ -79,6 +82,7 @@ public class OrderTypeInfoDao extends AbstractDao<OrderTypeInfo, String> {
         if (ordertype != null) {
             stmt.bindString(2, ordertype);
         }
+        stmt.bindLong(3, entity.getShowing());
     }
 
     @Override
@@ -90,7 +94,8 @@ public class OrderTypeInfoDao extends AbstractDao<OrderTypeInfo, String> {
     public OrderTypeInfo readEntity(Cursor cursor, int offset) {
         OrderTypeInfo entity = new OrderTypeInfo( //
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // typeid
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1) // ordertype
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // ordertype
+            cursor.getInt(offset + 2) // showing
         );
         return entity;
     }
@@ -99,6 +104,7 @@ public class OrderTypeInfoDao extends AbstractDao<OrderTypeInfo, String> {
     public void readEntity(Cursor cursor, OrderTypeInfo entity, int offset) {
         entity.setTypeid(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
         entity.setOrdertype(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setShowing(cursor.getInt(offset + 2));
      }
     
     @Override

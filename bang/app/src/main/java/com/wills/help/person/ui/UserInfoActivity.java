@@ -41,9 +41,9 @@ import kr.co.namee.permissiongen.PermissionSuccess;
  */
 
 public class UserInfoActivity extends BaseActivity implements View.OnClickListener , UserInfoView{
-    RelativeLayout rl_avatar,rl_nickname,rl_phone,rl_sex,rl_school,rl_address;
+    RelativeLayout rl_avatar,rl_nickname,rl_phone,rl_sex,rl_school;
     ImageView iv_avatar;
-    TextView tv_nickname,tv_phone,tv_sex,tv_school,tv_address;
+    TextView tv_nickname,tv_phone,tv_sex,tv_school;
     String[] sex = new String[]{"女","男"};
     boolean isChanged = false;
     private UserInfoPresenterImpl userInfoPresenter;
@@ -59,19 +59,16 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         rl_phone = (RelativeLayout) findViewById(R.id.rl_phone);
         rl_sex = (RelativeLayout) findViewById(R.id.rl_sex);
         rl_school = (RelativeLayout) findViewById(R.id.rl_school);
-        rl_address = (RelativeLayout) findViewById(R.id.rl_address);
         iv_avatar = (ImageView) findViewById(R.id.iv_avatar);
         tv_nickname = (TextView) findViewById(R.id.tv_nickname);
         tv_phone = (TextView) findViewById(R.id.tv_phone);
         tv_sex = (TextView) findViewById(R.id.tv_sex);
         tv_school = (TextView) findViewById(R.id.tv_school);
-        tv_address = (TextView) findViewById(R.id.tv_address);
         rl_avatar.setOnClickListener(this);
         rl_nickname.setOnClickListener(this);
         rl_phone.setOnClickListener(this);
         rl_sex.setOnClickListener(this);
         rl_school.setOnClickListener(this);
-        rl_address.setOnClickListener(this);
         initData();
     }
 
@@ -111,8 +108,6 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 bundle2.putString("name", App.getApp().getUser().getSchool());
                 bundle2.putInt("action",2);
                 IntentUtils.startActivityForResult(UserInfoActivity.this, ChangeNameActivity.class,bundle2,202);
-                break;
-            case R.id.tv_address:
                 break;
         }
     }

@@ -10,6 +10,7 @@ import com.wills.help.message.model.Contacts;
 import com.wills.help.pay.model.AliPaySign;
 import com.wills.help.pay.model.WXPaySign;
 import com.wills.help.person.model.Avatar;
+import com.wills.help.person.model.Bill;
 import com.wills.help.person.model.Wallet;
 import com.wills.help.release.model.Appraise;
 import com.wills.help.release.model.OrderDetail;
@@ -289,4 +290,32 @@ public interface ApiInterface {
     @POST("idcheck")
     @FormUrlEncoded
     Observable<Empty> idCheck(@FieldMap Map<String , String > map);
+
+    /**
+     * 提现
+     * @param map
+     * @return
+     */
+    @POST("transtoali")
+    @FormUrlEncoded
+    Observable<Empty> withdraw(@FieldMap Map<String , String > map);
+
+    /**
+     * 反馈
+     * @param map
+     * @return
+     */
+    @POST("advice")
+    @FormUrlEncoded
+    Observable<Empty> feedback(@FieldMap Map<String , String > map);
+
+    /**
+     * 获取账单历史
+     * @param map
+     * @return
+     */
+    @POST("getmybill")
+    @FormUrlEncoded
+    Observable<Bill> getBill(@FieldMap Map<String , String > map);
+
 }

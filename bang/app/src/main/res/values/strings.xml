@@ -9,6 +9,13 @@
 
     <string name="setting_exit">退出登录</string>
     <string name="setting_about">关于我们</string>
+    <string name="setting_about_content">\t\t\t\t交大帮由为你解邮科技服务有限公司运营。是属于BJTUers的公众平台。
+        我们是快递最后一公里的专家，将您的快递精确实时的送到您指定的校园地点内。我们更是您生活的小帮手，通过共享，提升单位时间的价值。</string>
+    <string name="setting_about_feedback">意见反馈</string>
+    <string name="setting_about_feedback_success">发送成功</string>
+    <string name="setting_about_feedback_hint">说点儿什么吧......</string>
+    <string name="setting_about_update">版本更新</string>
+    <string name="setting_about_copyright">Copyright © 2017</string>
     <string name="setting_account">帐户与安全</string>
     <string name="setting_account_phone">更换手机号码</string>
     <string name="setting_account_pwd">修改密码</string>
@@ -116,17 +123,18 @@
     <string name="home_news">热点资讯</string>
     <string name="express_my">我的快递</string>
     <string name="send_des">您的快递已经到达</string>
-    <string name="send_site">校内服务站</string>
+    <string name="send_site">交大帮自提点</string>
     <string name="send_address">请填写最后一公里详细地址</string>
     <string name="send_choose_address">选择地址</string>
     <string name="address_hint">请填写详细地址</string>
 
-    <string name="person_release_order">发布订单</string>
-    <string name="person_assist_order">帮助订单</string>
+    <string name="person_release_order">发布的订单</string>
+    <string name="person_assist_order">帮助的订单</string>
     <string name="order_info">订单详情</string>
     <string name="person_check">查看全部</string>
     <string name="person_all_order">全部</string>
     <string name="person_release">已发布</string>
+    <string name="person_accept">已被接单</string>
     <string name="person_progress">已接单</string>
     <string name="person_complete">已完成</string>
     <string name="person_evaluation">待评价</string>
@@ -136,10 +144,16 @@
     <string name="person_identification">在校生认证</string>
     <string name="person_public">我的公益</string>
     <string name="person_wallet">我的钱包</string>
+    <string name="app_delay">暂缓开通</string>
 
     <string name="money_amount">帐户余额</string>
     <string name="money_withdraw">提现</string>
+    <string name="money_withdraw_warn">可提现金额：%1$s，提现成功后24小时内到账</string>
+    <string name="money_withdraw_amount">提现金额</string>
+    <string name="money_withdraw_amount_hint">请输入提现金额</string>
     <string name="money_block">冻结金额</string>
+    <string name="money_withdraw_success">冻结金额</string>
+    <string name="money_withdraw_error">金额超限</string>
 
 
 
@@ -186,6 +200,8 @@
     <string name="pay_pwd_input_again">请再次输入支付密码</string>
     <string name="pay_approve_warn">\t\t温馨提示：为保证提现安全，输入的姓名需要和支付宝实名认证姓名一致，确保姓名和支付宝无误后再提交。</string>
     <string name="pay_balance_warn">您还没有设置支付密码，请设置完成后再进行余额支付。</string>
+    <string name="wallet_warn">您还没有设置支付密码，设置后可也更安全的管理自己的钱包</string>
+    <string name="wallet_id">您还未实名认证，为了资金安全，请实名认证后再进行提现操作</string>
     <string name="pay_pwd_error">支付密码错误</string>
 
     <string name="user_details">详细资料</string>

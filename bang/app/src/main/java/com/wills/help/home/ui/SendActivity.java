@@ -39,6 +39,7 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
     private ReleasePresenterImpl releasePresenter;
     private OrderInfo orderInfo;
     private boolean isUpdate = false;
+    private String deliveryId;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
         et_address.addTextChangedListener(new EditTextChange());
         btn_submit = (Button) findViewById(R.id.btn_submit);
         et_release_remark = (EditText)findViewById(R.id.et_release_remark);
+        et_release_remark.addTextChangedListener(new EditTextChange());
         tv_choose_address.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
         initData();
@@ -57,14 +59,16 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
 
     private void initData(){
         if (getIntent().getExtras()!=null){
-            isUpdate = true;
-            orderInfo = (OrderInfo) getIntent().getExtras().getSerializable("orderInfo");
-            et_address.setText(orderInfo.getDesdetail());
-            et_address.setSelection(orderInfo.getDesdetail().length());
-            tv_choose_address.setText(orderInfo.getDesname());
-            desId = orderInfo.getDesid();
-        }else {
-            desId = "0";
+            deliveryId = getIntent().getExtras().getString("deliveryid");
+            if (StringUtils.isNullOrEmpty(deliveryId)){
+                isUpdate = true;
+                orderInfo = (OrderInfo) getIntent().getExtras().getSerializable("orderInfo");
+                et_address.setText(orderInfo.getDesdetail());
+                et_address.setSelection(orderInfo.getDesdetail().length());
+                tv_choose_address.setText(orderInfo.getDesname());
+                et_release_remark.setText(orderInfo.getRemark());
+                desId = orderInfo.getDesid();
+            }
         }
         releasePresenter = new ReleasePresenterImpl(this);
     }
@@ -79,7 +83,7 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
                 if (isUpdate){
                     releasePresenter.updateOrder(getMap());
                 }else {
-                    releasePresenter.release(getMap());
+                    releasePresenter.release(getMap(),1);
                 }
                 break;
         }
@@ -102,13 +106,14 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
             map.put("orderid", orderInfo.getOrderid());
         }
         map.put("ordertype", "1");
-        map.put("srcid", "64");
+        map.put("srcid", "120");
         map.put("srcdetail", getString(R.string.send_site));
         map.put("desid", desId);
         map.put("desdetail", et_address.getText().toString());
         map.put("money", "0");
         map.put("maintype", "1");
         map.put("remark", et_release_remark.getText().toString());
+        map.put("deliveryid", deliveryId);
         return map.getMap();
     }
 

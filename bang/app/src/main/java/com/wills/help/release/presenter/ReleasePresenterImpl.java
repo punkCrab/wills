@@ -25,6 +25,7 @@ import rx.schedulers.Schedulers;
 public class ReleasePresenterImpl implements ReleasePresenter {
     ReleaseModel releaseModel;
     ReleaseView releaseView;
+    private AlertDialog dialog;
 
     public ReleasePresenterImpl(ReleaseView releaseView) {
         this.releaseView = releaseView;
@@ -32,8 +33,12 @@ public class ReleasePresenterImpl implements ReleasePresenter {
     }
 
     @Override
-    public void release(Map<String, String> map) {
-        final AlertDialog dialog = NetUtils.netDialog(((Fragment) releaseView).getActivity());
+    public void release(Map<String, String> map , int from) {
+        if (from == 1){
+            dialog = NetUtils.netDialog(((Context) releaseView));
+        }else if (from == 2){
+            dialog = NetUtils.netDialog(((Fragment) releaseView).getActivity());
+        }
         releaseModel.release(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

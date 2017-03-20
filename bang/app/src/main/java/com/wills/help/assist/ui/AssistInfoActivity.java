@@ -76,9 +76,11 @@ public class AssistInfoActivity extends BaseActivity implements View.OnClickList
             setBaseTitle(getString(R.string.order_info));
             tv_remark.setText(orderInfo.getRemark());
             btn_submit.setVisibility(View.GONE);
+            iv_msg.setVisibility(View.VISIBLE);
         }else if (from.equals("accept")){
             setBaseTitle(getString(R.string.accept));
             tv_remark.setText(getString(R.string.accept_remark));
+            iv_msg.setVisibility(View.GONE);
         }
     }
 

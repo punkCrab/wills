@@ -154,6 +154,9 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
             case R.id.btn_submit:
                 releasePresenter.updateOrder(getMap());
                 break;
+            case R.id.btn_change:
+                releasePresenter.cancelOrder(getDelMap());
+                break;
         }
     }
 
@@ -170,6 +173,14 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
         map.put("remark", et_release_remark.getText().toString());
         return map.getMap();
     }
+
+    private Map<String, String> getDelMap() {
+        HttpMap map = new HttpMap();
+        map.put("releaseuserid", App.getApp().getUser().getUserid());
+        map.put("orderid", orderInfo.getOrderid());
+        return map.getMap();
+    }
+
     /**
      * @param strings
      * @param textView

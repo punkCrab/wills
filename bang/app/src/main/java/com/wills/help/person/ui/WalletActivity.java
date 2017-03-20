@@ -1,8 +1,10 @@
 package com.wills.help.person.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +20,9 @@ import com.wills.help.net.HttpMap;
 import com.wills.help.person.model.Wallet;
 import com.wills.help.person.presenter.WalletPresenterImpl;
 import com.wills.help.person.view.WalletView;
+import com.wills.help.setting.ui.PayPasswordActivity;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.StringUtils;
 import com.wills.help.widget.RiseNumberTextView;
 
 import java.util.Map;
@@ -37,6 +41,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     RiseNumberTextView tv_amount;
     TextView tv_block;
     private WalletPresenterImpl walletPresenter;
+    private float amount;
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setNoActionBarView(R.layout.activity_wallet);
@@ -71,6 +76,9 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 }
             }
         });
+        if (StringUtils.isNullOrEmpty(App.getApp().getUser().getPaypwd())){
+            showPayPwd();
+        }
         walletPresenter = new WalletPresenterImpl(this);
         walletPresenter.getMoney(getMap());
     }
@@ -85,6 +93,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_history:
+                IntentUtils.startActivity(context,BillActivity.class);
                 break;
             case R.id.action_approve:
                 IntentUtils.startActivity(context,ApproveActivity.class);
@@ -103,7 +112,13 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.ll_withdraw:
-
+                if (StringUtils.isNullOrEmpty(App.getApp().getUser().getPaypwd())){
+                    showId();
+                }else {
+                    Bundle bundle = new Bundle();
+                    bundle.putFloat("amount",amount);
+                    IntentUtils.startActivity(WalletActivity.this,WithdrawActivity.class,bundle);
+                }
                 break;
             case R.id.ll_block:
 
@@ -114,9 +129,42 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void setMoney(Wallet.Money money) {
         float amount = Float.parseFloat(money.getMoney());
+        this.amount = amount;
         tv_amount.withNumber(amount);
         tv_amount.start();
     }
 
+    private void showPayPwd() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(getString(R.string.wallet_warn))
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton(getString(R.string.setting_set_pay_pwd), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        IntentUtils.startActivity(WalletActivity.this, PayPasswordActivity.class);
+                    }
+                }).show();
+    }
 
+    private void showId() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(getString(R.string.wallet_id))
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton(getString(R.string.pay_approve), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        IntentUtils.startActivity(WalletActivity.this, IdentificationActivity.class);
+                    }
+                }).show();
+    }
 }

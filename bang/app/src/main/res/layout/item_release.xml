@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:id="@+id/ll_info"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical">
@@ -29,7 +29,14 @@
             android:maxLines="1"
             android:textColor="@color/textPrimary"
             android:textSize="12sp" />
-
+        <TextView
+            android:id="@+id/tv_school"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="北京交通大学"
+            android:textColor="@color/textSecondary"
+            android:textSize="10sp" />
         <TextView
             android:id="@+id/tv_count"
             android:layout_width="wrap_content"
@@ -39,6 +46,7 @@
             android:drawablePadding="5dp"
             android:text="12单"
             android:textColor="@color/textPrimary"
+            android:visibility="gone"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -46,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/ll_info"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/ll_info">
 
         <TextView
@@ -57,13 +65,23 @@
             android:textColor="@color/textPrimary"
             android:textSize="16sp" />
 
-
+        <TextView
+            android:id="@+id/tv_release_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_release_state"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/assist_location"
+            android:drawablePadding="5dp"
+            android:text="定位地点：北交大南门"
+            android:textColor="@color/textPrimary"
+            android:textSize="12sp" />
         <TextView
             android:id="@+id/tv_release_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_release_state"
-            android:layout_marginTop="20dp"
+            android:layout_below="@id/tv_release_location"
+            android:layout_marginTop="5dp"
             android:drawableLeft="@drawable/release_address"
             android:drawablePadding="5dp"
             android:text="北京交通大学第九教学楼"
@@ -75,7 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_release_address"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:drawableLeft="@drawable/release_time"
             android:drawablePadding="5dp"
             android:text="截止时间至11-11 11：11"
@@ -97,7 +115,7 @@
             android:id="@+id/iv_release_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/tv_release_address"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:src="@drawable/release_msg"/>
 
@@ -115,6 +133,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/ll_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_info"

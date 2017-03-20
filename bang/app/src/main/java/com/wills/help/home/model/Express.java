@@ -66,9 +66,11 @@ public class Express implements Serializable{
     public static class ExpressInfo {
         private String id;
         private String deliveryid;
-        private String username;
+        private String deliverytype;
+        private String phone_num;
         private String stateid;
         private String state;
+        private String orderid;
 
         public String getId() {
             return id;
@@ -86,12 +88,20 @@ public class Express implements Serializable{
             this.deliveryid = deliveryid;
         }
 
-        public String getUsername() {
-            return username;
+        public String getDeliverytype() {
+            return deliverytype;
         }
 
-        public void setUsername(String username) {
-            this.username = username;
+        public void setDeliverytype(String deliverytype) {
+            this.deliverytype = deliverytype;
+        }
+
+        public String getPhone_num() {
+            return phone_num;
+        }
+
+        public void setPhone_num(String phone_num) {
+            this.phone_num = phone_num;
         }
 
         public String getStateid() {
@@ -108,6 +118,14 @@ public class Express implements Serializable{
 
         public void setState(String state) {
             this.state = state;
+        }
+
+        public String getOrderid() {
+            return orderid;
+        }
+
+        public void setOrderid(String orderid) {
+            this.orderid = orderid;
         }
     }
 }

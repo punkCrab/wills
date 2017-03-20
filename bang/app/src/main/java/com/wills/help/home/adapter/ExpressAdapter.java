@@ -1,6 +1,7 @@
 package com.wills.help.home.adapter;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,15 +41,26 @@ public class ExpressAdapter extends BaseListAdapter<Express.ExpressInfo>{
     }
 
     @Override
-    protected void BindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    protected void BindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ExpressHolder){
-            ((ExpressHolder)holder).tv_info.setText(list.get(position).getDeliveryid());
-            ((ExpressHolder)holder).btn_send.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    IntentUtils.startActivityForResult(context,SendActivity.class,301);
-                }
-            });
+            ((ExpressHolder)holder).tv_info.setText(list.get(position).getDeliverytype()+"\t"+list.get(position).getDeliveryid());
+            if (list.get(position).getStateid().equals("0")){
+                ((ExpressHolder)holder).btn_send.setTextColor(R.color.white);
+                ((ExpressHolder)holder).btn_send.setBackgroundResource(R.drawable.btn_selector);
+                ((ExpressHolder)holder).btn_send.setText(context.getString(R.string.home_express_send));
+                ((ExpressHolder)holder).btn_send.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("deliveryid",list.get(position).getDeliveryid());
+                        IntentUtils.startActivityForResult(context,SendActivity.class,bundle,301);
+                    }
+                });
+            }else {
+                ((ExpressHolder)holder).btn_send.setTextColor(R.color.textSecondary);
+                ((ExpressHolder)holder).btn_send.setBackgroundDrawable(null);
+                ((ExpressHolder)holder).btn_send.setText(list.get(position).getState());
+            }
         }
     }
 

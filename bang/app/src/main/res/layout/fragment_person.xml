@@ -100,15 +100,15 @@
                         android:id="@+id/tv_release_check"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
                         android:drawablePadding="5dp"
                         android:drawableRight="@drawable/arrow_right"
                         android:text="@string/person_check"
                         android:textColor="@color/textSecondary"
                         android:textSize="16sp"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 
@@ -145,7 +145,7 @@
                         android:drawablePadding="5dp"
                         android:drawableTop="@drawable/person_progress"
                         android:gravity="center"
-                        android:text="@string/person_progress"
+                        android:text="@string/person_accept"
                         android:textColor="@color/textPrimary"
                         android:textSize="14sp" />
 
@@ -172,7 +172,7 @@
                         android:text="@string/person_evaluation"
                         android:textColor="@color/textPrimary"
                         android:textSize="14sp"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <View
@@ -210,7 +210,7 @@
                             android:text="@string/person_check"
                             android:textColor="@color/textSecondary"
                             android:textSize="16sp"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                     </RelativeLayout>
 
@@ -274,7 +274,7 @@
                             android:text="@string/person_evaluation"
                             android:textColor="@color/textPrimary"
                             android:textSize="14sp"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <View
@@ -301,17 +301,6 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/tv_coupons"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawableBottom="@drawable/person_coupons"
-                            android:drawablePadding="10dp"
-                            android:gravity="center"
-                            android:text="@string/person_coupons"
-                            android:textColor="@color/textPrimary"
-                            android:textSize="14sp" />
-                        <TextView
                             android:id="@+id/tv_identification"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -320,6 +309,18 @@
                             android:drawablePadding="10dp"
                             android:gravity="center"
                             android:text="@string/person_identification"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_coupons"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableBottom="@drawable/person_coupons"
+                            android:drawablePadding="10dp"
+                            android:gravity="center"
+                            android:text="@string/person_coupons"
                             android:textColor="@color/textPrimary"
                             android:textSize="14sp" />
 

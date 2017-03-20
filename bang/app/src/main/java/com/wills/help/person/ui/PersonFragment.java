@@ -22,6 +22,7 @@ import com.wills.help.message.ui.MessageActivity;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.ToastUtils;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -94,6 +95,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
         tv_identification.setOnClickListener(this);
         tv_public.setOnClickListener(this);
         tv_wallet.setOnClickListener(this);
+        tv_coupons.setOnClickListener(this);
         if (App.getApp().getIsLogin()){
             GlideUtils.getInstance().displayCircleImageWithSignature(context, App.getApp().getUser().getAvatar(), imageView);
             tv_name.setText(App.getApp().getUser().getNickname());
@@ -185,11 +187,13 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
                 IntentUtils.startActivity(getAppCompatActivity(),IdentificationActivity.class);
                 break;
             case R.id.tv_public:
+                ToastUtils.toast(getAppCompatActivity().getString(R.string.app_delay));
                 break;
             case R.id.tv_wallet:
                 IntentUtils.startActivity(getAppCompatActivity(),WalletActivity.class);
                 break;
             case R.id.tv_coupons:
+                ToastUtils.toast(getAppCompatActivity().getString(R.string.app_delay));
                 break;
             default:
                 break;

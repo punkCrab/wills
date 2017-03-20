@@ -164,8 +164,7 @@ public class PayActivity extends BaseActivity implements PayView , WalletView{
 
     private void showOk() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(orderInfo.getState())
-                .setMessage(getString(R.string.pay_balance_warn))
+        builder.setMessage(getString(R.string.pay_balance_warn))
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

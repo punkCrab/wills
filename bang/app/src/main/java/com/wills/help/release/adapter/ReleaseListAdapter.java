@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wills.help.R;
@@ -86,6 +87,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
             }
             drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
             ((ReleaseHolder)holder).tv_name.setCompoundDrawables(drawable,null,null,null);
+            ((ReleaseHolder)holder).tv_release_location.setText(releaseInfo.getSrcname()+releaseInfo.getSrcdetail());
             ((ReleaseHolder)holder).tv_release_address.setText(releaseInfo.getDesname()+releaseInfo.getDesdetail());
             ((ReleaseHolder)holder).tv_release_money.setText(releaseInfo.getMoney()+context.getString(R.string.yuan));
             ((ReleaseHolder)holder).tv_release_time.setText(releaseInfo.getCreatetime()+"发布");
@@ -95,7 +97,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                     Bundle bundle = new Bundle();
                     bundle.putString(EaseConstant.EXTRA_USER_ID,releaseInfo.getAcceptusername());
                     bundle.putString(EaseConstant.EXTRA_USER_AVATAR,releaseInfo.getAcceptavatar());
-                    bundle.putString(EaseConstant.EXTRA_USER_NAME,releaseInfo.getReleasenickname());
+                    bundle.putString(EaseConstant.EXTRA_USER_NAME,releaseInfo.getAcceptnickname());
                     IntentUtils.startActivity(context,ChatActivity.class,bundle);
                 }
             });
@@ -109,6 +111,11 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 ((ReleaseHolder)holder).tv_name.setText(releaseInfo.getReleasenickname());
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.pay));
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.GONE);
+                if (type == 0){
+                    ((ReleaseHolder)holder).ll_state.setVisibility(View.VISIBLE);
+                }else if (type == 1){
+                    ((ReleaseHolder)holder).ll_state.setVisibility(View.GONE);
+                }
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -121,10 +128,15 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
             case 1://发布
                 GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getReleaseavatar(),((ReleaseHolder)holder).imageView);
                 ((ReleaseHolder)holder).tv_name.setText(releaseInfo.getReleasenickname());
-                ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
-                ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
-                ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
+                if (type == 0){
+                    ((ReleaseHolder)holder).ll_state.setVisibility(View.VISIBLE);
+                    ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                    ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
+                    ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
+                    ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
+                }else if (type == 1){
+                    ((ReleaseHolder)holder).ll_state.setVisibility(View.GONE);
+                }
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.GONE);
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_change));
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
@@ -143,10 +155,15 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
             case 2://接单
                 GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getReleaseavatar(),((ReleaseHolder)holder).imageView);
                 ((ReleaseHolder)holder).tv_name.setText(releaseInfo.getReleasenickname());
-                ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
-                ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
+                if (type == 0){
+                    ((ReleaseHolder)holder).ll_state.setVisibility(View.VISIBLE);
+                    ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                    ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                    ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
+                    ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
+                }else if (type == 1){
+                    ((ReleaseHolder)holder).ll_state.setVisibility(View.GONE);
+                }
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_ok));
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
@@ -161,10 +178,15 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
             case 3://进行中
                 GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getAcceptavatar(),((ReleaseHolder)holder).imageView);
                 ((ReleaseHolder)holder).tv_name.setText(releaseInfo.getAcceptnickname());
-                ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
+                if (type == 0){
+                    ((ReleaseHolder)holder).ll_state.setVisibility(View.VISIBLE);
+                    ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                    ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                    ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                    ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
+                }else if (type == 1){
+                    ((ReleaseHolder)holder).ll_state.setVisibility(View.GONE);
+                }
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_ok));
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
@@ -179,10 +201,15 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
             case 4://送达
                 GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getAcceptavatar(),((ReleaseHolder)holder).imageView);
                 ((ReleaseHolder)holder).tv_name.setText(releaseInfo.getAcceptnickname());
-                ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                if (type == 0){
+                    ((ReleaseHolder)holder).ll_state.setVisibility(View.VISIBLE);
+                    ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                    ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                    ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                    ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                }else if (type == 1){
+                    ((ReleaseHolder)holder).ll_state.setVisibility(View.GONE);
+                }
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_evaluation));
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
@@ -197,10 +224,15 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
             case 5://已完成
                 GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getAcceptavatar(),((ReleaseHolder)holder).imageView);
                 ((ReleaseHolder)holder).tv_name.setText(releaseInfo.getAcceptnickname());
-                ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
-                ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                if (type == 0){
+                    ((ReleaseHolder)holder).ll_state.setVisibility(View.VISIBLE);
+                    ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                    ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                    ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                    ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_true);
+                }else if (type == 1){
+                    ((ReleaseHolder)holder).ll_state.setVisibility(View.GONE);
+                }
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_evaluated));
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
@@ -214,9 +246,10 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
 
     public class ReleaseHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public ImageView imageView , iv_release_msg ,iv_home_express;
-        public TextView tv_name,tv_count,tv_release_state,tv_release_address,tv_release_time,
+        public TextView tv_name,tv_count,tv_release_state,tv_release_location,tv_release_address,tv_release_time,
                 tv_release_money,tv_release_change;
         public View layout_release,layout_progress,layout_arrive,layout_complete;
+        public LinearLayout ll_state;
         public ReleaseHolder(View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.iv);
@@ -226,6 +259,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
             tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             tv_count = (TextView) itemView.findViewById(R.id.tv_count);
             tv_release_state = (TextView) itemView.findViewById(R.id.tv_release_state);
+            tv_release_location = (TextView) itemView.findViewById(R.id.tv_release_location);
             tv_release_address = (TextView) itemView.findViewById(R.id.tv_release_address);
             tv_release_time = (TextView) itemView.findViewById(R.id.tv_release_time);
             tv_release_money = (TextView) itemView.findViewById(R.id.tv_release_money);
@@ -237,6 +271,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
             layout_progress = itemView.findViewById(R.id.layout_progress);
             layout_arrive = itemView.findViewById(R.id.layout_arrive);
             layout_complete = itemView.findViewById(R.id.layout_complete);
+            ll_state = (LinearLayout) itemView.findViewById(R.id.ll_state);
             ((TextView)layout_release.findViewById(R.id.tv_state)).setText(context.getString(R.string.release_state_release));
             ((TextView)layout_progress.findViewById(R.id.tv_state)).setText(context.getString(R.string.release_state_progress));
             ((TextView)layout_arrive.findViewById(R.id.tv_state)).setText(context.getString(R.string.release_state_arrive));
