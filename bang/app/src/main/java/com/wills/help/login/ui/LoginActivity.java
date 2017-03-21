@@ -3,6 +3,7 @@ package com.wills.help.login.ui;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.wills.help.utils.KeyBoardUtils;
 import com.wills.help.utils.ScreenUtils;
 import com.wills.help.utils.SharedPreferencesUtils;
 import com.wills.help.utils.StringUtils;
+import com.wills.help.utils.ToastUtils;
 
 /**
  * com.wills.help.login.ui
@@ -83,7 +85,10 @@ public class LoginActivity extends BaseActivity implements LoginView ,View.OnCli
             @Override
             public void onSuccess() {
                 EMClient.getInstance().chatManager().loadAllConversations();
+                Looper.prepare();
+                ToastUtils.toast(getString(R.string.login_success));
                 finish();
+                Looper.loop();
             }
 
             @Override

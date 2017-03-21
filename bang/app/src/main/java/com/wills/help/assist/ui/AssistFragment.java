@@ -11,6 +11,9 @@ import android.view.View;
 import com.hyphenate.chat.EMClient;
 import com.wills.help.R;
 import com.wills.help.assist.adapter.MapAdapter;
+import com.wills.help.assist.model.OrderNum;
+import com.wills.help.assist.presenter.OrderNumPresenterImpl;
+import com.wills.help.assist.view.OrderNumView;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.message.ui.MessageActivity;
 import com.wills.help.utils.IntentUtils;
@@ -21,12 +24,13 @@ import com.wills.help.utils.IntentUtils;
  * 2016/11/8.
  */
 
-public class AssistFragment extends BaseFragment implements MapAdapter.MapItemClickListener {
+public class AssistFragment extends BaseFragment implements MapAdapter.MapItemClickListener , OrderNumView{
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
     private MapAdapter mapAdapter;
+    private OrderNumPresenterImpl orderNumPresenter;
     private int[] images = {R.drawable.example_assist_01, R.drawable.example_assist_02,R.drawable.example_assist_03,
             R.drawable.example_assist_04, R.drawable.example_assist_05, R.drawable.example_assist_06
             , R.drawable.example_assist_07, R.drawable.example_assist_08, R.drawable.example_assist_09};
@@ -45,7 +49,6 @@ public class AssistFragment extends BaseFragment implements MapAdapter.MapItemCl
         View view = inflater.inflate(R.layout.fragment_assist, null);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         setHasOptionsMenu(true);
-//        toolbar.setTitle(getString(R.string.tab_assist));
         toolbar.setLogo(R.drawable.title);
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
         return view;
@@ -69,9 +72,8 @@ public class AssistFragment extends BaseFragment implements MapAdapter.MapItemCl
         });
         gridLayoutManager = new GridLayoutManager(getAppCompatActivity(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
-        mapAdapter = new MapAdapter(getAppCompatActivity(),images);
-        mapAdapter.setItemClickListener(this);
-        recyclerView.setAdapter(mapAdapter);
+        orderNumPresenter = new OrderNumPresenterImpl(this);
+        orderNumPresenter.getOrderNum();
     }
 
     @Override
@@ -109,5 +111,12 @@ public class AssistFragment extends BaseFragment implements MapAdapter.MapItemCl
                 toolbar.invalidate();
             }
         }
+    }
+
+    @Override
+    public void setOrderNum(OrderNum orderNum) {
+        mapAdapter = new MapAdapter(getAppCompatActivity(),images,orderNum.getData());
+        mapAdapter.setItemClickListener(this);
+        recyclerView.setAdapter(mapAdapter);
     }
 }

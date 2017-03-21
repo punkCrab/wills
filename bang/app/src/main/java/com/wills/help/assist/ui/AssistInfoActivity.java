@@ -21,7 +21,6 @@ import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
 import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
-import com.wills.help.utils.ToastUtils;
 
 import java.util.Map;
 
@@ -107,9 +106,7 @@ public class AssistInfoActivity extends BaseActivity implements View.OnClickList
     }
     @Override
     public void accept() {
-        ToastUtils.toast(getString(R.string.accept_success));
-        setResult(RESULT_OK);
-        finish();
+        showSuccess();
     }
 
     @Override
@@ -119,8 +116,7 @@ public class AssistInfoActivity extends BaseActivity implements View.OnClickList
 
     private void showOk() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(orderInfo.getState())
-                .setMessage(getString(R.string.accept_ok))
+        builder.setMessage(getString(R.string.accept_ok))
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -134,6 +130,25 @@ public class AssistInfoActivity extends BaseActivity implements View.OnClickList
                             assistPresenter = new AssistPresenterImpl(AssistInfoActivity.this);
                         }
                         assistPresenter.accept(getMap());
+                    }
+                }).show();
+    }
+
+    private void showSuccess() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("您已成功接单从" + orderInfo.getSrcname() + orderInfo.getSrcdetail() + "送往"
+                + orderInfo.getDesname() + orderInfo.getDesdetail() + "的" + orderInfo.getOrdertypename() + "请求，请您尽快动身。")
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton(getString(R.string.accept_success), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        setResult(RESULT_OK);
+                        finish();
                     }
                 }).show();
     }

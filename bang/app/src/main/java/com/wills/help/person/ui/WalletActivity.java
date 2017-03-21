@@ -1,6 +1,7 @@
 package com.wills.help.person.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -117,12 +118,20 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 }else {
                     Bundle bundle = new Bundle();
                     bundle.putFloat("amount",amount);
-                    IntentUtils.startActivity(WalletActivity.this,WithdrawActivity.class,bundle);
+                    IntentUtils.startActivityForResult(WalletActivity.this,WithdrawActivity.class,bundle,801);
                 }
                 break;
             case R.id.ll_block:
 
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 801 &&resultCode == RESULT_OK){
+            walletPresenter.getMoney(getMap());
         }
     }
 

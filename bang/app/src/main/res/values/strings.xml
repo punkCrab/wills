@@ -2,6 +2,7 @@
     <string name="app_name">交大帮</string>
 
     <string name="login">登录</string>
+    <string name="login_success">登录成功</string>
     <string name="unlogin">忘记密码?</string>
     <string name="register">注册新用户</string>
     <string name="back_exit">再按一次退出程序</string>
@@ -42,6 +43,12 @@
     <string name="school">学校</string>
     <string name="my_address">我的常用地址</string>
     <string name="more">更多</string>
+
+    <string name="pwd_original">原密码</string>
+    <string name="pwd_original_hint">请输入原密码</string>
+    <string name="pwd_new">新密码</string>
+    <string name="pwd_new_ok">新密码确认</string>
+    <string name="change">修改</string>
 
 
 
@@ -107,7 +114,7 @@
     <string name="release_state_ok_confirm">确认收获后，钱将支付给接单者。</string>
     <string name="release_free">免费为你解邮</string>
     <string name="accept_ok">确定接收此单？</string>
-    <string name="accept_success">接单成功</string>
+    <string name="accept_success">我知道了，马上就去</string>
     <string name="accept_remark">接单成功后可在个人中心接单页面看到备注信息</string>
 
     <string name="evaluation">整体评分</string>
@@ -152,7 +159,7 @@
     <string name="money_withdraw_amount">提现金额</string>
     <string name="money_withdraw_amount_hint">请输入提现金额</string>
     <string name="money_block">冻结金额</string>
-    <string name="money_withdraw_success">冻结金额</string>
+    <string name="money_withdraw_success">提现成功</string>
     <string name="money_withdraw_error">金额超限</string>
 
 

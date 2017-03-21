@@ -1,5 +1,6 @@
 package com.wills.help.net;
 
+import com.wills.help.assist.model.OrderNum;
 import com.wills.help.home.model.Banner;
 import com.wills.help.home.model.Express;
 import com.wills.help.home.model.News;
@@ -318,4 +319,20 @@ public interface ApiInterface {
     @FormUrlEncoded
     Observable<Bill> getBill(@FieldMap Map<String , String > map);
 
+
+    /**
+     * 获取地图上每块单子数量
+     * @return
+     */
+    @GET("getordernum")
+    Observable<OrderNum> getOrderNum();
+
+    /**
+     * 修改密码
+     * @param map
+     * @return
+     */
+    @POST("updatepassword")
+    @FormUrlEncoded
+    Observable<Empty> changePassword(@FieldMap Map<String , String > map);
 }

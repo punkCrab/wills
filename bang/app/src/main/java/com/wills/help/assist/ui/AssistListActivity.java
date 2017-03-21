@@ -31,7 +31,6 @@ import com.wills.help.net.HttpMap;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
 import com.wills.help.utils.IntentUtils;
-import com.wills.help.utils.ToastUtils;
 import com.wills.help.widget.DropDownMenu;
 import com.wills.help.widget.MyItemDecoration;
 
@@ -74,6 +73,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     private DropDownMenu dropDownMenu;
     private List<PointInfo> pointInfoList2, pointInfoList3;
     private List<OrderTypeInfo> orderTypeInfoList;
+    private OrderInfo orderInfo;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -282,8 +282,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
 
     @Override
     public void accept() {
-        ToastUtils.toast(getString(R.string.accept_success));
-        onRefresh();
+        showSuccess();
     }
 
     @Override
@@ -323,28 +322,46 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
 
     @Override
     public void buttonClick(int state, OrderInfo orderInfo) {
+        this.orderInfo = orderInfo;
         if (state ==3){
-            showOk(orderInfo);
+            showOk();
         }
     }
 
-    private void showOk(final OrderInfo orderInfo) {
+    private void showOk() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(orderInfo.getState())
-                .setMessage(getString(R.string.accept_ok))
+        builder.setMessage(getString(R.string.accept_ok))
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
                     }
                 })
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.accept_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (assistPresenter == null){
                             assistPresenter = new AssistPresenterImpl(AssistListActivity.this);
                         }
                         assistPresenter.accept(getAcceptMap(orderInfo));
+                    }
+                }).show();
+    }
+
+    private void showSuccess() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("您已成功接单从" + orderInfo.getSrcname() + orderInfo.getSrcdetail() + "送往"
+                + orderInfo.getDesname() + orderInfo.getDesdetail() + "的" + orderInfo.getOrdertypename() + "请求，请您尽快动身。")
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton(getString(R.string.accept_success), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        onRefresh();
                     }
                 }).show();
     }

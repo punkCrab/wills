@@ -46,6 +46,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
             case R.id.tv_change_phone:
                 break;
             case R.id.tv_change_pwd:
+                IntentUtils.startActivity(context,ChangePasswordActivity.class);
                 break;
             case R.id.rl_pay_pwd:
                 IntentUtils.startActivityForResult(AccountActivity.this,PayPasswordActivity.class,502);

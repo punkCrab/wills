@@ -161,6 +161,29 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         return fragments;
     }
 
+    private void removeFragment(){
+        if (mainReleaseFragment!=null){
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.remove(mainReleaseFragment).commit();
+        }
+        if (releaseFragment!=null){
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.remove(releaseFragment).commit();
+        }
+        if (assistFragment!=null){
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.remove(assistFragment).commit();
+        }
+        if (personFragment!=null){
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.remove(personFragment).commit();
+        }
+    }
+
     private void switchView(Fragment to , int position){
         if (isRelease){
             return;
@@ -259,12 +282,13 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 }else {
                     bottomNavigationBar.selectTab(0);
                 }
-        } else if (requestCode == 301&&resultCode==RESULT_OK){
+        }else if (requestCode == 301&&resultCode==RESULT_OK){
             isRelease = true;
             bottomNavigationBar.selectTab(1);
             changeReleaseFragment(1,0);
-        }else if (requestCode == 12&&resultCode==RESULT_OK){
+        }else if (requestCode == 12&&resultCode==RESULT_OK){//退出
             bottomNavigationBar.selectTab(0);
+            removeFragment();
         }else if((requestCode == 401||requestCode == 402||requestCode == 403) && resultCode == RESULT_OK){
             mainReleaseFragment.onActivityResult(requestCode,resultCode,data);
         }else if (requestCode == AppConfig.AVATAR && resultCode == RESULT_OK){
@@ -280,9 +304,13 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     }
 
     public void jumpReleaseFragment(int position,int stateId){
-        isRelease = true;
-        bottomNavigationBar.selectTab(position);
-        changeReleaseFragment(0,stateId);
+        if (App.getApp().getIsLogin()){
+            isRelease = true;
+            bottomNavigationBar.selectTab(position);
+            changeReleaseFragment(0,stateId);
+        }else {
+            IntentUtils.startActivityForResult(this, LoginActivity.class,LOGIN);
+        }
     }
 
     EMMessageListener messageListener = new EMMessageListener() {

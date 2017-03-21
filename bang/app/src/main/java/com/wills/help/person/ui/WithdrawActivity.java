@@ -71,6 +71,7 @@ public class WithdrawActivity extends BaseActivity implements WithdrawView{
     @Override
     public void setWithdraw() {
         ToastUtils.toast(getString(R.string.money_withdraw_success));
+        setResult(RESULT_OK);
         finish();
     }
 
