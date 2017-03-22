@@ -12,6 +12,9 @@ public class AppConfig {
     public static final String HOST = "http://59.110.62.75/think/";
     public static boolean TEST = true;
     public static String WX_APP_ID;
+    public static final String HW_APP_ID = "10856775";
+    public static final String MI_APP_ID = "2882303761517559840";
+    public static final String MI_APP_KEY = "5801755911840";
 
     public static final int NET_SUCCESS = 1;
     public static final int TOKEN_EXPRIED = 1;

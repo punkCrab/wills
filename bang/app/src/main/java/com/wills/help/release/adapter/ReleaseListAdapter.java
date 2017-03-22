@@ -153,7 +153,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 });
                 break;
             case 2://接单
-                GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getReleaseavatar(),((ReleaseHolder)holder).imageView);
+                GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getAcceptavatar(),((ReleaseHolder)holder).imageView);
                 ((ReleaseHolder)holder).tv_name.setText(releaseInfo.getReleasenickname());
                 if (type == 0){
                     ((ReleaseHolder)holder).ll_state.setVisibility(View.VISIBLE);

@@ -135,7 +135,7 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void initListener() {
-        tv_release_state.setOnClickListener(this);
+//        tv_release_state.setOnClickListener(this);
         tv_release_from.setOnClickListener(this);
         tv_release_send.setOnClickListener(this);
         et_release_from_address.addTextChangedListener(new EditTextChange());
@@ -149,9 +149,9 @@ public class ReleaseFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_release_state:
-                showAlert(state, tv_release_state, 0);
-                break;
+//            case R.id.tv_release_state:
+//                showAlert(state, tv_release_state, 0);
+//                break;
             case R.id.tv_release_from:
                 IntentUtils.startActivityForResult(getAppCompatActivity(),SelectPointActivity.class,402);
                 break;

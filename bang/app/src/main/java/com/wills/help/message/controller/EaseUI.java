@@ -7,21 +7,34 @@ import android.util.Log;
 
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMCmdMessageBody;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
+import com.hyphenate.util.EasyUtils;
+import com.wills.help.R;
+import com.wills.help.base.App;
+import com.wills.help.db.bean.Contact;
+import com.wills.help.db.manager.ContactHelper;
+import com.wills.help.db.manager.UserInfoHelper;
 import com.wills.help.listener.MessageConnectionListener;
+import com.wills.help.message.ContactsView;
 import com.wills.help.message.domain.EaseEmojicon;
 import com.wills.help.message.domain.EaseUser;
 import com.wills.help.message.model.EaseAtMessageHelper;
 import com.wills.help.message.model.EaseNotifier;
+import com.wills.help.message.presenter.ContactsPresenterImpl;
+import com.wills.help.net.HttpMap;
 import com.wills.help.utils.AppConfig;
+import com.wills.help.utils.AppManager;
 import com.wills.help.utils.SharedPreferencesUtils;
+import com.wills.help.utils.StringUtils;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public final class EaseUI {
+public final class EaseUI implements ContactsView {
     private static final String TAG = EaseUI.class.getSimpleName();
 
     /**
@@ -50,7 +63,9 @@ public final class EaseUI {
      * the notifier
      */
     private EaseNotifier notifier = null;
-    
+
+
+    private ContactsPresenterImpl contactsPresenter;
 
     private EaseUI(){}
     
@@ -97,6 +112,7 @@ public final class EaseUI {
         }else{
             EMClient.getInstance().init(context, options);
         }
+        EMClient.getInstance().setDebugMode(true);
         EMClient.getInstance().addConnectionListener(new MessageConnectionListener());
         initNotifier();
         registerMessageListener();
@@ -120,7 +136,10 @@ public final class EaseUI {
         options.setRequireAck(true);
         // set if need delivery ack
         options.setRequireDeliveryAck(false);
-        
+        //huawei push
+        options.setHuaweiPushAppId(AppConfig.HW_APP_ID);
+        //mi push
+        options.setMipushConfig(AppConfig.MI_APP_ID,AppConfig.MI_APP_KEY);
         return options;
     }
     
@@ -128,13 +147,45 @@ public final class EaseUI {
         notifier = createNotifier();
         notifier.init(appContext);
     }
-    
+
+    private Map<String,String> getMap(Map<String, EMConversation> conversations){
+        String userNames = "";
+        HttpMap map = new HttpMap();
+        for (Map.Entry<String,EMConversation> entry:conversations.entrySet()){
+            if (!entry.getKey().equals("admin")){
+                userNames+=entry.getKey()+",";
+            }
+        }
+        if (!StringUtils.isNullOrEmpty(userNames)){
+            map.put("usernames",userNames.substring(0,userNames.length()-1));
+        }
+        return map.getMap();
+    }
+
     private void registerMessageListener() {
+        contactsPresenter = new ContactsPresenterImpl(this);
+        if (App.getApp().getIsLogin()){
+            Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
+            if (conversations.size()>0){
+                if (!(conversations.size() == 1&&conversations.containsKey("admin"))){
+                    contactsPresenter.getContacts(getMap(conversations));
+                }
+            }
+        }
+
         EMClient.getInstance().chatManager().addMessageListener(new EMMessageListener() {
             
             @Override
             public void onMessageReceived(List<EMMessage> messages) {
                 EaseAtMessageHelper.get().parseMessages(messages);
+                if (!EasyUtils.isAppRunningForeground(appContext)){
+                    EaseUI.getInstance().getNotifier().onNewMesg(messages);
+                }else {
+                    String currentActivity = AppManager.getAppManager().currentActivity().getClass().getSimpleName();
+                    if (!currentActivity.equals("MessageActivity")&&!currentActivity.equals("ChatActivity")){
+                        EaseUI.getInstance().getNotifier().onNewMesg(messages);
+                    }
+                }
             }
             @Override
             public void onMessageReadAckReceived(List<EMMessage> messages) {
@@ -149,7 +200,20 @@ public final class EaseUI {
             }
             @Override
             public void onCmdMessageReceived(List<EMMessage> messages) {
-                
+                for (EMMessage message : messages){
+                    EMCmdMessageBody cmdMsgBody = (EMCmdMessageBody) message.getBody();
+                    String action = cmdMsgBody.action();
+                    if (action.equals("userInfo")){
+                        HttpMap map = new HttpMap();
+                        map.put("usernames",message.getUserName());
+                        contactsPresenter.getContacts(map.getMap());
+                    }else if (action.contains("idcheck")){
+                        App.getApp().getUser().setUsertype("1");
+                        App.getApp().getUser().setTypename(appContext.getString(R.string.approved));
+                        App.getApp().getUser().setSchool_num(action.substring(7));
+                        UserInfoHelper.getInstance().updateData(App.getApp().getUser()).subscribe();
+                    }
+                }
             }
         });
     }
@@ -215,7 +279,12 @@ public final class EaseUI {
         }
         return processName;
     }
-    
+
+    @Override
+    public void setContacts(List<Contact> contactList) {
+        ContactHelper.getInstance().insertData(contactList).subscribe();
+    }
+
     /**
      * User profile provider
      * @author wei

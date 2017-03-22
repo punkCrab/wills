@@ -1,5 +1,6 @@
 package com.wills.help.home.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -78,6 +79,9 @@ public class ExpressListActivity extends BaseActivity implements ExpressView,Swi
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
+        if (expressInfoList!=null){
+            expressInfoList.clear();
+        }
         expressPresenter.getExpress(getMap());
     }
 
@@ -85,5 +89,13 @@ public class ExpressListActivity extends BaseActivity implements ExpressView,Swi
         HttpMap map = new HttpMap();
         map.put("userid", App.getApp().getUser().getUserid());
         return map.getMap();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 301 && resultCode == RESULT_OK){
+            onRefresh();
+        }
     }
 }

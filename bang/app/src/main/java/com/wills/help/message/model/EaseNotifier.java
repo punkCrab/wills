@@ -28,6 +28,8 @@ import android.support.v4.app.NotificationCompat;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.util.EMLog;
+import com.wills.help.db.bean.Contact;
+import com.wills.help.db.manager.ContactHelper;
 import com.wills.help.message.controller.EaseUI;
 import com.wills.help.message.ui.MessageActivity;
 import com.wills.help.message.utils.EaseCommonUtils;
@@ -433,6 +435,10 @@ public class EaseNotifier {
 
         @Override
         public String getTitle(EMMessage message) {
+            Contact contact = ContactHelper.getInstance().queryByUser(message.getFrom());
+            if (contact!=null){
+                return contact.getNickname();
+            }
             return message.getFrom();
         }
 

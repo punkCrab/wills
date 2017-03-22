@@ -22,13 +22,15 @@
         android:text=""
         android:textColor="@color/textSecondary"/>
 
-    <TextView
-        android:id="@+id/tv_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/btn_state"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text=""
-        android:textSize="16sp"
-        android:textColor="@color/orange"/>
+        android:background="@drawable/btn_selector"
+        android:text="@string/home_express_send"
+        android:textColor="@color/white"
+        android:textSize="10sp"/>
+
 </RelativeLayout>

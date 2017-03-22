@@ -776,6 +776,7 @@ import rx.functions.Action1;
         }else if(chatType == EaseConstant.CHATTYPE_CHATROOM){
             message.setChatType(ChatType.ChatRoom);
         }
+        message.setAttribute("em_force_notification", true);
         //send message
         EMClient.getInstance().chatManager().sendMessage(message);
         //refresh ui

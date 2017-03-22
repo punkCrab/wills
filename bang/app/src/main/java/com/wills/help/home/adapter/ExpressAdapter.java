@@ -45,7 +45,7 @@ public class ExpressAdapter extends BaseListAdapter<Express.ExpressInfo>{
         if (holder instanceof ExpressHolder){
             ((ExpressHolder)holder).tv_info.setText(list.get(position).getDeliverytype()+"\t"+list.get(position).getDeliveryid());
             if (list.get(position).getStateid().equals("0")){
-                ((ExpressHolder)holder).btn_send.setTextColor(R.color.white);
+                ((ExpressHolder)holder).btn_send.setTextColor(context.getResources().getColor(R.color.white));
                 ((ExpressHolder)holder).btn_send.setBackgroundResource(R.drawable.btn_selector);
                 ((ExpressHolder)holder).btn_send.setText(context.getString(R.string.home_express_send));
                 ((ExpressHolder)holder).btn_send.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +57,7 @@ public class ExpressAdapter extends BaseListAdapter<Express.ExpressInfo>{
                     }
                 });
             }else {
-                ((ExpressHolder)holder).btn_send.setTextColor(R.color.textSecondary);
+                ((ExpressHolder)holder).btn_send.setTextColor(context.getResources().getColor(R.color.textSecondary));
                 ((ExpressHolder)holder).btn_send.setBackgroundDrawable(null);
                 ((ExpressHolder)holder).btn_send.setText(list.get(position).getState());
             }

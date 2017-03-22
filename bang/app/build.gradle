@@ -74,5 +74,7 @@ dependencies {
     compile files('libs/alipaySdk-20161222.jar')
     compile files('libs/sun.misc.BASE64Decoder.jar')
     compile files('libs/wechat-sdk-android-with-mta-1.0.2.jar')
+    compile files('libs/HwPush_SDK_V2705_nomap.jar')
+    compile files('libs/MiPush_SDK_Client_3_2_2.jar')
 }
 

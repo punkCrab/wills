@@ -56,6 +56,11 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
         if (holder instanceof OrderHolder){
             final OrderInfo orderInfo = list.get(position);
             ((OrderHolder)holder).tv_assist_state.setText(context.getString(R.string.help)+orderInfo.getOrdertypename());
+            if (orderInfo.getMaintype().equals("0")){
+                ((OrderHolder)holder).iv_home_express.setVisibility(View.GONE);
+            }else if (orderInfo.getMaintype().equals("1")){
+                ((OrderHolder)holder).iv_home_express.setVisibility(View.VISIBLE);
+            }
             Drawable drawable =null;
             if (orderInfo.getReleasesex().equals("1")){
                 drawable = context.getResources().getDrawable(R.drawable.sex_girl);
@@ -155,13 +160,14 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
 
     public class OrderHolder extends RecyclerView.ViewHolder  implements View.OnClickListener{
         public View itemView;
-        public ImageView imageView ,iv_assist_msg;
+        public ImageView imageView ,iv_assist_msg ,iv_home_express;
         public TextView tv_assist_state,tv_assist_location,tv_assist_address,tv_assist_time,tv_assist_money,tv_assist_progress,
                 tv_name,tv_school;
         public OrderHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
             imageView = (ImageView) itemView.findViewById(R.id.iv);
+            iv_home_express = (ImageView) itemView.findViewById(R.id.iv_home_express);
             iv_assist_msg = (ImageView) itemView.findViewById(R.id.iv_assist_msg);
             tv_assist_state = (TextView) itemView.findViewById(R.id.tv_assist_state);
             tv_assist_address = (TextView) itemView.findViewById(R.id.tv_assist_address);

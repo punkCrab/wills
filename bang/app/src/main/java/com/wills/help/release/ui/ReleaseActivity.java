@@ -83,7 +83,7 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
         tv_release_send.addTextChangedListener(new EditTextChange());
         tv_release_from.addTextChangedListener(new EditTextChange());
         et_release_money.addTextChangedListener(new EditTextChange());
-        tv_release_state.setOnClickListener(this);
+//        tv_release_state.setOnClickListener(this);
         tv_release_from.setOnClickListener(this);
         tv_release_send.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
@@ -142,9 +142,9 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.tv_release_state:
-                showAlert(state,tv_release_state,0);
-                break;
+//            case R.id.tv_release_state:
+//                showAlert(state,tv_release_state,0);
+//                break;
             case R.id.tv_release_from:
                 IntentUtils.startActivityForResult(ReleaseActivity.this,SelectPointActivity.class,405);
                 break;
