@@ -1,6 +1,7 @@
 package com.wills.help.person.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -192,6 +193,14 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
             case 2:
             showOk(releaseInfo);
             break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 401 && resultCode == RESULT_OK){
+            onRefresh();
         }
     }
 }

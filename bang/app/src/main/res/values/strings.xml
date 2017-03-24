@@ -116,6 +116,7 @@
     <string name="accept_ok">确定接收此单？</string>
     <string name="accept_success">我知道了，马上就去</string>
     <string name="accept_remark">接单成功后可在个人中心接单页面看到备注信息</string>
+    <string name="accept_id">您还未在校生认证，认证后才可以接单</string>
 
     <string name="evaluation">整体评分</string>
     <string name="evaluation_hint">填写您的评价</string>
@@ -162,7 +163,11 @@
     <string name="money_withdraw_success">提现成功</string>
     <string name="money_withdraw_error">金额超限</string>
 
-
+    <string name="download">下载</string>
+    <string name="download_loading">正在下载</string>
+    <string name="download_success">下载完成</string>
+    <string name="version_update">发现新版本</string>
+    <string name="version_no">已经是最新版本</string>
 
     <string name="identification">在校生认证</string>
     <string name="identification_content">注意：点击认证后，请登录交大学生邮箱点击链接确认。</string>

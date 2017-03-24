@@ -1,5 +1,6 @@
 package com.wills.help.person.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,10 +13,13 @@ import android.widget.TextView;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseListAdapter;
+import com.wills.help.home.ui.SendActivity;
 import com.wills.help.message.EaseConstant;
 import com.wills.help.message.ui.ChatActivity;
+import com.wills.help.pay.ui.PayActivity;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.ui.AppraiseActivity;
+import com.wills.help.release.ui.ReleaseActivity;
 import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
 
@@ -93,10 +97,10 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
                         }
                     });
                 }
-
                 if (orderInfo.getStateid().equals("4")){
-                    ((OrderHolder)holder).tv_assist_progress.setVisibility(View.VISIBLE);
                     ((OrderHolder)holder).tv_assist_progress.setText(context.getString(R.string.release_state_evaluation));
+                    ((OrderHolder)holder).tv_assist_progress.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    ((OrderHolder)holder).tv_assist_progress.setBackgroundResource(R.drawable.release_shape);
                     ((OrderHolder)holder).tv_assist_progress.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -106,8 +110,9 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
                         }
                     });
                 }else if (orderInfo.getStateid().equals("2")||orderInfo.getStateid().equals("3")){
-                    ((OrderHolder)holder).tv_assist_progress.setVisibility(View.VISIBLE);
                     ((OrderHolder)holder).tv_assist_progress.setText(context.getString(R.string.release_state_ok));
+                    ((OrderHolder)holder).tv_assist_progress.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    ((OrderHolder)holder).tv_assist_progress.setBackgroundResource(R.drawable.release_shape);
                     ((OrderHolder)holder).tv_assist_progress.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -116,8 +121,43 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
                             }
                         }
                     });
+                }else if (orderInfo.getStateid().equals("0")){
+                    ((OrderHolder)holder).tv_assist_progress.setText(context.getString(R.string.pay));
+                    ((OrderHolder)holder).tv_assist_progress.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    ((OrderHolder)holder).tv_assist_progress.setBackgroundResource(R.drawable.release_shape);
+                    ((OrderHolder)holder).tv_assist_progress.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("orderId",orderInfo.getOrderid());
+                            IntentUtils.startActivityForResult((Activity)context,PayActivity.class,bundle,401);
+                        }
+                    });
+                }else if (orderInfo.getStateid().equals("1")) {
+                    ((OrderHolder)holder).tv_assist_progress.setText(context.getString(R.string.release_state_change));
+                    ((OrderHolder)holder).tv_assist_progress.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    ((OrderHolder)holder).tv_assist_progress.setBackgroundResource(R.drawable.release_shape);
+                    ((OrderHolder)holder).tv_assist_progress.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("orderInfo",orderInfo);
+                            if (orderInfo.getMaintype().equals("0")){
+                                IntentUtils.startActivityForResult((Activity)context,ReleaseActivity.class,bundle,401);
+                            }else {
+                                IntentUtils.startActivityForResult((Activity)context,SendActivity.class,bundle,401);
+                            }
+                        }
+                    });
                 }else {
-                    ((OrderHolder)holder).tv_assist_progress.setVisibility(View.GONE);
+                    ((OrderHolder)holder).tv_assist_progress.setText(context.getString(R.string.release_state_evaluated));
+                    ((OrderHolder)holder).tv_assist_progress.setTextColor(context.getResources().getColor(R.color.textSecondary));
+                    ((OrderHolder)holder).tv_assist_progress.setBackgroundDrawable(null);
+                    ((OrderHolder)holder).tv_assist_progress.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    });
                 }
             }else if (mainType == 1){
                 GlideUtils.getInstance().displayCircleImage(context ,orderInfo.getReleaseavatar() ,((OrderHolder)holder).imageView);
@@ -168,6 +208,7 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
             this.itemView = itemView;
             imageView = (ImageView) itemView.findViewById(R.id.iv);
             iv_home_express = (ImageView) itemView.findViewById(R.id.iv_home_express);
+            iv_home_express.getBackground().setAlpha(50);
             iv_assist_msg = (ImageView) itemView.findViewById(R.id.iv_assist_msg);
             tv_assist_state = (TextView) itemView.findViewById(R.id.tv_assist_state);
             tv_assist_address = (TextView) itemView.findViewById(R.id.tv_assist_address);

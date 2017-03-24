@@ -28,6 +28,7 @@ import com.wills.help.db.manager.OrderTypeInfoHelper;
 import com.wills.help.db.manager.PointInfoHelper;
 import com.wills.help.listener.BaseListLoadMoreListener;
 import com.wills.help.net.HttpMap;
+import com.wills.help.person.ui.IdentificationActivity;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
 import com.wills.help.utils.IntentUtils;
@@ -324,8 +325,29 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     public void buttonClick(int state, OrderInfo orderInfo) {
         this.orderInfo = orderInfo;
         if (state ==3){
-            showOk();
+            if (App.getApp().getUser().getUsertype().equals("1")){
+                showOk();
+            }else {
+                showId();
+            }
         }
+    }
+
+    private void showId(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(getString(R.string.accept_id))
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton(getString(R.string.approve), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        IntentUtils.startActivity(context,IdentificationActivity.class);
+                    }
+                }).show();
     }
 
     private void showOk() {

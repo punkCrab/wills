@@ -17,6 +17,7 @@ import com.wills.help.release.model.Appraise;
 import com.wills.help.release.model.OrderDetail;
 import com.wills.help.release.model.Release;
 import com.wills.help.release.model.OrderList;
+import com.wills.help.setting.model.VersionCheck;
 
 import java.util.Map;
 
@@ -335,4 +336,12 @@ public interface ApiInterface {
     @POST("updatepassword")
     @FormUrlEncoded
     Observable<Empty> changePassword(@FieldMap Map<String , String > map);
+
+
+    /**
+     * 检测升级
+     * @return
+     */
+    @GET("versioncheck")
+    Observable<VersionCheck> versionCheck();
 }

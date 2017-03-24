@@ -110,6 +110,8 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 GlideUtils.getInstance().displayCircleImage(context,releaseInfo.getReleaseavatar(),((ReleaseHolder)holder).imageView);
                 ((ReleaseHolder)holder).tv_name.setText(releaseInfo.getReleasenickname());
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.pay));
+                ((ReleaseHolder)holder).tv_release_change.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                ((ReleaseHolder)holder).tv_release_change.setBackgroundResource(R.drawable.release_shape);
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.GONE);
                 if (type == 0){
                     ((ReleaseHolder)holder).ll_state.setVisibility(View.VISIBLE);
@@ -139,6 +141,8 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 }
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.GONE);
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_change));
+                ((ReleaseHolder)holder).tv_release_change.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                ((ReleaseHolder)holder).tv_release_change.setBackgroundResource(R.drawable.release_shape);
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -166,6 +170,8 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 }
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_ok));
+                ((ReleaseHolder)holder).tv_release_change.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                ((ReleaseHolder)holder).tv_release_change.setBackgroundResource(R.drawable.release_shape);
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -189,6 +195,8 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 }
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_ok));
+                ((ReleaseHolder)holder).tv_release_change.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                ((ReleaseHolder)holder).tv_release_change.setBackgroundResource(R.drawable.release_shape);
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -212,6 +220,8 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 }
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_evaluation));
+                ((ReleaseHolder)holder).tv_release_change.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                ((ReleaseHolder)holder).tv_release_change.setBackgroundResource(R.drawable.release_shape);
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -235,6 +245,8 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 }
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.VISIBLE);
                 ((ReleaseHolder)holder).tv_release_change.setText(context.getString(R.string.release_state_evaluated));
+                ((ReleaseHolder)holder).tv_release_change.setTextColor(context.getResources().getColor(R.color.textSecondary));
+                ((ReleaseHolder)holder).tv_release_change.setBackgroundDrawable(null);
                 ((ReleaseHolder)holder).tv_release_change.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

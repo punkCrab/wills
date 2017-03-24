@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
@@ -30,9 +31,7 @@ import com.wills.help.utils.ToastUtils;
 import java.io.File;
 import java.util.Map;
 
-import kr.co.namee.permissiongen.PermissionFail;
-import kr.co.namee.permissiongen.PermissionGen;
-import kr.co.namee.permissiongen.PermissionSuccess;
+import rx.functions.Action1;
 
 /**
  * com.wills.help.person.ui
@@ -173,22 +172,20 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     }
 
     protected void selectPicFromLocal() {
-        PermissionGen.with(this)
-                .addRequestCode(120)
-                .permissions(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-                .request();
-    }
-    @PermissionSuccess(requestCode = 120)
-    public void picSuccess(){
-        Bundle bundle = new Bundle();
-        bundle.putInt("action", AppConfig.AVATAR);
-        IntentUtils.startActivityForResult(UserInfoActivity.this, PhotoSelectorActivity.class,bundle,AppConfig.AVATAR);
-    }
-    @PermissionFail(requestCode = 120)
-    public void picFail(){
-        ToastUtils.toast("permission is not granted");
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        if (aBoolean){
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("action", AppConfig.AVATAR);
+                            IntentUtils.startActivityForResult(UserInfoActivity.this, PhotoSelectorActivity.class,bundle,AppConfig.AVATAR);
+                        }else {
+                            ToastUtils.toast("permission is not granted");
+                        }
+                    }
+                });
     }
 }

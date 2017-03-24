@@ -83,6 +83,7 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
         tv_release_send.addTextChangedListener(new EditTextChange());
         tv_release_from.addTextChangedListener(new EditTextChange());
         et_release_money.addTextChangedListener(new EditTextChange());
+        et_release_remark.addTextChangedListener(new EditTextChange());
 //        tv_release_state.setOnClickListener(this);
         tv_release_from.setOnClickListener(this);
         tv_release_send.setOnClickListener(this);
@@ -165,6 +166,7 @@ public class ReleaseActivity extends BaseActivity implements View.OnClickListene
         map.put("releaseuserid", App.getApp().getUser().getUserid());
         map.put("orderid", orderInfo.getOrderid());
         map.put("ordertype", orderType);
+        map.put("ordertypename", orderInfo.getOrdertypename());
         map.put("srcid", srcId);
         map.put("srcdetail", et_release_from_address.getText().toString());
         map.put("desid", desId);

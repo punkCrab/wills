@@ -3,6 +3,7 @@ package com.wills.help.utils;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -121,5 +122,18 @@ public class StringUtils {
         }else {
             return getStarStr(str,3,4);
         }
+    }
+
+    /**
+     * 获取文件大小
+     * @param var0
+     * @return
+     */
+    public static String getFileSize(long var0) {
+        DecimalFormat var2 = new DecimalFormat("###.00");
+        return var0 < 1024L ? var0 + "bytes" : (var0 < 1048576L ? var2.format((double) ((float) var0 / 1024.0F))
+                + "KB" : (var0 < 1073741824L ? var2.format((double) ((float) var0 / 1024.0F / 1024.0F))
+                + "MB" : (var0 < 0L ? var2.format((double) ((float) var0 / 1024.0F / 1024.0F / 1024.0F))
+                + "GB" : "error")));
     }
 }

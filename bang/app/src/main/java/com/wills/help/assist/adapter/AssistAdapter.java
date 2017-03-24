@@ -114,6 +114,7 @@ public class AssistAdapter extends BaseListAdapter<OrderInfo>{
             imageView = (ImageView) itemView.findViewById(R.id.iv);
             iv_assist_msg = (ImageView) itemView.findViewById(R.id.iv_assist_msg);
             iv_home_express = (ImageView) itemView.findViewById(R.id.iv_home_express);
+            iv_home_express.getBackground().setAlpha(50);
             tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             tv_school = (TextView) itemView.findViewById(R.id.tv_school);
             tv_assist_state = (TextView) itemView.findViewById(R.id.tv_assist_state);

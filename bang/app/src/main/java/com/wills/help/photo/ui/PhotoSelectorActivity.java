@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.wills.help.R;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.photo.adapter.AlbumAdapter;
@@ -40,9 +41,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.co.namee.permissiongen.PermissionFail;
-import kr.co.namee.permissiongen.PermissionGen;
-import kr.co.namee.permissiongen.PermissionSuccess;
+import rx.functions.Action1;
 
 public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onItemClickListener, PhotoItem.onPhotoItemCheckedListener,
 		OnItemClickListener, OnClickListener {
@@ -130,31 +129,22 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 	}
 
 	private void catchPicture() {
-		PermissionGen.with(this)
-				.addRequestCode(100)
-				.permissions(
-						Manifest.permission.CAMERA
-				)
-				.request();
-	}
-
-	@Override
-	public void onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults){
-		PermissionGen.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
-	}
-
-	@PermissionSuccess(requestCode = 100)
-	public void doSomething(){
-		Intent intent  = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		cameraPath = CameraUtils.getPath();
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraPath));
-		intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-		IntentUtils.startActivityForResult(this, intent, AppConfig.CAMERA);
-	}
-
-	@PermissionFail(requestCode = 100)
-	public void doFailSomething(){
-		ToastUtils.toast("permission is not granted");
+		RxPermissions rxPermissions = new RxPermissions(this);
+		rxPermissions.request(Manifest.permission.CAMERA)
+				.subscribe(new Action1<Boolean>() {
+					@Override
+					public void call(Boolean aBoolean) {
+						if (aBoolean){
+							Intent intent  = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+							cameraPath = CameraUtils.getPath();
+							intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraPath));
+							intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+							IntentUtils.startActivityForResult(PhotoSelectorActivity.this, intent, AppConfig.CAMERA);
+						}else {
+							ToastUtils.toast("permission is not granted");
+						}
+					}
+				});
 	}
 
 	@Override

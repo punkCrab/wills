@@ -17,6 +17,7 @@ import com.wills.help.base.BaseActivity;
 import com.wills.help.message.EaseConstant;
 import com.wills.help.message.ui.ChatActivity;
 import com.wills.help.net.HttpMap;
+import com.wills.help.person.ui.IdentificationActivity;
 import com.wills.help.release.model.OrderInfo;
 import com.wills.help.release.model.OrderList;
 import com.wills.help.utils.GlideUtils;
@@ -87,7 +88,11 @@ public class AssistInfoActivity extends BaseActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_submit:
-                showOk();
+                if (App.getApp().getUser().getUsertype().equals("1")){
+                    showOk();
+                }else {
+                    showId();
+                }
                 break;
             case R.id.iv_msg:
                 Bundle bundle = new Bundle();
@@ -130,6 +135,23 @@ public class AssistInfoActivity extends BaseActivity implements View.OnClickList
                             assistPresenter = new AssistPresenterImpl(AssistInfoActivity.this);
                         }
                         assistPresenter.accept(getMap());
+                    }
+                }).show();
+    }
+
+    private void showId(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(getString(R.string.accept_id))
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton(getString(R.string.approve), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        IntentUtils.startActivity(context,IdentificationActivity.class);
                     }
                 }).show();
     }

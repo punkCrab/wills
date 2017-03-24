@@ -14,10 +14,14 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.wills.help.R;
 import com.wills.help.assist.ui.AssistFragment;
+import com.wills.help.download.DownloadActivity;
 import com.wills.help.home.ui.HomeFragment;
 import com.wills.help.login.ui.LoginActivity;
 import com.wills.help.person.ui.PersonFragment;
 import com.wills.help.release.ui.MainReleaseFragment;
+import com.wills.help.setting.model.VersionCheck;
+import com.wills.help.setting.presenter.VersionCheckPresenterImpl;
+import com.wills.help.setting.view.VersionCheckView;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.AppManager;
 import com.wills.help.utils.IntentUtils;
@@ -26,7 +30,7 @@ import com.wills.help.utils.ToastUtils;
 
 import java.util.ArrayList;
 
-public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener{
+public class MainActivity extends BaseActivity implements BottomNavigationBar.OnTabSelectedListener, VersionCheckView{
     private FrameLayout frameLayout;
     private BottomNavigationBar bottomNavigationBar;
     private static ArrayList<Fragment> fragments;
@@ -44,7 +48,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private MainReleaseFragment releaseFragment;//用于不同页面跳转展示不同数据时使用。
     private boolean isRelease = false;//是切换发布需求的
 //    private BottomNavigationItem msgItem;
-//    private ContactsPresenterImpl contactsPresenter;
+    private VersionCheckPresenterImpl versionCheckPresenter;
     @Override
     protected void initViews(Bundle savedInstanceState) {
         setNoActionBarView(R.layout.activity_main);
@@ -53,6 +57,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
         tags = new String[]{getString(R.string.tab_home), getString(R.string.tab_release) , getString(R.string.tab_assist), getString(R.string.tab_person)};
         initBottomNavigationBar();
         stateCheck(savedInstanceState);
+        versionCheckPresenter = new VersionCheckPresenterImpl(this);
+        versionCheckPresenter.versionCheck();
     }
 
     private void initBottomNavigationBar(){
@@ -289,6 +295,15 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             changeReleaseFragment(0,stateId);
         }else {
             IntentUtils.startActivityForResult(this, LoginActivity.class,LOGIN);
+        }
+    }
+
+    @Override
+    public void setVersionCheck(VersionCheck.VersionInfo versionInfo) {
+        if (Integer.parseInt(versionInfo.getVersion())>Integer.parseInt(AppConfig.VERSION_ID)){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("version",versionInfo);
+            IntentUtils.startActivity(context, DownloadActivity.class,bundle);
         }
     }
 }

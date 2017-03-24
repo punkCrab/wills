@@ -172,7 +172,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
                 .setPositiveButton(getString(R.string.pay_approve), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        IntentUtils.startActivity(WalletActivity.this, IdentificationActivity.class);
+                        IntentUtils.startActivity(WalletActivity.this, ApproveActivity.class);
                     }
                 }).show();
     }

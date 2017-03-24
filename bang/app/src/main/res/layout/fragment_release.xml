@@ -255,7 +255,6 @@
                 android:layout_weight="1"
                 android:layout_margin="5dp"
                 android:background="@drawable/btn_selector"
-                android:enabled="false"
                 android:text="@string/delete"
                 android:textColor="@color/white"
                 android:textSize="18sp"

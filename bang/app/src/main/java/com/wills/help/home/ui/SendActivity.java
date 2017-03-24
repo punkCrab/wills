@@ -106,6 +106,7 @@ public class SendActivity extends BaseActivity implements View.OnClickListener ,
             map.put("orderid", orderInfo.getOrderid());
         }
         map.put("ordertype", "1");
+        map.put("ordertypename", "取快递");
         map.put("srcid", "120");
         map.put("srcdetail", getString(R.string.send_site));
         map.put("desid", desId);

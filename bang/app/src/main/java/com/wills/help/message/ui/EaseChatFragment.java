@@ -41,6 +41,7 @@ import com.hyphenate.chat.EMMessage.ChatType;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.wills.help.R;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.message.EaseConstant;
@@ -67,9 +68,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.co.namee.permissiongen.PermissionFail;
-import kr.co.namee.permissiongen.PermissionGen;
-import kr.co.namee.permissiongen.PermissionSuccess;
 import rx.Observable;
 import rx.functions.Action1;
 
@@ -129,10 +127,12 @@ import rx.functions.Action1;
     private EMChatRoomChangeListener chatRoomChangeListener;
     private boolean isMessageListInited;
     protected MyItemClickListener extendMenuItemClickListener;
+    private RxPermissions rxPermissions;
 
 
     @Override
     public View initView(LayoutInflater inflater) {
+        rxPermissions = new RxPermissions(getAppCompatActivity());
         View view = inflater.inflate(R.layout.ease_fragment_chat, null);
         // hold to record voice
         //noinspection ConstantConditions
@@ -877,76 +877,61 @@ import rx.functions.Action1;
      * capture new image
      */
     protected void selectPicFromCamera() {
-        PermissionGen.with(this)
-                .addRequestCode(100)
-                .permissions(
-                        Manifest.permission.CAMERA
-                )
-                .request();
+        rxPermissions.request(Manifest.permission.CAMERA)
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        if (aBoolean){
+                            Intent intent  = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            cameraFile = new File(PathUtil.getInstance().getImagePath(), EMClient.getInstance().getCurrentUser()
+                                    + System.currentTimeMillis() + ".jpg");
+                            cameraFile.getParentFile().mkdirs();
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile));
+                            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+                            IntentUtils.startActivityForResult(getAppCompatActivity(), intent, AppConfig.CAMERA);
+                        }else {
+                            ToastUtils.toast("permission is not granted");
+                        }
+                    }
+                });
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults){
-        PermissionGen.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
-    }
-    @PermissionSuccess(requestCode = 100)
-    public void doSomething(){
-        Intent intent  = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraFile = new File(PathUtil.getInstance().getImagePath(), EMClient.getInstance().getCurrentUser()
-                + System.currentTimeMillis() + ".jpg");
-        cameraFile.getParentFile().mkdirs();
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile));
-        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-        IntentUtils.startActivityForResult(getAppCompatActivity(), intent, AppConfig.CAMERA);
-    }
 
-    @PermissionFail(requestCode = 100)
-    public void doFailSomething(){
-        ToastUtils.toast("permission is not granted");
-    }
     private PermissionListener permissionListener;
     @Override
-    public void requestVoice(PermissionListener permissionListener) {
-        this.permissionListener = permissionListener;
-        PermissionGen.with(this)
-                .addRequestCode(110)
-                .permissions(
-                        Manifest.permission.RECORD_AUDIO
-                )
-                .request();
-    }
-    @PermissionSuccess(requestCode = 110)
-    public void voiceSuccess(){
-        if (permissionListener!=null)
-            permissionListener.permissionSuccess();
-    }
-
-    @PermissionFail(requestCode = 110)
-    public void voiceFail(){
-        ToastUtils.toast("permission is not granted");
+    public void requestVoice(final PermissionListener permissionListener) {
+        rxPermissions.request(Manifest.permission.RECORD_AUDIO)
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        if (aBoolean){
+                            if (permissionListener!=null)
+                                permissionListener.permissionSuccess();
+                        }else {
+                            ToastUtils.toast("permission is not granted");
+                        }
+                    }
+                });
     }
 
     /**
      * select local image
      */
     protected void selectPicFromLocal() {
-        PermissionGen.with(this)
-                .addRequestCode(120)
-                .permissions(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-                .request();
-    }
-    @PermissionSuccess(requestCode = 120)
-    public void picSuccess(){
-        Bundle bundle = new Bundle();
-        bundle.putInt("action", AppConfig.PHOTO);
-        IntentUtils.startActivityForResult(getAppCompatActivity(), PhotoSelectorActivity.class,bundle,AppConfig.PHOTO);
-    }
-    @PermissionFail(requestCode = 120)
-    public void picFail(){
-        ToastUtils.toast("permission is not granted");
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        if (aBoolean){
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("action", AppConfig.PHOTO);
+                            IntentUtils.startActivityForResult(getAppCompatActivity(), PhotoSelectorActivity.class,bundle,AppConfig.PHOTO);
+                        }else {
+                            ToastUtils.toast("permission is not granted");
+                        }
+                    }
+                });
     }
 
     /**
