@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,13 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
         this.list = list;
     }
 
+    public ReleaseListAdapter(Context context, List<OrderInfo> list, RecyclerView recyclerView, LinearLayoutManager linearLayoutManager, int type) {
+        super(context, list, recyclerView, linearLayoutManager);
+        this.context = context;
+        this.list = list;
+        this.type = type;
+    }
+
     @Override
     protected RecyclerView.ViewHolder CreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_release, parent, false);
@@ -87,8 +95,8 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
             }
             drawable.setBounds(0,0,drawable.getMinimumWidth(),drawable.getMinimumHeight());
             ((ReleaseHolder)holder).tv_name.setCompoundDrawables(drawable,null,null,null);
-            ((ReleaseHolder)holder).tv_release_location.setText(releaseInfo.getSrcname()+releaseInfo.getSrcdetail());
-            ((ReleaseHolder)holder).tv_release_address.setText(releaseInfo.getDesname()+releaseInfo.getDesdetail());
+            ((ReleaseHolder)holder).tv_release_location.setText(releaseInfo.getSrcname());
+            ((ReleaseHolder)holder).tv_release_address.setText(releaseInfo.getDesname());
             ((ReleaseHolder)holder).tv_release_money.setText(releaseInfo.getMoney()+context.getString(R.string.yuan));
             ((ReleaseHolder)holder).tv_release_time.setText(releaseInfo.getCreatetime()+"发布");
             ((ReleaseHolder)holder).iv_release_msg.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +107,12 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                     bundle.putString(EaseConstant.EXTRA_USER_AVATAR,releaseInfo.getAcceptavatar());
                     bundle.putString(EaseConstant.EXTRA_USER_NAME,releaseInfo.getAcceptnickname());
                     IntentUtils.startActivity(context,ChatActivity.class,bundle);
+                }
+            });
+            ((ReleaseHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    baseItemClickListener.onItemClick(position);
                 }
             });
         }
@@ -257,6 +271,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
     }
 
     public class ReleaseHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        public View itemView;
         public ImageView imageView , iv_release_msg ,iv_home_express;
         public TextView tv_name,tv_count,tv_release_state,tv_release_location,tv_release_address,tv_release_time,
                 tv_release_money,tv_release_change;
@@ -264,6 +279,7 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
         public LinearLayout ll_state;
         public ReleaseHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             imageView = (ImageView) itemView.findViewById(R.id.iv);
             iv_home_express = (ImageView) itemView.findViewById(R.id.iv_home_express);
             iv_home_express.getBackground().setAlpha(50);

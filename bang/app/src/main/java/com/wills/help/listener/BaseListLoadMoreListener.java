@@ -16,7 +16,7 @@ public class BaseListLoadMoreListener extends RecyclerView.OnScrollListener {
     private int lastVisibleItem;
     private LinearLayoutManager linearLayoutManager;
     private BaseListAdapter adapter;
-    private LoadMoreListener loadMoreListener;
+    private BaseListAdapter.LoadMoreListener listener;
     private boolean isScrolled = false;
     @Override
     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -27,7 +27,7 @@ public class BaseListLoadMoreListener extends RecyclerView.OnScrollListener {
                 && adapter.getState() != adapter.LOAD
                 && isScrolled) {
             adapter.setLoadMore(adapter.LOAD);
-            loadMoreListener.loadMore();
+            listener.loadMore();
         }
     }
 
@@ -45,17 +45,9 @@ public class BaseListLoadMoreListener extends RecyclerView.OnScrollListener {
         super();
     }
 
-    public BaseListLoadMoreListener(LinearLayoutManager linearLayoutManager , BaseListAdapter adapter) {
+    public BaseListLoadMoreListener(LinearLayoutManager linearLayoutManager, BaseListAdapter adapter, BaseListAdapter.LoadMoreListener listener) {
         this.linearLayoutManager = linearLayoutManager;
         this.adapter = adapter;
-    }
-
-    public interface LoadMoreListener{
-        void loadMore();
-    }
-
-    public void setLoadMoreListener(LoadMoreListener loadMoreListener){
-        this.loadMoreListener = loadMoreListener;
-        adapter.setLoadMoreListener(loadMoreListener);
+        this.listener = listener;
     }
 }

@@ -2,6 +2,7 @@ package com.wills.help.assist.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,12 @@ public class AssistAdapter extends BaseListAdapter<OrderInfo>{
     private List<OrderInfo> list;
     public AssistAdapter(Context context, List<OrderInfo> list) {
         super(context, list);
+        this.context=context;
+        this.list=list;
+    }
+
+    public AssistAdapter(Context context, List<OrderInfo> list, RecyclerView recyclerView, LinearLayoutManager linearLayoutManager) {
+        super(context, list, recyclerView, linearLayoutManager);
         this.context=context;
         this.list=list;
     }

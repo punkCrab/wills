@@ -23,6 +23,7 @@ import com.wills.help.person.presenter.UserInfoPresenterImpl;
 import com.wills.help.person.view.UserInfoView;
 import com.wills.help.photo.model.CameraUtils;
 import com.wills.help.photo.ui.PhotoSelectorActivity;
+import com.wills.help.utils.AESUtils;
 import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.GlideUtils;
 import com.wills.help.utils.IntentUtils;
@@ -119,7 +120,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 isChanged = true;
                 bitmap = data.getParcelableExtra("avatar");
                 file = CameraUtils.saveImage(bitmap);
-                userInfoPresenter.setAvatar(HttpManager.getPart("avatar" ,file),App.getApp().getUser().getUserid());
+                userInfoPresenter.setAvatar(HttpManager.getPart("avatar" ,file),AESUtils.getInstance().encrypt(App.getApp().getUser().getUserid()));
             }
         }else if (requestCode == 201 && resultCode == RESULT_OK){
             tv_nickname.setText(data.getStringExtra("name"));

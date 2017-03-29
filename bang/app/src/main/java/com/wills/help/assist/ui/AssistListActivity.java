@@ -26,7 +26,6 @@ import com.wills.help.db.bean.OrderTypeInfo;
 import com.wills.help.db.bean.PointInfo;
 import com.wills.help.db.manager.OrderTypeInfoHelper;
 import com.wills.help.db.manager.PointInfoHelper;
-import com.wills.help.listener.BaseListLoadMoreListener;
 import com.wills.help.net.HttpMap;
 import com.wills.help.person.ui.IdentificationActivity;
 import com.wills.help.release.model.OrderInfo;
@@ -53,7 +52,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class AssistListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,
-        BaseListLoadMoreListener.LoadMoreListener, AssistView, BaseListAdapter.BaseItemClickListener ,AssistAdapter.ButtonClickListener{
+        BaseListAdapter.LoadMoreListener, AssistView, BaseListAdapter.BaseItemClickListener ,AssistAdapter.ButtonClickListener{
 
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
@@ -231,13 +230,11 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new MyItemDecoration(context, 5));
-        assistAdapter = new AssistAdapter(context, assistList);
+        assistAdapter = new AssistAdapter(context, assistList, recyclerView,linearLayoutManager);
         assistAdapter.setButtonClickListener(this);
         assistAdapter.setBaseItemClickListener(this);
         recyclerView.setAdapter(assistAdapter);
-        BaseListLoadMoreListener listLoadMore = new BaseListLoadMoreListener(linearLayoutManager, assistAdapter);
-        recyclerView.addOnScrollListener(listLoadMore);
-        listLoadMore.setLoadMoreListener(this);
+        assistAdapter.setLoadMoreListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
         onRefresh();
     }

@@ -1,6 +1,7 @@
 package com.wills.help.base;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,8 +33,10 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
     private List<T> list;
     private Context context;
     private View footerView ,emptyView;
-    private BaseListLoadMoreListener.LoadMoreListener loadMoreListener;
+    private LoadMoreListener listener;
     protected BaseItemClickListener baseItemClickListener;
+    private LinearLayoutManager linearLayoutManager;
+    private RecyclerView recyclerView;
 
     public BaseListAdapter(Context context) {
         this.context = context;
@@ -42,6 +45,13 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
     public BaseListAdapter(Context context, List<T> list) {
         this.context = context;
         this.list = list;
+    }
+
+    public BaseListAdapter(Context context, List<T> list, RecyclerView recyclerView,LinearLayoutManager linearLayoutManager) {
+        this.context = context;
+        this.list = list;
+        this.recyclerView = recyclerView;
+        this.linearLayoutManager = linearLayoutManager;
     }
 
     @Override
@@ -80,10 +90,6 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
     public void setLoadMore(int state) {
         this.STATE = state;
         changeFooter();
-    }
-
-    public void setLoadMoreListener(BaseListLoadMoreListener.LoadMoreListener loadMoreListener){
-        this.loadMoreListener = loadMoreListener;
     }
 
     private void changeFooter(){
@@ -159,7 +165,7 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
         public void onClick(View view) {
             if (STATE!=LOAD){
                 setLoadMore(LOAD);
-                loadMoreListener.loadMore();
+                listener.loadMore();
             }
         }
     }
@@ -177,5 +183,15 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
 
     public interface BaseItemClickListener{
         void onItemClick(int position);
+    }
+
+    public interface LoadMoreListener{
+        void loadMore();
+    }
+
+    public void setLoadMoreListener(LoadMoreListener loadMoreListener){
+        this.listener = loadMoreListener;
+        BaseListLoadMoreListener listLoadMore = new BaseListLoadMoreListener(linearLayoutManager, this,loadMoreListener);
+        recyclerView.addOnScrollListener(listLoadMore);
     }
 }

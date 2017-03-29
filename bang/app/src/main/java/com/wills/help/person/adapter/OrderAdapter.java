@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,14 @@ public class OrderAdapter extends BaseListAdapter<OrderInfo>{
 
     public OrderAdapter(Context context, List<OrderInfo> list,int mainType,int type) {
         super(context, list);
+        this.context = context;
+        this.list = list;
+        this.mainType = mainType;
+        this.type = type;
+    }
+
+    public OrderAdapter(Context context, List<OrderInfo> list, RecyclerView recyclerView, LinearLayoutManager linearLayoutManager, int mainType, int type) {
+        super(context, list, recyclerView, linearLayoutManager);
         this.context = context;
         this.list = list;
         this.mainType = mainType;

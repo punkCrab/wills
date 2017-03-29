@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import com.wills.help.R;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
-import com.wills.help.listener.BaseListLoadMoreListener;
+import com.wills.help.base.BaseListAdapter;
 import com.wills.help.net.HttpMap;
 import com.wills.help.person.adapter.BillAdapter;
 import com.wills.help.person.model.Bill;
@@ -27,7 +27,7 @@ import java.util.Map;
  * 2017/3/20.
  */
 
-public class BillActivity extends BaseActivity implements BaseListLoadMoreListener.LoadMoreListener , SwipeRefreshLayout.OnRefreshListener,BillView{
+public class BillActivity extends BaseActivity implements BaseListAdapter.LoadMoreListener , SwipeRefreshLayout.OnRefreshListener,BillView{
 
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
@@ -55,11 +55,9 @@ public class BillActivity extends BaseActivity implements BaseListLoadMoreListen
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new MyItemDecoration(context,5));
-        adapter = new BillAdapter(context,billInfoList);
+        adapter = new BillAdapter(context,billInfoList,recyclerView,linearLayoutManager);
         recyclerView.setAdapter(adapter);
-        BaseListLoadMoreListener listLoadMore = new BaseListLoadMoreListener(linearLayoutManager,adapter);
-        recyclerView.addOnScrollListener(listLoadMore);
-        listLoadMore.setLoadMoreListener(this);
+        adapter.setLoadMoreListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
         onRefresh();
     }

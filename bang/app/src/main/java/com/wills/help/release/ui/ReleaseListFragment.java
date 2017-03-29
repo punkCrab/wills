@@ -11,9 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.wills.help.R;
+import com.wills.help.assist.ui.AssistInfoActivity;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseFragment;
-import com.wills.help.listener.BaseListLoadMoreListener;
+import com.wills.help.base.BaseListAdapter;
 import com.wills.help.net.HttpMap;
 import com.wills.help.release.adapter.ReleaseListAdapter;
 import com.wills.help.release.model.OrderInfo;
@@ -33,7 +34,7 @@ import java.util.Map;
  * 2016/11/14.
  */
 
-public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener , BaseListLoadMoreListener.LoadMoreListener , ReleaseListView , ReleaseListAdapter.ButtonClickListener{
+public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener , BaseListAdapter.LoadMoreListener , ReleaseListView , ReleaseListAdapter.ButtonClickListener,BaseListAdapter.BaseItemClickListener{
 
     private int type = 0;//0进行中1已完成
     SwipeRefreshLayout swipeRefreshLayout;
@@ -72,12 +73,11 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new MyItemDecoration(getAppCompatActivity(),5));
-        releaseListAdapter = new ReleaseListAdapter(getAppCompatActivity(), releaseInfoList,type);
+        releaseListAdapter = new ReleaseListAdapter(getAppCompatActivity(), releaseInfoList,recyclerView,linearLayoutManager,type);
         releaseListAdapter.setButtonClickListener(this);
+        releaseListAdapter.setBaseItemClickListener(this);
         recyclerView.setAdapter(releaseListAdapter);
-        BaseListLoadMoreListener loadMore = new BaseListLoadMoreListener(linearLayoutManager,releaseListAdapter);
-        recyclerView.addOnScrollListener(loadMore);
-        loadMore.setLoadMoreListener(this);
+        releaseListAdapter.setLoadMoreListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
         onRefresh();
     }
@@ -178,5 +178,13 @@ public class ReleaseListFragment extends BaseFragment implements SwipeRefreshLay
                 showOk(releaseInfo);
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("orderInfo", releaseInfoList.get(position));
+        bundle.putString("from", "orderList");
+        IntentUtils.startActivityForResult(getAppCompatActivity(), AssistInfoActivity.class, bundle, 501);
     }
 }

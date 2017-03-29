@@ -14,7 +14,6 @@ import com.wills.help.assist.ui.AssistInfoActivity;
 import com.wills.help.base.App;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.base.BaseListAdapter;
-import com.wills.help.listener.BaseListLoadMoreListener;
 import com.wills.help.net.HttpMap;
 import com.wills.help.person.adapter.OrderAdapter;
 import com.wills.help.release.model.OrderInfo;
@@ -35,7 +34,7 @@ import java.util.Map;
  * 2016/12/5.
  */
 
-public class OrderListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener , BaseListLoadMoreListener.LoadMoreListener , ReleaseListView ,BaseListAdapter.BaseItemClickListener,OrderAdapter.ButtonClickListener{
+public class OrderListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener , BaseListAdapter.LoadMoreListener , ReleaseListView ,BaseListAdapter.BaseItemClickListener,OrderAdapter.ButtonClickListener{
 
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
@@ -69,13 +68,11 @@ public class OrderListActivity extends BaseActivity implements SwipeRefreshLayou
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new MyItemDecoration(context,5));
-        orderAdapter = new OrderAdapter(context,orderArrayList,type,action);
+        orderAdapter = new OrderAdapter(context,orderArrayList,recyclerView,linearLayoutManager,type,action);
         orderAdapter.setBaseItemClickListener(this);
         orderAdapter.setButtonClickListener(this);
         recyclerView.setAdapter(orderAdapter);
-        BaseListLoadMoreListener listLoadMore = new BaseListLoadMoreListener(linearLayoutManager,orderAdapter);
-        recyclerView.addOnScrollListener(listLoadMore);
-        listLoadMore.setLoadMoreListener(this);
+        orderAdapter.setLoadMoreListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
         onRefresh();
     }

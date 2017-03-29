@@ -1,6 +1,7 @@
 package com.wills.help.person.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,12 @@ public class BillAdapter extends BaseListAdapter<Bill.BillInfo>{
         this.list = list;
     }
 
+    public BillAdapter(Context context, List<Bill.BillInfo> list, RecyclerView recyclerView, LinearLayoutManager linearLayoutManager) {
+        super(context, list, recyclerView, linearLayoutManager);
+        this.context = context;
+        this.list = list;
+    }
+
     @Override
     protected RecyclerView.ViewHolder CreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bill, parent, false);
@@ -42,7 +49,7 @@ public class BillAdapter extends BaseListAdapter<Bill.BillInfo>{
     }
 
     @Override
-    protected void BindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+    protected void BindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof BillHolder){
             OrderTypeInfoHelper.getInstance().queryById(list.get(position).getOrdertype())
                     .subscribeOn(Schedulers.io())
@@ -60,7 +67,11 @@ public class BillAdapter extends BaseListAdapter<Bill.BillInfo>{
 
                         @Override
                         public void onNext(OrderTypeInfo orderTypeInfo) {
-                            ((BillHolder)holder).tv_state.setText(orderTypeInfo.getOrdertype());
+                            if (orderTypeInfo != null){
+                                ((BillHolder)holder).tv_state.setText(orderTypeInfo.getOrdertype());
+                            }else {
+                                ((BillHolder)holder).tv_state.setText(list.get(position).getOrdertype());
+                            }
                         }
                     });
             if (Float.parseFloat(list.get(position).getMoney())>0){
