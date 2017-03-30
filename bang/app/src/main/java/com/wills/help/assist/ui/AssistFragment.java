@@ -1,8 +1,11 @@
 package com.wills.help.assist.ui;
 
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +16,7 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
+import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.hyphenate.chat.EMClient;
@@ -23,6 +27,8 @@ import com.wills.help.assist.view.OrderNumView;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.message.ui.MessageActivity;
 import com.wills.help.utils.IntentUtils;
+
+import java.util.List;
 
 /**
  * com.wills.help.assist.ui
@@ -76,6 +82,15 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
         if (aMap == null){
             aMap = mapView.getMap();
         }
+        aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Bundle bundle = new Bundle();
+                bundle.putString("srcid",((OrderNum.PosNum)marker.getObject()).getSrcid());
+                IntentUtils.startActivity(getAppCompatActivity(),AssistListActivity.class,bundle);
+                return false;
+            }
+        });
         LatLng southwestLatLng = new LatLng(39.26, 115.25);
         LatLng northeastLatLng = new LatLng(41.03, 117.30);
         LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
@@ -136,7 +151,7 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
 
     @Override
     public void setOrderNum(OrderNum orderNum) {
-        marker();
+        marker(orderNum.getData());
     }
 
     /**
@@ -146,18 +161,33 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
         MyLocationStyle myLocationStyle = new MyLocationStyle();
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
         myLocationStyle.interval(2000);
+        myLocationStyle.strokeColor(getResources().getColor(R.color.map_stroke));
+        myLocationStyle.radiusFillColor(getResources().getColor(R.color.map_radiusFill));
         aMap.setMyLocationStyle(myLocationStyle);
         aMap.getUiSettings().setMyLocationButtonEnabled(true);
         aMap.setMyLocationEnabled(true);
     }
 
-    private void marker(){
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(new LatLng(40.03, 116.30));
-        markerOptions.title("wills").snippet("wills：110");
-        markerOptions.draggable(false);
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.map_bubble)));
-        markerOptions.setFlat(true);
-        aMap.addMarker(markerOptions);
+    private void marker(List<OrderNum.PosNum> list){
+        for (OrderNum.PosNum posNum : list){
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(new LatLng(Double.parseDouble(posNum.getLat()), Double.parseDouble(posNum.getLng())));
+            markerOptions.draggable(false);
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmap(posNum.getCount())));
+            aMap.addMarker(markerOptions).setObject(posNum);
+        }
+    }
+
+    private Bitmap getBitmap(String string){
+        Bitmap bitmap = BitmapDescriptorFactory.fromResource(R.drawable.map_bubble).getBitmap();
+        bitmap = Bitmap.createBitmap(bitmap, 0 ,0, bitmap.getWidth(),bitmap.getHeight());
+        Canvas canvas = new Canvas(bitmap);
+        TextPaint textPaint = new TextPaint();
+        textPaint.setAntiAlias(true);
+        textPaint.setTextSize(36f);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setColor(getResources().getColor(R.color.white));
+        canvas.drawText(string, bitmap.getWidth()/4, bitmap.getHeight()/4 + (textPaint.descent()-textPaint.ascent()) / 2 ,textPaint);
+        return bitmap;
     }
 }
