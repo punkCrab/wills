@@ -39,9 +39,18 @@ public class OrderNum {
 
     public static class PosNum{
         private String srcid;
+        private String blockid;
         private String count;
         private String lng;
         private String lat;
+
+        public String getBlockid() {
+            return blockid;
+        }
+
+        public void setBlockid(String blockid) {
+            this.blockid = blockid;
+        }
 
         public String getSrcid() {
             return srcid;

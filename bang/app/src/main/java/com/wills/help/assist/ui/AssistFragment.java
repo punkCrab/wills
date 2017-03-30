@@ -87,6 +87,7 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
             public boolean onMarkerClick(Marker marker) {
                 Bundle bundle = new Bundle();
                 bundle.putString("srcid",((OrderNum.PosNum)marker.getObject()).getSrcid());
+                bundle.putString("blockid",((OrderNum.PosNum)marker.getObject()).getBlockid());
                 IntentUtils.startActivity(getAppCompatActivity(),AssistListActivity.class,bundle);
                 return false;
             }

@@ -62,8 +62,8 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     private int page = 1;
     private int count = 0;
     private AssistPresenterImpl assistPresenter;
-    private String srcId;
-    private String blockId="1",desId="0",typeorder="0";
+    private String srcId,blockId;
+    private String desId="0",typeorder="0";
 
     private String headers[] = {"求助内容", "求助定位", "送达地址"};
     private ListView listView1, listView2, listView3;
@@ -80,6 +80,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
         setBaseView(R.layout.activity_assist_list);
         setBaseTitle(getString(R.string.tab_assist));
         srcId = getIntent().getExtras().getString("srcid");
+        blockId = getIntent().getExtras().getString("blockid");
         dropDownMenu = (DropDownMenu) findViewById(R.id.dropDownMenu);
         initData();
     }
@@ -255,9 +256,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     private Map<String, String> getMap() {
         Map<String,String> map = new HashMap<>();
         map.put("blockid", blockId);
-        if (!srcId.equals("0")){
-            map.put("srcid", srcId);
-        }
+        map.put("srcid", srcId);
         if (!desId.equals("0")){
             map.put("desid", desId);
         }
