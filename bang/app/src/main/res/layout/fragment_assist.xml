@@ -7,8 +7,8 @@
 
     <include layout="@layout/toolbar"></include>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
+    <com.amap.api.maps.MapView
+        android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"/>
 </LinearLayout>

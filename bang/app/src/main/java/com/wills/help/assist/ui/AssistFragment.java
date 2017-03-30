@@ -1,16 +1,22 @@
 package com.wills.help.assist.ui;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
+import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.MyLocationStyle;
 import com.hyphenate.chat.EMClient;
 import com.wills.help.R;
-import com.wills.help.assist.adapter.MapAdapter;
 import com.wills.help.assist.model.OrderNum;
 import com.wills.help.assist.presenter.OrderNumPresenterImpl;
 import com.wills.help.assist.view.OrderNumView;
@@ -24,16 +30,12 @@ import com.wills.help.utils.IntentUtils;
  * 2016/11/8.
  */
 
-public class AssistFragment extends BaseFragment implements MapAdapter.MapItemClickListener , OrderNumView{
+public class AssistFragment extends BaseFragment implements OrderNumView{
 
     private Toolbar toolbar;
-    private RecyclerView recyclerView;
-    private GridLayoutManager gridLayoutManager;
-    private MapAdapter mapAdapter;
+    private MapView mapView;
+    private AMap aMap;
     private OrderNumPresenterImpl orderNumPresenter;
-    private int[] images = {R.drawable.example_assist_01, R.drawable.example_assist_02,R.drawable.example_assist_03,
-            R.drawable.example_assist_04, R.drawable.example_assist_05, R.drawable.example_assist_06
-            , R.drawable.example_assist_07, R.drawable.example_assist_08, R.drawable.example_assist_09};
 
     public static AssistFragment newInstance() {
 
@@ -50,7 +52,7 @@ public class AssistFragment extends BaseFragment implements MapAdapter.MapItemCl
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         setHasOptionsMenu(true);
         toolbar.setLogo(R.drawable.title);
-        recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        mapView = (MapView) view.findViewById(R.id.map);
         return view;
     }
 
@@ -70,17 +72,18 @@ public class AssistFragment extends BaseFragment implements MapAdapter.MapItemCl
                 return true;
             }
         });
-        gridLayoutManager = new GridLayoutManager(getAppCompatActivity(), 3);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        mapView.onCreate(savedInstanceState);
+        if (aMap == null){
+            aMap = mapView.getMap();
+        }
+        LatLng southwestLatLng = new LatLng(39.26, 115.25);
+        LatLng northeastLatLng = new LatLng(41.03, 117.30);
+        LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
+        aMap.setMapStatusLimits(latLngBounds);
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(17f));
+        location();
         orderNumPresenter = new OrderNumPresenterImpl(this);
         orderNumPresenter.getOrderNum();
-    }
-
-    @Override
-    public void onItemClick(int position) {
-        Bundle bundle = new Bundle();
-        bundle.putInt("blockId",position+1);
-        IntentUtils.startActivity(getAppCompatActivity(),AssistListActivity.class,bundle);
     }
 
     @Override
@@ -94,9 +97,27 @@ public class AssistFragment extends BaseFragment implements MapAdapter.MapItemCl
     @Override
     public void onResume() {
         super.onResume();
+        mapView.onResume();
         changeMsgIcon();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
 
     private void changeMsgIcon(){
         int count = EMClient.getInstance().chatManager().getUnreadMsgsCount();
@@ -115,8 +136,28 @@ public class AssistFragment extends BaseFragment implements MapAdapter.MapItemCl
 
     @Override
     public void setOrderNum(OrderNum orderNum) {
-        mapAdapter = new MapAdapter(getAppCompatActivity(),images,orderNum.getData());
-        mapAdapter.setItemClickListener(this);
-        recyclerView.setAdapter(mapAdapter);
+        marker();
+    }
+
+    /**
+     * 定位
+     */
+    private void location(){
+        MyLocationStyle myLocationStyle = new MyLocationStyle();
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
+        myLocationStyle.interval(2000);
+        aMap.setMyLocationStyle(myLocationStyle);
+        aMap.getUiSettings().setMyLocationButtonEnabled(true);
+        aMap.setMyLocationEnabled(true);
+    }
+
+    private void marker(){
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(new LatLng(40.03, 116.30));
+        markerOptions.title("wills").snippet("wills：110");
+        markerOptions.draggable(false);
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.map_bubble)));
+        markerOptions.setFlat(true);
+        aMap.addMarker(markerOptions);
     }
 }

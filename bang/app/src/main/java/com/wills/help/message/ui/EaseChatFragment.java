@@ -116,14 +116,13 @@ import rx.functions.Action1;
     
     static final int ITEM_TAKE_PICTURE = 1;
     static final int ITEM_PICTURE = 2;
-    static final int ITEM_LOCATION = 3;
-    
+
 //    protected int[] itemStrings = { R.string.attach_take_pic, R.string.attach_picture, R.string.attach_location };
     protected int[] itemStrings = { R.string.attach_take_pic, R.string.attach_picture};
     protected int[] itemdrawables = { R.drawable.ease_chat_takepic_selector, R.drawable.ease_chat_image_selector};
 //    protected int[] itemdrawables = { R.drawable.ease_chat_takepic_selector, R.drawable.ease_chat_image_selector,
 //            R.drawable.ease_chat_location_selector };
-    protected int[] itemIds = { ITEM_TAKE_PICTURE, ITEM_PICTURE, ITEM_LOCATION };
+    protected int[] itemIds = { ITEM_TAKE_PICTURE, ITEM_PICTURE};
     private EMChatRoomChangeListener chatRoomChangeListener;
     private boolean isMessageListInited;
     protected MyItemClickListener extendMenuItemClickListener;
@@ -656,9 +655,6 @@ import rx.functions.Action1;
                 break;
             case ITEM_PICTURE:
                 selectPicFromLocal();
-                break;
-            case ITEM_LOCATION:
-                startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
                 break;
 
             default:

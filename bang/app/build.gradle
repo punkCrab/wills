@@ -67,7 +67,6 @@ dependencies {
     compile files('libs/uk-co-senab-photoview.jar')
     compile project(':sublimepicker')
     compile 'com.umeng.analytics:analytics:latest.integration'
-    compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/hyphenatechat_3.2.2.jar')
     compile files('libs/org.apache.http.legacy.jar')
     compile files('libs/alipaySdk-20161222.jar')
@@ -76,5 +75,6 @@ dependencies {
     compile files('libs/HwPush_SDK_V2705_nomap.jar')
     compile files('libs/MiPush_SDK_Client_3_2_2.jar')
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.3@aar'
+    compile files('libs/AMap3DMap_5.0.0_AMapSearch_5.0.0_AMapLocation_3.3.0_20170311.jar')
 }
 

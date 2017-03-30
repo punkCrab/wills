@@ -1,7 +1,6 @@
 package com.wills.help.message.widget.chatrow;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
@@ -13,7 +12,6 @@ import com.hyphenate.chat.EMMessage.ChatType;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.LatLng;
 import com.wills.help.R;
-import com.wills.help.message.ui.EaseBaiduMapActivity;
 
 public class EaseChatRowLocation extends EaseChatRow{
 
@@ -82,11 +80,6 @@ public class EaseChatRowLocation extends EaseChatRow{
     
     @Override
     protected void onBubbleClick() {
-        Intent intent = new Intent(context, EaseBaiduMapActivity.class);
-        intent.putExtra("latitude", locBody.getLatitude());
-        intent.putExtra("longitude", locBody.getLongitude());
-        intent.putExtra("address", locBody.getAddress());
-        activity.startActivity(intent);
     }
     
     /*

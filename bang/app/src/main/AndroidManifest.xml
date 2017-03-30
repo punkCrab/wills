@@ -12,13 +12,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-permission android:name="com.wills.help.permission.MIPUSH_RECEIVE" />
     <permission android:name="com.wills.help.permission.MIPUSH_RECEIVE"
@@ -31,7 +31,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="54da0ace30d0ef9fe31a3c91d21768a0"/>
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5844ff784544cb0ffa0000bb" />
@@ -247,10 +249,6 @@
             android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity
             android:name=".message.ui.EaseShowBigImageActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".message.ui.EaseBaiduMapActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
         <activity
