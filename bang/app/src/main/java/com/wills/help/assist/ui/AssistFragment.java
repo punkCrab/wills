@@ -1,5 +1,6 @@
 package com.wills.help.assist.ui;
 
+import android.Manifest;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -9,17 +10,21 @@ import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.AMapOptions;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.hyphenate.chat.EMClient;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.wills.help.R;
 import com.wills.help.assist.model.OrderNum;
 import com.wills.help.assist.presenter.OrderNumPresenterImpl;
@@ -27,8 +32,11 @@ import com.wills.help.assist.view.OrderNumView;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.message.ui.MessageActivity;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.ToastUtils;
 
 import java.util.List;
+
+import rx.functions.Action1;
 
 /**
  * com.wills.help.assist.ui
@@ -40,8 +48,13 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
 
     private Toolbar toolbar;
     private MapView mapView;
+    private FrameLayout frameLayout;
     private AMap aMap;
+    private MyLocationStyle myLocationStyle;
     private OrderNumPresenterImpl orderNumPresenter;
+    private boolean isFirst = true;//第一次进来
+    private ImageView imageView;
+    RxPermissions rxPermissions;
 
     public static AssistFragment newInstance() {
 
@@ -56,14 +69,16 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
     public View initView(LayoutInflater inflater) {
         View view = inflater.inflate(R.layout.fragment_assist, null);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        frameLayout = (FrameLayout) view.findViewById(R.id.fl_map);
+        imageView = (ImageView) view.findViewById(R.id.image);
         setHasOptionsMenu(true);
         toolbar.setLogo(R.drawable.title);
-        mapView = (MapView) view.findViewById(R.id.map);
         return view;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        rxPermissions = new RxPermissions(getAppCompatActivity());
         toolbar.inflateMenu(R.menu.menu_base);
         toolbar.getMenu().getItem(0).setIcon(R.drawable.msg);
         toolbar.getMenu().getItem(0).setTitle(R.string.tab_msg);
@@ -78,7 +93,31 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
                 return true;
             }
         });
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                        .subscribe(new Action1<Boolean>() {
+                            @Override
+                            public void call(Boolean aBoolean) {
+                                if (aBoolean){
+                                    location();
+                                }else {
+                                    ToastUtils.toast("permission is not granted");
+                                }
+                            }
+                        });
+            }
+        });
+        LatLng centerBJPoint= new LatLng(39.952272,116.342779);
+        AMapOptions mapOptions = new AMapOptions();
+        mapOptions.camera(new CameraPosition(centerBJPoint, 17f, 0, 0));
+        mapView = new MapView(getAppCompatActivity(),mapOptions);
         mapView.onCreate(savedInstanceState);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mapView.setLayoutParams(layoutParams);
+        frameLayout.addView(mapView);
         if (aMap == null){
             aMap = mapView.getMap();
         }
@@ -92,14 +131,11 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
                 return false;
             }
         });
-        LatLng southwestLatLng = new LatLng(39.26, 115.25);
-        LatLng northeastLatLng = new LatLng(41.03, 117.30);
-        LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
-        aMap.setMapStatusLimits(latLngBounds);
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(17f));
-        location();
-        orderNumPresenter = new OrderNumPresenterImpl(this);
-        orderNumPresenter.getOrderNum();
+//        LatLng southwestLatLng = new LatLng(39.26, 115.25);
+//        LatLng northeastLatLng = new LatLng(41.03, 117.30);
+//        LatLngBounds latLngBounds = new LatLngBounds(southwestLatLng, northeastLatLng);
+//        aMap.setMapStatusLimits(latLngBounds);
+//        aMap.moveCamera(CameraUpdateFactory.zoomTo(17f));
     }
 
     @Override
@@ -107,6 +143,13 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
         super.onHiddenChanged(hidden);
         if (!hidden) {
             changeMsgIcon();
+            if (aMap !=null){
+                aMap.clear(true);
+            }
+            if (orderNumPresenter == null){
+                orderNumPresenter = new OrderNumPresenterImpl(this);
+            }
+            orderNumPresenter.getOrderNum();
         }
     }
 
@@ -115,6 +158,15 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
         super.onResume();
         mapView.onResume();
         changeMsgIcon();
+        if (aMap !=null&&!isFirst){
+            aMap.clear(true);
+        }else {
+            isFirst = false;
+        }
+        if (orderNumPresenter == null){
+            orderNumPresenter = new OrderNumPresenterImpl(this);
+        }
+        orderNumPresenter.getOrderNum();
     }
 
     @Override
@@ -159,13 +211,16 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
      * 定位
      */
     private void location(){
-        MyLocationStyle myLocationStyle = new MyLocationStyle();
-        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
-        myLocationStyle.interval(2000);
-        myLocationStyle.strokeColor(getResources().getColor(R.color.map_stroke));
-        myLocationStyle.radiusFillColor(getResources().getColor(R.color.map_radiusFill));
+        if (myLocationStyle == null){
+            myLocationStyle = new MyLocationStyle();
+            myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);
+//            myLocationStyle.interval(2000);
+            myLocationStyle.strokeColor(getResources().getColor(R.color.map_stroke));
+            myLocationStyle.radiusFillColor(getResources().getColor(R.color.map_radiusFill));
+            myLocationStyle.strokeWidth(1f);
+        }
         aMap.setMyLocationStyle(myLocationStyle);
-        aMap.getUiSettings().setMyLocationButtonEnabled(true);
+//        aMap.getUiSettings().setMyLocationButtonEnabled(true);
         aMap.setMyLocationEnabled(true);
     }
 

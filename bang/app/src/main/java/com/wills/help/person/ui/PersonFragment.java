@@ -36,7 +36,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
     Context context;
     CollapsingToolbarLayout collapsingToolbar;
     AppBarLayout appBarLayout;
-    ImageView imageView;
+    ImageView imageView,iv_vip;
     TextView tv_name, tv_school, tv_release_check, tv_release, tv_release_progress, tv_release_complete, tv_release_evaluation,
              tv_assist_check, tv_assist, tv_assist_progress, tv_assist_complete, tv_assist_evaluation,
              tv_identification, tv_public, tv_wallet,tv_coupons;
@@ -59,6 +59,7 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
         appBarLayout = (AppBarLayout) view.findViewById(R.id.appbar);
         collapsingToolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
         imageView = (ImageView) view.findViewById(R.id.iv_avatar);
+        iv_vip = (ImageView) view.findViewById(R.id.iv_vip);
         tv_name = (TextView) view.findViewById(R.id.tv_name);
         tv_school = (TextView) view.findViewById(R.id.tv_school);
         tv_release_check = (TextView) view.findViewById(R.id.tv_release_check);
@@ -100,6 +101,9 @@ public class PersonFragment extends BaseFragment implements View.OnClickListener
             GlideUtils.getInstance().displayCircleImageWithSignature(context, App.getApp().getUser().getAvatar(), imageView);
             tv_name.setText(App.getApp().getUser().getNickname());
             tv_school.setText(App.getApp().getUser().getSchool());
+            if (App.getApp().getUser().getUsertype().equals("1")){
+                iv_vip.setVisibility(View.VISIBLE);
+            }
         }
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override

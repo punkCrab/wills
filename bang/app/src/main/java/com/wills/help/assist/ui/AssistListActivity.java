@@ -65,11 +65,13 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     private String srcId,blockId;
     private String desId="0",typeorder="0";
 
-    private String headers[] = {"求助内容", "求助定位", "送达地址"};
-    private ListView listView1, listView2, listView3;
+//    private String headers[] = {"求助内容", "求助定位", "送达地址"};
+    private String headers[] = {"求助内容", "送达地址"};
+    private ListView listView1, listView3;
     private List<View> viewList = new ArrayList<>();
     private OrderTypeListAdapter adapter1;
-    private PointListAdapter adapter2, adapter3;
+//    private PointListAdapter adapter2;
+    private PointListAdapter adapter3;
     private DropDownMenu dropDownMenu;
     private List<PointInfo> pointInfoList2, pointInfoList3;
     private List<OrderTypeInfo> orderTypeInfoList;
@@ -178,16 +180,16 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
         listView1.setDividerHeight(0);
         adapter1 = new OrderTypeListAdapter(context, orderTypeInfoList);
         listView1.setAdapter(adapter1);
-        listView2 = new ListView(context);
-        listView2.setDividerHeight(0);
-        adapter2 = new PointListAdapter(context, pointInfoList2);
-        listView2.setAdapter(adapter2);
+//        listView2 = new ListView(context);
+//        listView2.setDividerHeight(0);
+//        adapter2 = new PointListAdapter(context, pointInfoList2);
+//        listView2.setAdapter(adapter2);
         listView3 = new ListView(context);
         listView3.setDividerHeight(0);
         adapter3 = new PointListAdapter(context, pointInfoList3);
         listView3.setAdapter(adapter3);
         viewList.add(listView1);
-        viewList.add(listView2);
+//        viewList.add(listView2);
         viewList.add(listView3);
 
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -199,15 +201,15 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
                 onRefresh();
             }
         });
-        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                dropDownMenu.setTabText(pointInfoList2.get(i).getPosname());
-                srcId = pointInfoList2.get(i).getPosid();
-                dropDownMenu.closeMenu();
-                onRefresh();
-            }
-        });
+//        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                dropDownMenu.setTabText(pointInfoList2.get(i).getPosname());
+//                srcId = pointInfoList2.get(i).getPosid();
+//                dropDownMenu.closeMenu();
+//                onRefresh();
+//            }
+//        });
         listView3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
