@@ -59,6 +59,7 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 	public static ArrayList<PhotoModel> selected;
 	private int action = 0;
 	private File cameraPath;
+	private List<PhotoModel> photoList;
 
 	@Override
 	protected void initViews(Bundle savedInstanceState) {
@@ -283,18 +284,41 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 
 	@Override
 	public void onCheckedChanged(PhotoModel photoModel, CompoundButton buttonView, boolean isChecked) {
-		photoModel.setChecked(isChecked);
-		if (isChecked) {
-			selected.add(photoModel);
-		} else {
-			selected.remove(photoModel);
-		}
-		if (selected.isEmpty()) {
-			tvPreview.setEnabled(false);
-			tvPreview.setText("预览");
-		}else {
-			tvPreview.setText("预览(" + selected.size() + ")");
-			tvPreview.setEnabled(true);
+			if (isChecked) {
+				if (selected.size()>=MAX){
+					buttonView.setChecked(false);
+					ToastUtils.toast(String.format(getString(R.string.photo_max),String.valueOf(MAX)));
+				}else {
+					photoModel.setChecked(isChecked);
+					selected.add(photoModel);
+				}
+			} else {
+				photoModel.setChecked(isChecked);
+				if (selected.contains(photoModel)){
+					selected.remove(photoModel);
+				}else {
+					removePhoto(photoModel);
+				}
+			}
+			if (selected.isEmpty()) {
+				tvPreview.setEnabled(false);
+				tvPreview.setText("预览");
+			}else {
+				tvPreview.setText("预览(" + selected.size() + ")");
+				tvPreview.setEnabled(true);
+			}
+	}
+
+	/**
+	 *
+	 * @param photoModel
+     */
+	private void removePhoto(PhotoModel photoModel){
+		for (int i = 0;i<PhotoSelectorActivity.selected.size();i++){
+			if (PhotoSelectorActivity.selected.get(i).getOriginalPath().equals(photoModel.getOriginalPath())){
+				PhotoSelectorActivity.selected.remove(i);
+				break;
+			}
 		}
 	}
 
@@ -358,6 +382,8 @@ public class PhotoSelectorActivity extends BaseActivity implements PhotoItem.onI
 	private OnLocalReccentListener reccentListener = new OnLocalReccentListener() {
 		@Override
 		public void onPhotoLoaded(List<PhotoModel> photos) {
+			photoList = new ArrayList<>();
+			photoList = photos;
 			if (tvAlbum.getText().equals(RECCENT_PHOTO))
 				photos.add(0, new PhotoModel());
 			photoAdapter.update(photos);

@@ -59,8 +59,16 @@ public class PhotoItem extends LinearLayout implements OnCheckedChangeListener, 
 			listener.onCheckedChanged(photo, buttonView, isChecked);
 		}
 		if (isChecked) {
-			setDrawingable();
-			ivPhoto.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+			if (PhotoSelectorActivity.selected.size() <= PhotoSelectorActivity.MAX) {
+				if (cbPhoto.isChecked()){
+					setDrawingable();
+					ivPhoto.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+				}else {
+					ivPhoto.clearColorFilter();
+				}
+			} else {
+				ivPhoto.clearColorFilter();
+			}
 		} else {
 			ivPhoto.clearColorFilter();
 		}

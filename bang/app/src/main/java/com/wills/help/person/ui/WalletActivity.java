@@ -113,7 +113,7 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.ll_withdraw:
-                if (StringUtils.isNullOrEmpty(App.getApp().getUser().getPaypwd())){
+                if (StringUtils.isNullOrEmpty(App.getApp().getUser().getAliaccount())){
                     showId();
                 }else {
                     Bundle bundle = new Bundle();

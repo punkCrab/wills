@@ -21,6 +21,7 @@ import com.wills.help.photo.model.PhotoModel;
 import com.wills.help.photo.widget.HackyViewPager;
 import com.wills.help.utils.ScreenUtils;
 import com.wills.help.utils.StringUtils;
+import com.wills.help.utils.ToastUtils;
 
 import java.util.List;
 
@@ -83,9 +84,14 @@ public class PhotoPreviewActivity extends BaseActivity implements PhotoSelectorA
                     }
                     photos.get(current).setChecked(false);
                 }else {
-                    checkBox.setChecked(true);
-                    photos.get(current).setChecked(true);
-                    PhotoSelectorActivity.selected.add(photos.get(current));
+                    if (PhotoSelectorActivity.selected.size()<PhotoSelectorActivity.MAX){
+                        checkBox.setChecked(true);
+                        photos.get(current).setChecked(true);
+                        PhotoSelectorActivity.selected.add(photos.get(current));
+                    }else {
+                        ToastUtils.toast(String.format(getString(R.string.photo_max),String.valueOf(PhotoSelectorActivity.MAX)));
+                        checkBox.setChecked(false);
+                    }
                 }
             }
         });
