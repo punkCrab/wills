@@ -340,6 +340,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dialog.Alert"/>
 
+        <activity
+            android:name=".message.ui.SystemActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" />
+
         <service android:name=".download.DownloadService"></service>
         <!-- alipay sdk begin -->
 

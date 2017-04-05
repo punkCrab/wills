@@ -9,6 +9,7 @@ import com.wills.help.base.App;
 import com.wills.help.db.bean.Contact;
 import com.wills.help.db.manager.ContactHelper;
 import com.wills.help.message.domain.EaseUser;
+import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.GlideUtils;
 
 import rx.Subscriber;
@@ -51,6 +52,9 @@ public class EaseUserUtils {
         if (username.equals(App.getApp().getUser().getUsername())){
             GlideUtils.getInstance().displayImage(context,App.getApp().getUser().getAvatar(),imageView);
             textView.setText(App.getApp().getUser().getNickname());
+        }else if (username.equals(AppConfig.ADMIN)){
+            imageView.setImageResource(R.drawable.msg_system);
+            textView.setText(AppConfig.ADMIN_NAME);
         }else {
             ContactHelper.getInstance().queryByUsername(username).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

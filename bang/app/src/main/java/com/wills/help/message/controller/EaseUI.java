@@ -152,7 +152,7 @@ public final class EaseUI implements ContactsView {
         String userNames = "";
         HttpMap map = new HttpMap();
         for (Map.Entry<String,EMConversation> entry:conversations.entrySet()){
-            if (!entry.getKey().equals("admin")){
+            if (!entry.getKey().equals(AppConfig.ADMIN)){
                 userNames+=entry.getKey()+",";
             }
         }
@@ -167,7 +167,7 @@ public final class EaseUI implements ContactsView {
         if (App.getApp().getIsLogin()){
             Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
             if (conversations.size()>0){
-                if (!(conversations.size() == 1&&conversations.containsKey("admin"))){
+                if (!(conversations.size() == 1&&conversations.containsKey(AppConfig.ADMIN))){
                     contactsPresenter.getContacts(getMap(conversations));
                 }
             }

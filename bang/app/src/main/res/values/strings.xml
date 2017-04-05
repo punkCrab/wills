@@ -216,6 +216,9 @@
     <string name="wallet_id">您还未实名认证，为了资金安全，请实名认证后再进行提现操作</string>
     <string name="pay_pwd_error">支付密码错误</string>
 
+    <string name="notify_release">您的订单已经被接单</string>
+    <string name="notify_accept">恭喜您，成功接单</string>
+
     <string name="user_details">详细资料</string>
     <string name="send_msg">发消息</string>
     <string name="check_msg">查看消息</string>

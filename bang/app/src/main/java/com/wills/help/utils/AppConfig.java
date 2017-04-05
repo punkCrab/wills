@@ -20,6 +20,9 @@ public class AppConfig {
     public static final int NET_SUCCESS = 1;
     public static final int TOKEN_EXPRIED = 1;
 
+    public static final String ADMIN = "admin";
+    public static final String ADMIN_NAME = "系统消息";
+
     public static final int AVATAR = 100;
     public static final int PHOTO = 101;
     public static final int CAMERA = 102;

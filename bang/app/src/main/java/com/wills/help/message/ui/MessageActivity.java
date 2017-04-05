@@ -12,6 +12,7 @@ import com.hyphenate.chat.EMConversation;
 import com.wills.help.R;
 import com.wills.help.base.BaseActivity;
 import com.wills.help.message.EaseConstant;
+import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.AppManager;
 import com.wills.help.utils.IntentUtils;
 
@@ -32,9 +33,13 @@ public class MessageActivity extends BaseActivity{
         listFragment.setConversationListItemClickListener(new EaseConversationListFragment.EaseConversationListItemClickListener() {
             @Override
             public void onListItemClicked(EMConversation conversation) {
-                Bundle bundle = new Bundle();
-                bundle.putString(EaseConstant.EXTRA_USER_ID,conversation.getUserName());
-                IntentUtils.startActivity(context,ChatActivity.class,bundle);
+                if (conversation.getUserName().equals(AppConfig.ADMIN)){
+                    IntentUtils.startActivity(context,SystemActivity.class);
+                }else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(EaseConstant.EXTRA_USER_ID,conversation.getUserName());
+                    IntentUtils.startActivity(context,ChatActivity.class,bundle);
+                }
             }
 
             @Override
@@ -59,10 +64,14 @@ public class MessageActivity extends BaseActivity{
                         listFragment.refresh();
                         break;
                     case 1:
-                        Bundle bundle = new Bundle();
-                        bundle.putString(EaseConstant.EXTRA_USER_ID,conversation.getUserName());
-                        IntentUtils.startActivity(context,ChatActivity.class,bundle);
-                        break;
+                        if (conversation.getUserName().equals(AppConfig.ADMIN)) {
+                            IntentUtils.startActivity(context, SystemActivity.class);
+                        } else {
+                            Bundle bundle = new Bundle();
+                            bundle.putString(EaseConstant.EXTRA_USER_ID, conversation.getUserName());
+                            IntentUtils.startActivity(context, ChatActivity.class, bundle);
+                            break;
+                        }
                 }
             }
         }).show();
