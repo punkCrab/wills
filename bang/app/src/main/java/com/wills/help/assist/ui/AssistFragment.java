@@ -118,9 +118,7 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mapView.setLayoutParams(layoutParams);
         frameLayout.addView(mapView);
-        if (aMap == null){
-            aMap = mapView.getMap();
-        }
+        aMap = mapView.getMap();
         aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
