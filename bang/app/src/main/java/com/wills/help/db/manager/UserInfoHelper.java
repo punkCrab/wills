@@ -66,4 +66,8 @@ public class UserInfoHelper implements IDBHelper<UserInfo>{
         return userInfoDao.queryBuilder().where(UserInfoDao.Properties.Userid.eq(userId)).rx().unique();
     }
 
+    public UserInfo queryById(String userId){
+        return userInfoDao.queryBuilder().where(UserInfoDao.Properties.Userid.eq(userId)).unique();
+    }
+
 }

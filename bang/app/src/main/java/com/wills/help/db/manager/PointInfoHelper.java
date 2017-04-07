@@ -67,4 +67,8 @@ public class PointInfoHelper implements IDBHelper<PointInfo>{
     public Observable<List<PointInfo>> queryByUserBlockId(String blockId){
         return pointInfoDao.queryBuilder().where(PointInfoDao.Properties.Blockid.eq(blockId)).rx().list();
     }
+
+    public Observable<PointInfo> queryByPosId(String blockId){
+        return pointInfoDao.queryBuilder().where(PointInfoDao.Properties.Posid.eq(blockId)).rx().unique();
+    }
 }

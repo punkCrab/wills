@@ -76,6 +76,8 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
     private List<PointInfo> pointInfoList2, pointInfoList3;
     private List<OrderTypeInfo> orderTypeInfoList;
     private OrderInfo orderInfo;
+    private boolean isFirst = true;//第一次进来初始化送法地址，只会不请求
+    private View view;
 
     @Override
     protected void initViews(Bundle savedInstanceState) {
@@ -84,7 +86,7 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
         srcId = getIntent().getExtras().getString("srcid");
         blockId = getIntent().getExtras().getString("blockid");
         dropDownMenu = (DropDownMenu) findViewById(R.id.dropDownMenu);
-        initData();
+        setData();
     }
 
     private void initData() {
@@ -98,12 +100,39 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
                         orderTypeInfo.setOrdertype(getString(R.string.person_all_order));
                         orderTypeInfoList.add(orderTypeInfo);
                         orderTypeInfoList.addAll(orderTypeInfos);
+                        pointInfoList3 = new ArrayList<PointInfo>();
+                        PointInfo pointInfo = new PointInfo();
+                        pointInfo.setBlockid("0");
+                        pointInfo.setPosid("0");
+                        pointInfo.setPosname(getString(R.string.person_all_order));
+                        pointInfoList3.add(pointInfo);
                     }
                 }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<OrderTypeInfo>>() {
                     @Override
                     public void onCompleted() {
+                        for (OrderInfo info : assistList){
+                            PointInfoHelper.getInstance().queryByPosId(info.getDesid())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new Subscriber<PointInfo>() {
+                                        @Override
+                                        public void onCompleted() {
+                                            setDropDownMenu();
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(PointInfo pointInfo) {
+                                            pointInfoList3.add(pointInfo);
+                                        }
+                                    });
+                        }
                     }
 
                     @Override
@@ -113,69 +142,12 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
 
                     @Override
                     public void onNext(List<OrderTypeInfo> orderTypeInfos) {
-                        PointInfoHelper.getInstance().queryAll()
-                                .doOnNext(new Action1<List<PointInfo>>() {
-                                    @Override
-                                    public void call(List<PointInfo> pointInfos) {
-                                        pointInfoList3 = new ArrayList<PointInfo>();
-                                        PointInfo pointInfo = new PointInfo();
-                                        pointInfo.setBlockid("0");
-                                        pointInfo.setPosid("0");
-                                        pointInfo.setPosname(getString(R.string.person_all_order));
-                                        pointInfoList3.add(pointInfo);
-                                        pointInfoList3.addAll(pointInfos);
-                                    }
-                                }).subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Subscriber<List<PointInfo>>() {
-                                    @Override
-                                    public void onCompleted() {
-                                    }
 
-                                    @Override
-                                    public void onError(Throwable e) {
-
-                                    }
-
-                                    @Override
-                                    public void onNext(List<PointInfo> pointInfos) {
-                                        PointInfoHelper.getInstance().queryByUserBlockId("1")
-                                                .doOnNext(new Action1<List<PointInfo>>() {
-                                                    @Override
-                                                    public void call(List<PointInfo> pointInfos) {
-                                                        pointInfoList2 = new ArrayList<PointInfo>();
-                                                        PointInfo pointInfo = new PointInfo();
-                                                        pointInfo.setBlockid("0");
-                                                        pointInfo.setPosid("0");
-                                                        pointInfo.setPosname(getString(R.string.person_all_order));
-                                                        pointInfoList2.add(pointInfo);
-                                                        pointInfoList2.addAll(pointInfos);
-                                                    }
-                                                }).subscribeOn(Schedulers.io())
-                                                .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe(new Subscriber<List<PointInfo>>() {
-                                                    @Override
-                                                    public void onCompleted() {
-                                                        setData();
-                                                    }
-
-                                                    @Override
-                                                    public void onError(Throwable e) {
-
-                                                    }
-
-                                                    @Override
-                                                    public void onNext(List<PointInfo> pointInfos) {
-
-                                                    }
-                                                });
-                                    }
-                                });
                     }
                 });
     }
 
-    private void setData(){
+    private void setDropDownMenu(){
         listView1 = new ListView(context);
         listView1.setDividerHeight(0);
         adapter1 = new OrderTypeListAdapter(context, orderTypeInfoList);
@@ -220,13 +192,14 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
             }
         });
 
-        View view = LayoutInflater.from(context).inflate(R.layout.page_list, null);
+        dropDownMenu.setDropDownMenu(Arrays.asList(headers), viewList, view);
+    }
+
+    private void setData(){
+        view = LayoutInflater.from(context).inflate(R.layout.page_list, null);
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorPrimary, R.color.colorPrimaryLight, R.color.colorAccent);
-
-        dropDownMenu.setDropDownMenu(Arrays.asList(headers), viewList, view);
-
         assistPresenter = new AssistPresenterImpl(this);
         linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setHasFixedSize(true);
@@ -300,6 +273,11 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
             page++;
         } else {
             assistAdapter.setEmpty();
+        }
+
+        if (isFirst){
+            initData();
+            isFirst = false;
         }
     }
 

@@ -122,8 +122,8 @@
     <string name="evaluation_hint">填写您的评价</string>
     <string name="evaluation_ok">确认评价</string>
 
-    <string name="home_seek">求助</string>
-    <string name="home_help">帮人</string>
+    <string name="home_seek">人帮我</string>
+    <string name="home_help">我帮人</string>
     <string name="home_express">为你解邮</string>
     <string name="home_express_count">您有%1$s个快递已经到达学校</string>
     <string name="home_express_send">免费派送</string>

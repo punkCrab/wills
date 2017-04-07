@@ -9,8 +9,6 @@ import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.SharedPreferencesUtils;
 import com.wills.help.utils.StringUtils;
 
-import rx.Subscriber;
-
 /**
  * com.wills.help
  * Created by lizhaoyong
@@ -38,22 +36,7 @@ public class App extends MultiDexApplication {
         if (user == null){
             String userId = (String) SharedPreferencesUtils.getInstance().get(AppConfig.SP_USER,"");
             if (!StringUtils.isNullOrEmpty(userId)){
-                UserInfoHelper.getInstance().queryByUserId(userId).subscribe(new Subscriber<UserInfo>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(UserInfo userInfo) {
-                        user = userInfo;
-                    }
-                });
+                return UserInfoHelper.getInstance().queryById(userId);
             }
         }
         return user;

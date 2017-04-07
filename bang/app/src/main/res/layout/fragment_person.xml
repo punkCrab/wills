@@ -43,7 +43,7 @@
                         android:layout_alignBottom="@id/iv_avatar"
                         android:layout_alignRight="@id/iv_avatar"
                         android:src="@drawable/vip"
-                        android:visibility="visible"/>
+                        android:visibility="visible" />
                 </RelativeLayout>
 
                 <TextView
@@ -140,18 +140,6 @@
                     android:padding="@dimen/activity_horizontal_margin">
 
                     <TextView
-                        android:id="@+id/tv_release"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawablePadding="5dp"
-                        android:drawableTop="@drawable/person_release"
-                        android:gravity="center"
-                        android:text="@string/person_all_order"
-                        android:textColor="@color/textPrimary"
-                        android:textSize="14sp" />
-
-                    <TextView
                         android:id="@+id/tv_release_progress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -172,6 +160,18 @@
                         android:drawableTop="@drawable/person_complete"
                         android:gravity="center"
                         android:text="@string/person_complete"
+                        android:textColor="@color/textPrimary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_release"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="5dp"
+                        android:drawableTop="@drawable/person_release"
+                        android:gravity="center"
+                        android:text="@string/person_all_order"
                         android:textColor="@color/textPrimary"
                         android:textSize="14sp" />
 
@@ -241,17 +241,6 @@
                         android:orientation="horizontal"
                         android:padding="@dimen/activity_horizontal_margin">
 
-                        <TextView
-                            android:id="@+id/tv_assist"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawablePadding="5dp"
-                            android:drawableTop="@drawable/person_assist"
-                            android:gravity="center"
-                            android:text="@string/person_all_order"
-                            android:textColor="@color/textPrimary"
-                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/tv_assist_progress"
@@ -274,6 +263,18 @@
                             android:drawableTop="@drawable/person_complete"
                             android:gravity="center"
                             android:text="@string/person_complete"
+                            android:textColor="@color/textPrimary"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_assist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="5dp"
+                            android:drawableTop="@drawable/person_assist"
+                            android:gravity="center"
+                            android:text="@string/person_all_order"
                             android:textColor="@color/textPrimary"
                             android:textSize="14sp" />
 

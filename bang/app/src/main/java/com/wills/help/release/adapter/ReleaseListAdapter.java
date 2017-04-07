@@ -129,6 +129,10 @@ public class ReleaseListAdapter extends BaseListAdapter<OrderInfo>{
                 ((ReleaseHolder)holder).iv_release_msg.setVisibility(View.GONE);
                 if (type == 0){
                     ((ReleaseHolder)holder).ll_state.setVisibility(View.VISIBLE);
+                    ((ReleaseHolder)holder).layout_release.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
+                    ((ReleaseHolder)holder).layout_progress.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
+                    ((ReleaseHolder)holder).layout_arrive.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
+                    ((ReleaseHolder)holder).layout_complete.findViewById(R.id.iv_state).setBackgroundResource(R.drawable.release_state_false);
                 }else if (type == 1){
                     ((ReleaseHolder)holder).ll_state.setVisibility(View.GONE);
                 }
