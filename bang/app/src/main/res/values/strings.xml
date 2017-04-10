@@ -117,6 +117,8 @@
     <string name="accept_success">我知道了，马上就去</string>
     <string name="accept_remark">接单成功后可在个人中心接单页面看到备注信息</string>
     <string name="accept_id">您还未在校生认证，认证后才可以接单</string>
+    <string name="accept_count">目前共有%1$s单正在发布</string>
+
 
     <string name="evaluation">整体评分</string>
     <string name="evaluation_hint">填写您的评价</string>
@@ -212,7 +214,7 @@
     <string name="pay_pwd_input_again">请再次输入支付密码</string>
     <string name="pay_approve_warn">\t\t温馨提示：为保证提现安全，输入的姓名需要和支付宝实名认证姓名一致，确保姓名和支付宝无误后再提交。</string>
     <string name="pay_balance_warn">您还没有设置支付密码，请设置完成后再进行余额支付。</string>
-    <string name="wallet_warn">您还没有设置支付密码，设置后可也更安全的管理自己的钱包</string>
+    <string name="wallet_warn">您还没有设置支付密码，设置后可以更安全的管理自己的钱包</string>
     <string name="wallet_id">您还未实名认证，为了资金安全，请实名认证后再进行提现操作</string>
     <string name="pay_pwd_error">支付密码错误</string>
 

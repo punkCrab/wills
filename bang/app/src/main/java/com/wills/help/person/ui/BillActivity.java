@@ -103,7 +103,11 @@ public class BillActivity extends BaseActivity implements BaseListAdapter.LoadMo
             adapter.setList(billInfoList);
             page++;
         }else {
-            adapter.setEmpty();
+            if(billInfoList.size()>0){
+                adapter.setLoadMore(adapter.EMPTY);
+            }else {
+                adapter.setEmpty();
+            }
         }
     }
 }

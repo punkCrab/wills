@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +48,7 @@ public class WithdrawActivity extends BaseActivity implements WithdrawView{
         tv_amount = (TextView) findViewById(R.id.tv_amount);
         et_amount = (EditText) findViewById(R.id.et_amount);
         btn_submit = (Button) findViewById(R.id.btn_submit);
+        et_amount.addTextChangedListener(new EditTextChange());
         tv_zfb.setText(StringUtils.getZFB(App.getApp().getUser().getAliaccount()));
         tv_amount.setText(String.format(getString(R.string.money_withdraw_warn),String.valueOf(amount)));
         btn_submit.setOnClickListener(new View.OnClickListener() {
@@ -107,5 +110,29 @@ public class WithdrawActivity extends BaseActivity implements WithdrawView{
             }
         });
         return dialog;
+    }
+
+    public class EditTextChange implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (!StringUtils.isNullOrEmpty(et_amount.getText().toString())){
+                btn_submit.setEnabled(true);
+                btn_submit.setBackgroundResource(R.drawable.btn_selector);
+            }else {
+                btn_submit.setEnabled(false);
+                btn_submit.setBackgroundResource(R.color.button_gray);
+            }
+        }
     }
 }

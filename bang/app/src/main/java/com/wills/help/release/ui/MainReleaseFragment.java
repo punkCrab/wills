@@ -129,6 +129,9 @@ public class MainReleaseFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 401 && resultCode == RESULT_OK){
+            if(tabLayout == null){
+                tabLayout = (TabLayout) view.findViewById(R.id.tabLayout);
+            }
             tabLayout.getTabAt(1).select();
             if (progressFragment!=null){
                 progressFragment.onRefresh();

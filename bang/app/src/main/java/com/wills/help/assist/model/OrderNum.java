@@ -11,6 +11,16 @@ import java.util.List;
 public class OrderNum {
     private int state;
     private String info;
+    private int count;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     private List<PosNum> data;
 
     public int getState() {

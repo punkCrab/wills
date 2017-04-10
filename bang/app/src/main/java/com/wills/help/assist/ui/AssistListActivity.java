@@ -113,26 +113,14 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
                     @Override
                     public void onCompleted() {
                         for (OrderInfo info : assistList){
-                            PointInfoHelper.getInstance().queryByPosId(info.getDesid())
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new Subscriber<PointInfo>() {
-                                        @Override
-                                        public void onCompleted() {
-                                            setDropDownMenu();
-                                        }
-
-                                        @Override
-                                        public void onError(Throwable e) {
-
-                                        }
-
-                                        @Override
-                                        public void onNext(PointInfo pointInfo) {
-                                            pointInfoList3.add(pointInfo);
-                                        }
-                                    });
+                            for (PointInfo pointInfo : pointInfoList3){
+                                if (!pointInfo.getPosid().equals(info.getDesid())){
+                                    pointInfoList3.add(PointInfoHelper.getInstance().queryById(info.getDesid()));
+                                    break;
+                                }
+                            }
                         }
+                        setDropDownMenu();
                     }
 
                     @Override
@@ -350,12 +338,6 @@ public class AssistListActivity extends BaseActivity implements SwipeRefreshLayo
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage("您已成功接单从" + orderInfo.getSrcname() + orderInfo.getSrcdetail() + "送往"
                 + orderInfo.getDesname() + orderInfo.getDesdetail() + "的" + orderInfo.getOrdertypename() + "请求，请您尽快动身。")
-                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
                 .setPositiveButton(getString(R.string.accept_success), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

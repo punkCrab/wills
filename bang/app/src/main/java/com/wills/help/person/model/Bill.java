@@ -53,7 +53,16 @@ public class Bill {
         private String money;
         private String time;
         private String orderid ;
+        private String typeid;
         private String ordertype;
+
+        public String getTypeid() {
+            return typeid;
+        }
+
+        public void setTypeid(String typeid) {
+            this.typeid = typeid;
+        }
 
         public String getBillid() {
             return billid;

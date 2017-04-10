@@ -10,15 +10,9 @@ import android.widget.TextView;
 
 import com.wills.help.R;
 import com.wills.help.base.BaseListAdapter;
-import com.wills.help.db.bean.OrderTypeInfo;
-import com.wills.help.db.manager.OrderTypeInfoHelper;
 import com.wills.help.person.model.Bill;
 
 import java.util.List;
-
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * com.wills.help.person.adapter
@@ -51,33 +45,12 @@ public class BillAdapter extends BaseListAdapter<Bill.BillInfo>{
     @Override
     protected void BindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof BillHolder){
-            OrderTypeInfoHelper.getInstance().queryById(list.get(position).getOrdertype())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<OrderTypeInfo>() {
-                        @Override
-                        public void onCompleted() {
 
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onNext(OrderTypeInfo orderTypeInfo) {
-                            if (orderTypeInfo != null){
-                                ((BillHolder)holder).tv_state.setText(orderTypeInfo.getOrdertype());
-                            }else {
-                                ((BillHolder)holder).tv_state.setText(list.get(position).getOrdertype());
-                            }
-                        }
-                    });
+            ((BillHolder)holder).tv_state.setText(list.get(position).getOrdertype());
             if (Float.parseFloat(list.get(position).getMoney())>0){
-                ((BillHolder)holder).tv_amount.setText("+"+list.get(position).getMoney());
+                ((BillHolder)holder).tv_amount.setText("+"+list.get(position).getMoney()+context.getString(R.string.yuan));
             }else {
-                ((BillHolder)holder).tv_amount.setText(list.get(position).getMoney());
+                ((BillHolder)holder).tv_amount.setText(list.get(position).getMoney()+context.getString(R.string.yuan));
             }
             ((BillHolder)holder).tv_time.setText(list.get(position).getTime());
         }

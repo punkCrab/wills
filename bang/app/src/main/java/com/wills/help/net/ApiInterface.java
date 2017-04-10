@@ -169,7 +169,7 @@ public interface ApiInterface {
     Observable<OrderDetail> getOrderInfo(@FieldMap Map<String , String > map);
 
     /**
-     * 获取订单详情
+     * 修改个人资料
      * @param map
      * @return
      */

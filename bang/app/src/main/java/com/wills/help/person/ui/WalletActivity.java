@@ -146,10 +146,11 @@ public class WalletActivity extends BaseActivity implements View.OnClickListener
     private void showPayPwd() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(getString(R.string.wallet_warn))
+                .setCancelable(false)
                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                        WalletActivity.this.finish();
                     }
                 })
                 .setPositiveButton(getString(R.string.setting_set_pay_pwd), new DialogInterface.OnClickListener() {

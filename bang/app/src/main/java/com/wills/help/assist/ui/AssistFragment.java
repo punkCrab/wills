@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
@@ -49,6 +50,7 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
     private Toolbar toolbar;
     private MapView mapView;
     private FrameLayout frameLayout;
+    private TextView tv_amount;
     private AMap aMap;
     private MyLocationStyle myLocationStyle;
     private OrderNumPresenterImpl orderNumPresenter;
@@ -70,6 +72,7 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
         View view = inflater.inflate(R.layout.fragment_assist, null);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         frameLayout = (FrameLayout) view.findViewById(R.id.fl_map);
+        tv_amount = (TextView) view.findViewById(R.id.tv_amount);
         imageView = (ImageView) view.findViewById(R.id.image);
         setHasOptionsMenu(true);
         toolbar.setLogo(R.drawable.title);
@@ -155,16 +158,18 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
     public void onResume() {
         super.onResume();
         mapView.onResume();
-        changeMsgIcon();
-        if (aMap !=null&&!isFirst){
-            aMap.clear(true);
-        }else {
-            isFirst = false;
+        if (isVisible()){
+            changeMsgIcon();
+            if (aMap !=null&&!isFirst){
+                aMap.clear(true);
+            }else {
+                isFirst = false;
+            }
+            if (orderNumPresenter == null){
+                orderNumPresenter = new OrderNumPresenterImpl(this);
+            }
+            orderNumPresenter.getOrderNum();
         }
-        if (orderNumPresenter == null){
-            orderNumPresenter = new OrderNumPresenterImpl(this);
-        }
-        orderNumPresenter.getOrderNum();
     }
 
     @Override
@@ -202,6 +207,7 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
 
     @Override
     public void setOrderNum(OrderNum orderNum) {
+        tv_amount.setText(String.format(getString(R.string.accept_count),String.valueOf(orderNum.getCount())));
         marker(orderNum.getData());
     }
 
@@ -227,7 +233,9 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(new LatLng(Double.parseDouble(posNum.getLat()), Double.parseDouble(posNum.getLng())));
             markerOptions.draggable(false);
-            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getBitmap(posNum.getCount())));
+            Bitmap bitmap = getBitmap(posNum.getCount());
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
+            markerOptions.anchor(0.3f,0.5f);
             aMap.addMarker(markerOptions).setObject(posNum);
         }
     }

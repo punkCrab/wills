@@ -77,7 +77,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/btn_submit_height"
         android:layout_margin="@dimen/activity_horizontal_margin"
-        android:background="@drawable/btn_selector"
+        android:background="@color/button_gray"
+        android:enabled="false"
         android:text="@string/money_withdraw"
         android:textColor="@color/white"
         android:textSize="18sp" />

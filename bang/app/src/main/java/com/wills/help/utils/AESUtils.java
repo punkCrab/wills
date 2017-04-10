@@ -19,7 +19,7 @@ import Decoder.BASE64Encoder;
 public class AESUtils {
 
     private static AESUtils instance;
-    private static final String KEY = "56A0741C0955CBC9";
+    private static final String KEY = "56A0741C0955CBC1";
     public AESUtils() {
     }
 
