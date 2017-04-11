@@ -2,13 +2,16 @@ package com.wills.help.assist.ui;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -242,23 +245,42 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(new LatLng(Double.parseDouble(posNum.getLat()), Double.parseDouble(posNum.getLng())));
             markerOptions.draggable(false);
-            Bitmap bitmap = getBitmap(posNum.getCount());
+            Bitmap bitmap = getBitmap(posNum.getCount(),posNum);
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
-            markerOptions.anchor(0.3f,0.5f);
+            markerOptions.anchor(0.5f,1f);//偏移量
             aMap.addMarker(markerOptions).setObject(posNum);
         }
     }
 
-    private Bitmap getBitmap(String string){
-        Bitmap bitmap = BitmapDescriptorFactory.fromResource(R.drawable.map_bubble).getBitmap();
-        bitmap = Bitmap.createBitmap(bitmap, 0 ,0, bitmap.getWidth(),bitmap.getHeight());
+    /**
+     *
+     * @param string
+     * @return
+     */
+    private Bitmap getBitmap(String string,OrderNum.PosNum posNum){
+        Resources resource = getAppCompatActivity().getResources();
+        float scale = resource.getDisplayMetrics().density;
+        Bitmap bitmap = null;
+        if (posNum.getSrcid().equals("120")){//自提点
+            bitmap = BitmapFactory.decodeResource(resource, R.drawable.map_bubble_blue);
+        }else {
+            bitmap = BitmapFactory.decodeResource(resource, R.drawable.map_bubble);
+        }
+        android.graphics.Bitmap.Config bitmapConfig = bitmap.getConfig();
+        if(bitmapConfig == null) {
+            bitmapConfig = android.graphics.Bitmap.Config.ARGB_8888;
+        }
+        bitmap = bitmap.copy(bitmapConfig, true);
         Canvas canvas = new Canvas(bitmap);
-        TextPaint textPaint = new TextPaint();
-        textPaint.setAntiAlias(true);
-        textPaint.setTextSize(36f);
-        textPaint.setTextAlign(Paint.Align.CENTER);
-        textPaint.setColor(getResources().getColor(R.color.white));
-        canvas.drawText(string, bitmap.getWidth()/4, bitmap.getHeight()/4 + (textPaint.descent()-textPaint.ascent()) / 2 ,textPaint);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(resource.getColor(R.color.white));
+        paint.setTextSize((int) (12 * scale));
+        paint.setShadowLayer(1f, 0f, 1f, Color.WHITE);
+        Rect bounds = new Rect();
+        paint.getTextBounds(string, 0, string.length(), bounds);
+        int x = (bitmap.getWidth() - bounds.width())/2;
+        int y = (bitmap.getHeight() + bounds.height())/2;
+        canvas.drawText(string, x , y , paint);
         return bitmap;
     }
 
