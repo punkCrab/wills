@@ -29,6 +29,7 @@ public class AppConfig {
     public static final int PREV = 103;
 
     public static final String SP_USER = "sp_user";
+    public static final String MAP_FIRST = "map_first";//首次使用地图
 
     public static final String KEYBOARD = "keyboard_height";
     public static final String TOOLBAR = "toolbar_height";

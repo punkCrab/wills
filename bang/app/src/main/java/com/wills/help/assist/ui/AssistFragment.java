@@ -1,10 +1,12 @@
 package com.wills.help.assist.ui;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextPaint;
 import android.view.LayoutInflater;
@@ -32,7 +34,9 @@ import com.wills.help.assist.presenter.OrderNumPresenterImpl;
 import com.wills.help.assist.view.OrderNumView;
 import com.wills.help.base.BaseFragment;
 import com.wills.help.message.ui.MessageActivity;
+import com.wills.help.utils.AppConfig;
 import com.wills.help.utils.IntentUtils;
+import com.wills.help.utils.SharedPreferencesUtils;
 import com.wills.help.utils.ToastUtils;
 
 import java.util.List;
@@ -82,6 +86,11 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
     @Override
     public void initData(Bundle savedInstanceState) {
         rxPermissions = new RxPermissions(getAppCompatActivity());
+        //首次使用地图弹出提醒
+        if ((Boolean) SharedPreferencesUtils.getInstance().get(AppConfig.MAP_FIRST,true)){
+            showAlert();
+            SharedPreferencesUtils.getInstance().put(AppConfig.MAP_FIRST,false);
+        }
         toolbar.inflateMenu(R.menu.menu_base);
         toolbar.getMenu().getItem(0).setIcon(R.drawable.msg);
         toolbar.getMenu().getItem(0).setTitle(R.string.tab_msg);
@@ -251,5 +260,17 @@ public class AssistFragment extends BaseFragment implements OrderNumView{
         textPaint.setColor(getResources().getColor(R.color.white));
         canvas.drawText(string, bitmap.getWidth()/4, bitmap.getHeight()/4 + (textPaint.descent()-textPaint.ascent()) / 2 ,textPaint);
         return bitmap;
+    }
+
+    private void showAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getAppCompatActivity());
+        builder.setTitle(getString(R.string.accept_warn))
+                .setMessage(getString(R.string.accept_warn_content))
+                .setPositiveButton(getString(R.string.know), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
     }
 }
