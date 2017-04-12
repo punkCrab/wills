@@ -11,7 +11,7 @@ public class AppConfig {
     public static String VERSION = "1.0.0";
     public static String VERSION_ID = "100";
     public static boolean TEST = true;
-    public static final String HOST = TEST?"http://59.110.62.75/test/":"http://59.110.62.75/think/";
+    public static final String HOST = TEST?"https://helpsharer.cn/test/":"https://helpsharer.cn/think/";
     public static String WX_APP_ID;
     public static final String HW_APP_ID = "10856775";
     public static final String MI_APP_ID = "2882303761517559840";

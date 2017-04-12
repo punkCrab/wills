@@ -3,12 +3,16 @@ package com.wills.help.net;
 import com.wills.help.utils.AppConfig;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -62,20 +66,20 @@ public class HttpManager {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addNetworkInterceptor(httpLoggingInterceptor)
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
-//                .addInterceptor(new Interceptor() {
-//            @Override
-//            public Response intercept(Chain chain) throws IOException {
-//                Request request = chain.request().newBuilder()
-//                        .addHeader("","")//可以从这里添加请求头
-//                        .build();
-//                Response response = chain.proceed(request);
+                .addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request().newBuilder()
+                        .addHeader("Connection","close")//可以从这里添加请求头
+                        .build();
+                Response response = chain.proceed(request);
 //                String headerValue = request.cacheControl().toString();
 //                if (!StringUtils.isNullOrEmpty(headerValue)){
 //                    response = response.newBuilder().removeHeader("Pragma").header("Cache-Control" , "max-age=" + 30).build();
 //                }
-//                return response;
-//            }
-//        })
+                return response;
+            }
+        })
                 .build();
         return client;
     }
